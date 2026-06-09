@@ -2,9 +2,9 @@
 
 Fuente visual revisada:
 
-- `logos y marcas/quie.png`: logo principal con simbolo superior y wordmark.
-- `logos y marcas/completa.png`: tablero de concepto, paleta, tipografias, usos y aplicaciones.
-- `logos y marcas/marketing.txt`: estrategia de tono, campanas, producto, NFC y posicionamiento.
+- `logos y marcas/logos y aplicaciones/quie.png`: logo principal con simbolo superior y wordmark.
+- `logos y marcas/logos y aplicaciones/completa.png`: tablero de concepto, paleta, tipografias, usos y aplicaciones.
+- `logos y marcas/logos y aplicaciones/marketing.txt`: estrategia de tono, campanas, producto, NFC y posicionamiento.
 
 ## Concepto
 

@@ -144,8 +144,8 @@ psql "$DATABASE_URL" -f database/aurora/002_seed_demo.sql
 
 QUIE® significa "Tierra". La direccion visual esta documentada en:
 
-- `logos y marcas/completa.png`
-- `logos y marcas/marketing.txt`
+- `logos y marcas/logos y aplicaciones/completa.png`
+- `logos y marcas/logos y aplicaciones/marketing.txt`
 - `documentacion/GUIA_MARCA_QUIE.md`
 
 Principios:
