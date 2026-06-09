@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Origen — QUIE®</title>
+  <meta name="description" content="La historia fundacional de QUIE®. De la tierra. Para siempre."/>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Paleta QUIE® ── */
+    :root {
+      --carbon:    #1A1A1A;
+      --terracota: #C4622D;
+      --arcilla:   #D4956A;
+      --verde:     #3D5A3E;
+      --dorado:    #E8C87A;
+    }
+
+    /* ── Base ── */
+    body {
+      background-color: var(--carbon);
+      color: rgba(255,255,255,0.88);
+      font-family: Georgia, "Times New Roman", serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 3s ease;
+    }
+    body.transitioned { background-color: var(--terracota); }
+
+    /* ── Background image overlay ── */
+    #bg-image {
+      position: fixed;
+      inset: 0;
+      background-image: url('/assets/quie/brand/quie.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 2.5s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #bg-image.visible { opacity: 0.10; }
+
+    /* ── Dark gradient overlay ── */
+    #bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.45) 0%,
+        rgba(0,0,0,0.22) 50%,
+        rgba(0,0,0,0.55) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── Content column ── */
+    #content {
+      position: relative;
+      z-index: 10;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 72px 24px 120px;
+    }
+
+    /* ── Back link ── */
+    #back-link {
+      display: inline-block;
+      margin-bottom: 48px;
+      font-family: system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--arcilla);
+      text-decoration: none;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    #back-link:hover { opacity: 1; }
+
+    /* ── Text paragraphs ── */
+    .para {
+      font-size: clamp(17px, 4vw, 20px);
+      line-height: 2;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 1.6em;
+    }
+
+    /* ── "—" dividers ── */
+    .divider {
+      text-align: center;
+      font-size: 22px;
+      color: var(--arcilla);
+      margin: 2em 0;
+      user-select: none;
+    }
+
+    /* ── Blinking cursor ── */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    #cursor {
+      display: inline-block;
+      color: var(--arcilla);
+      margin-left: 2px;
+      animation: blink 0.8s step-end infinite;
+    }
+    #cursor.hidden { display: none; }
+
+    /* ── Final phrase ── */
+    #final-phrase {
+      color: var(--dorado);
+      font-size: clamp(22px, 6vw, 28px);
+      font-style: italic;
+      line-height: 1.9;
+      white-space: pre-line;
+      margin-top: 0.5em;
+      margin-bottom: 4em;
+      min-height: 1em;
+    }
+    #final-cursor {
+      display: inline-block;
+      color: var(--dorado);
+      margin-left: 2px;
+      animation: blink 0.8s step-end infinite;
+    }
+    #final-cursor.hidden { display: none; }
+
+    /* ── Logo ── */
+    #logo-block {
+      text-align: center;
+      margin-bottom: 2.5em;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    #logo-block.visible { opacity: 1; }
+    #logo-wordmark {
+      font-size: clamp(28px, 8vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.35em;
+      color: var(--dorado);
+      text-shadow: 0 0 48px rgba(232,200,122,0.27);
+    }
+    #logo-tagline {
+      margin-top: 8px;
+      font-family: system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--arcilla);
+    }
+
+    /* ── CTA button ── */
+    #cta-wrap {
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #cta-wrap.visible { opacity: 1; }
+    #cta-btn {
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--carbon);
+      background-color: var(--dorado);
+      border: none;
+      padding: 16px 38px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(232,200,122,0.35);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="bg-image"></div>
+  <div id="bg-overlay"></div>
+
+  <div id="content">
+    <a id="back-link" href="/">← Volver</a>
+    <div id="text-output"></div>
+    <div id="final-phrase"></div>
+    <div id="logo-block">
+      <div id="logo-wordmark">QUIE®</div>
+      <div id="logo-tagline">Artesanía colombiana</div>
+    </div>
+    <div id="cta-wrap">
+      <a id="cta-btn" href="/catalogo">Conoce tu pieza →</a>
+    </div>
+  </div>
+
+<script>
+  // ── Texto ──
+  const BODY_TEXT = `Hubo un tiempo en que la tierra hablaba
+a través de las manos.
+
+No había fábricas.
+No había prisa.
+Solo arcilla, cuero, aguja e hilo
+y el conocimiento silencioso
+que pasa de padre a hijo
+sin necesidad de palabras.
+
+En algún lugar de Colombia —
+donde el río baja de la montaña
+y la neblina todavía abraza los cerros
+antes de que llegue el sol —
+un artesano extendió un trozo de cuero
+sobre su mesa de trabajo.
+
+Lo miró largo tiempo.
+
+No porque no supiera qué hacer.
+Sino porque sabía
+que lo que estaba a punto de crear
+duraría más que él.
+
+Eso cambia la forma en que trabajas.
+Eso cambia todo.
+
+—
+
+QUIE significa tierra.
+No la tierra que pisas —
+la tierra que te sostiene.
+La que guarda semillas
+y devuelve vida.
+La que recuerda
+cuando todo lo demás olvida.
+
+Cada pieza que sale de nuestros talleres
+lleva esa memoria.
+
+El cuero que usamos
+fue piel que protegió a otro ser.
+Las manos que lo cortaron
+aprendieron de manos que ya no están.
+El hilo que lo une
+es el mismo gesto
+que tejió las primeras comunidades
+de esta tierra.
+
+No hacemos accesorios.
+
+Guardamos tiempo.
+Transferimos historia.
+Creamos objetos que envejecen bien
+porque fueron hechos con honestidad.
+
+—
+
+Hoy llevas contigo
+un fragmento de todo eso.
+
+Escaneaste el tag
+y encontraste este mensaje
+porque creemos
+que mereces saber
+de dónde viene lo que tocas.
+
+Mereces saber
+que hay manos reales detrás.
+Una historia real.
+Una tierra real.
+
+No un algoritmo.
+No una línea de ensamblaje.
+No un logo vacío.
+
+Solo nosotros.
+Solo tú.
+Y este objeto entre los dos
+que durará más que esta conversación.
+
+—
+
+Bienvenido a QUIE®.
+
+`;
+
+  const FINAL_TEXT = 'De la tierra.\nPara siempre.';
+  const LS_KEY     = 'quie_origin_seen';
+  const CHAR_DELAY = 40;
+  const MIDPOINT   = Math.floor(BODY_TEXT.length / 2);
+
+  const outputEl    = document.getElementById('text-output');
+  const finalEl     = document.getElementById('final-phrase');
+  const bgImageEl   = document.getElementById('bg-image');
+  const logoEl      = document.getElementById('logo-block');
+  const ctaEl       = document.getElementById('cta-wrap');
+
+  // ── Renderer: split body text into paragraphs
+  function renderBody(text) {
+    outputEl.innerHTML = '';
+    const paragraphs = text.split('\n\n');
+    paragraphs.forEach((para) => {
+      const t = para.trim();
+      if (!t) return;
+      if (t === '—') {
+        const d = document.createElement('div');
+        d.className = 'divider';
+        d.textContent = '—';
+        outputEl.appendChild(d);
+        return;
+      }
+      const p = document.createElement('p');
+      p.className = 'para';
+      p.innerHTML = para.split('\n').join('<br>');
+      outputEl.appendChild(p);
+    });
+
+    // Append blinking cursor to last element
+    const last = outputEl.lastElementChild;
+    if (last) {
+      const cur = document.createElement('span');
+      cur.id = 'cursor';
+      last.appendChild(cur);
+    }
+  }
+
+  // ── Show everything instantly (already seen)
+  function showComplete() {
+    renderBody(BODY_TEXT);
+    document.getElementById('cursor').className = 'hidden';
+    finalEl.textContent = FINAL_TEXT;
+    document.body.classList.add('transitioned');
+    bgImageEl.classList.add('visible');
+    logoEl.classList.add('visible');
+    ctaEl.classList.add('visible');
+  }
+
+  // ── Typewriter engine
+  let bodyIdx  = 0;
+  let finalIdx = 0;
+
+  function typeBody() {
+    if (bodyIdx > BODY_TEXT.length) {
+      // Body done — remove cursor and start final phrase after 500ms
+      const cur = document.getElementById('cursor');
+      if (cur) cur.className = 'hidden';
+      setTimeout(typeFinal, 500);
+      return;
+    }
+    renderBody(BODY_TEXT.slice(0, bodyIdx));
+    if (bodyIdx >= MIDPOINT) {
+      document.body.classList.add('transitioned');
+      bgImageEl.classList.add('visible');
+    }
+    bodyIdx++;
+    setTimeout(typeBody, CHAR_DELAY);
+  }
+
+  function typeFinal() {
+    if (finalIdx > FINAL_TEXT.length) {
+      // Final phrase done — show logo then CTA
+      const fcur = document.getElementById('final-cursor');
+      if (fcur) fcur.remove();
+      setTimeout(() => {
+        logoEl.classList.add('visible');
+        setTimeout(() => {
+          ctaEl.classList.add('visible');
+          localStorage.setItem(LS_KEY, 'true');
+        }, 600);
+      }, 800);
+      return;
+    }
+
+    // Build final text + cursor
+    const typed = FINAL_TEXT.slice(0, finalIdx);
+    finalEl.innerHTML =
+      typed.replace(/\n/g, '<br>') +
+      '<span id="final-cursor"></span>';
+
+    finalIdx++;
+    setTimeout(typeFinal, CHAR_DELAY);
+  }
+
+  // ── Entry point
+  // URL param ?replay=1 fuerza la animación aunque ya se haya visto
+  const forceReplay = new URLSearchParams(location.search).has('replay');
+  const alreadySeen = localStorage.getItem(LS_KEY) === 'true' && !forceReplay;
+
+  if (alreadySeen) {
+    showComplete();
+  } else {
+    // Small breathing room before starting
+    setTimeout(typeBody, 300);
+  }
+</script>
+
+</body>
+</html>

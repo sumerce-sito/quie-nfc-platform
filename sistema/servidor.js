@@ -203,6 +203,7 @@ app.get('/', (req, res) => res.sendFile(path.join(WEB, 'index.html')));
 app.get('/guia-nfc', (req, res) => res.sendFile(path.join(WEB, 'guia-nfc.html')));
 app.get('/catalogo', (req, res) => res.sendFile(path.join(WEB, 'catalogo.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(WEB, 'login.html')));
+app.get('/origen', (req, res) => res.sendFile(path.join(WEB, 'origen.html')));
 
 app.get('/api/qr', async (req, res) => {
   const data = String(req.query.data || '').trim();
@@ -307,7 +308,8 @@ app.get('/v/demo', (req, res) => {
     .replace(/\{\{ES_PRIMER_ESCANEO\}\}/g,    tipo === 'autentico' ? 'true' : 'false')
     .replace(/\{\{TOTAL_ESCANEOS\}\}/g,       tipo === 'sospechoso' ? '87' : tipo === 'rescan' ? '4' : '1')
     .replace(/\{\{YA_REGISTRADO\}\}/g,        tipo === 'rescan' ? 'true' : 'false')
-    .replace(/\{\{NOMBRE_PROPIETARIO\}\}/g,   tipo === 'rescan' ? 'Carlos Rodríguez' : '');
+    .replace(/\{\{NOMBRE_PROPIETARIO\}\}/g,   tipo === 'rescan' ? 'Carlos Rodríguez' : '')
+    .replace(/\{\{FOTO_PRODUCTO\}\}/g,        '/assets/quie/productos/tarjetero.png');
   res.send(html);
 });
 

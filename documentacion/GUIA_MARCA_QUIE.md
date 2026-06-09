@@ -112,6 +112,17 @@ Experiencia NFC:
 - Secciones esperadas: Origen, Material, Hecho en Colombia, Fecha de creacion, Serie, Cuidado.
 - El estado autenticado debe sentirse premium, no tecnico ni alarmista.
 
+Modulo "El Origen" (/origen):
+
+- Historia poetica fundacional de QUIE®. Se activa al primer escaneo NFC.
+- La animacion typewriter (40ms/caracter) corre UNA SOLA VEZ por dispositivo.
+- Se controla con localStorage key: `quie_origin_seen = true`.
+- Despues de verla, el texto aparece completo sin animacion (experiencia de regreso).
+- Para forzar replay en demos: /origen?replay=1
+- Accesible permanentemente desde: nav principal, footer del sitio y pagina de autenticidad NFC.
+- Archivo: web/origen.html — sin dependencias externas, vanilla JS puro.
+- La animacion NO debe resetearse automaticamente. Es una experiencia de primer contacto con la marca.
+
 Panel admin:
 
 - Debe ser utilitario y denso, pero mantener paleta QUIE.

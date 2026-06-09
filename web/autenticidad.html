@@ -39,6 +39,21 @@
         var(--negro);
     }
 
+    /* ── TEXTURA DE CUERO ── */
+    .bg-texture{
+      position:fixed;inset:0;pointer-events:none;z-index:1;
+      background-image:url('/assets/quie/textures/leather-verde.png');
+      background-size:520px auto;
+      background-repeat:repeat;
+      opacity:.07;
+      mix-blend-mode:screen;
+      transition:opacity 1s ease;
+    }
+    .bg-texture.sospechoso{
+      background-image:url('/assets/quie/textures/leather-terracota.png');
+      opacity:.09;
+    }
+
     /* ── HEADER ── */
     header{
       position:relative;z-index:10;
@@ -52,7 +67,7 @@
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
     .header-badge{
-      font-size:.6rem;letter-spacing:2px;color:#593325;
+      font-size:.6rem;letter-spacing:2px;color:rgba(242,242,242,.58);
       border:1px solid #2D402E;border-radius:10px;padding:4px 10px;
       text-transform:uppercase;
     }
@@ -115,7 +130,7 @@
       font-size:1.3rem;font-weight:900;letter-spacing:3px;
       text-transform:uppercase;margin-bottom:8px;
     }
-    .sello-titulo.verde{color:var(--verde);}
+    .sello-titulo.verde{color:#D9A86C;}
     .sello-titulo.rojo{color:var(--rojo);}
     .sello-titulo.gold{
       background:linear-gradient(135deg,var(--dorado),var(--dorado2));
@@ -123,7 +138,7 @@
     }
 
     .sello-sub{
-      font-size:.82rem;color:#593325;line-height:1.7;
+      font-size:.82rem;color:rgba(242,242,242,.58);line-height:1.7;
       max-width:320px;margin:0 auto 16px;
     }
 
@@ -172,7 +187,7 @@
       padding:10px 0;border-bottom:1px solid #2D402E;font-size:.84rem;
     }
     .info-row:last-child{border:none;padding-bottom:0;}
-    .info-row .lbl{color:#593325;}
+    .info-row .lbl{color:rgba(242,242,242,.58);}
     .info-row .val{font-weight:700;color:var(--blanco);}
     .val-codigo{
       font-family:monospace;font-size:.75rem;
@@ -188,7 +203,7 @@
     .historial-item:last-child{border:none;}
     .hist-ico{font-size:1.1rem;width:28px;text-align:center;flex-shrink:0;}
     .hist-info{flex:1;}
-    .hist-fecha{color:#593325;font-size:.7rem;margin-top:2px;}
+    .hist-fecha{color:rgba(242,242,242,.58);font-size:.7rem;margin-top:2px;}
 
     /* ── REGISTRO PROPIETARIO ── */
     .registro-card{
@@ -210,11 +225,11 @@
       display:flex;align-items:center;justify-content:center;font-size:1.4rem;
     }
     .reg-header h3{font-size:.95rem;font-weight:900;margin-bottom:4px;}
-    .reg-header p{font-size:.75rem;color:#593325;line-height:1.6;}
+    .reg-header p{font-size:.75rem;color:rgba(242,242,242,.58);line-height:1.6;}
 
     .reg-campo{margin-bottom:14px;}
     .reg-campo label{
-      display:block;font-size:.65rem;letter-spacing:2px;color:#593325;
+      display:block;font-size:.65rem;letter-spacing:2px;color:rgba(242,242,242,.58);
       text-transform:uppercase;margin-bottom:6px;font-weight:700;
     }
     .reg-campo input{
@@ -224,21 +239,21 @@
       -webkit-appearance:none;
     }
     .reg-campo input:focus{border-color:rgba(217, 168, 108, .5);}
-    .reg-campo input::placeholder{color:#593325;}
+    .reg-campo input::placeholder{color:rgba(242,242,242,.58);}
     .reg-campo .opcional{
-      font-size:.65rem;color:#593325;margin-left:6px;letter-spacing:0;
+      font-size:.65rem;color:rgba(242,242,242,.58);margin-left:6px;letter-spacing:0;
       text-transform:none;font-weight:400;
     }
     .foto-input{
       display:flex;align-items:center;gap:12px;
       background:#2D402E;border:1px dashed rgba(217, 168, 108, .35);
-      border-radius:12px;padding:12px 14px;color:#593325;
+      border-radius:12px;padding:12px 14px;color:rgba(242,242,242,.58);
     }
     .foto-input input{display:none;}
     .foto-icon{font-size:1.35rem;flex-shrink:0;}
     .foto-copy{flex:1;min-width:0;}
     .foto-copy strong{display:block;color:var(--blanco);font-size:.82rem;margin-bottom:2px;}
-    .foto-copy span{display:block;color:#593325;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .foto-copy span{display:block;color:rgba(242,242,242,.58);font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .foto-preview{
       display:none;margin-top:10px;border-radius:12px;overflow:hidden;
       border:1px solid rgba(217, 168, 108, .25);background:#2D402E;
@@ -248,7 +263,7 @@
     .btn-registrar{
       width:100%;padding:14px;border-radius:10px;border:none;
       background:linear-gradient(135deg,#593325,var(--dorado),#D9A86C);
-      color:#2D402E;font-weight:900;font-size:.9rem;letter-spacing:1px;
+      color:#1A1A1A;font-weight:900;font-size:.9rem;letter-spacing:1px;
       cursor:pointer;margin-top:6px;transition:opacity .2s,transform .1s;
     }
     .btn-registrar:hover:not(:disabled){opacity:.88;}
@@ -256,7 +271,7 @@
     .btn-registrar:disabled{opacity:.35;cursor:not-allowed;}
 
     .reg-privacidad{
-      font-size:.65rem;color:#593325;text-align:center;margin-top:10px;line-height:1.6;
+      font-size:.65rem;color:rgba(242,242,242,.58);text-align:center;margin-top:10px;line-height:1.6;
     }
     .reg-error{
       background:rgba(191, 86, 48, .1);border:1px solid rgba(191, 86, 48, .3);
@@ -264,11 +279,11 @@
       margin-top:10px;display:none;
     }
     .reg-skip{
-      background:none;border:none;color:#593325;font-size:.72rem;
+      background:none;border:none;color:rgba(242,242,242,.58);font-size:.72rem;
       cursor:pointer;width:100%;margin-top:10px;padding:4px;
       text-decoration:underline;transition:color .2s;
     }
-    .reg-skip:hover{color:#593325;}
+    .reg-skip:hover{color:rgba(242,242,242,.9);}
 
     /* ── SECCIÓN MARCA ── */
     .promo-card{
@@ -277,7 +292,7 @@
     }
     .promo-kicker{font-size:.62rem;letter-spacing:3px;color:var(--dorado);text-transform:uppercase;font-weight:800;margin-bottom:8px;}
     .promo-card h3{font-size:1rem;margin-bottom:8px;}
-    .promo-card p{font-size:.78rem;color:#593325;line-height:1.6;margin-bottom:14px;}
+    .promo-card p{font-size:.78rem;color:rgba(242,242,242,.58);line-height:1.6;margin-bottom:14px;}
     .promo-actions{display:flex;gap:10px;flex-wrap:wrap;}
     .promo-btn{flex:1;min-width:130px;text-align:center;text-decoration:none;border-radius:10px;padding:11px 12px;font-size:.76rem;font-weight:900;}
     .promo-btn.gold{background:var(--dorado);color:#2D402E;}
@@ -301,11 +316,11 @@
       margin-bottom:6px;
     }
     @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
-    .marca-desc{font-size:.75rem;color:#593325;line-height:1.7;}
+    .marca-desc{font-size:.75rem;color:rgba(242,242,242,.58);line-height:1.7;}
 
     /* ── REDES ── */
     .redes-titulo{
-      font-size:.6rem;letter-spacing:3px;color:#593325;
+      font-size:.6rem;letter-spacing:3px;color:rgba(242,242,242,.58);
       text-transform:uppercase;text-align:center;margin-bottom:14px;
     }
     .redes-grid{
@@ -315,7 +330,7 @@
     .red-btn{
       background:var(--gris2);border:1px solid #2D402E;
       border-radius:10px;padding:10px 16px;
-      color:#593325;text-decoration:none;font-size:.75rem;font-weight:700;
+      color:rgba(242,242,242,.58);text-decoration:none;font-size:.75rem;font-weight:700;
       transition:border-color .2s,color .2s;display:flex;align-items:center;gap:6px;
     }
     .red-btn:hover{border-color:rgba(217, 168, 108, .3);color:var(--dorado);}
@@ -326,7 +341,8 @@
       padding:10px 0;border-bottom:1px solid #2D402E;
     }
     .contacto-row:last-child{border:none;}
-    .contacto-row a{color:#593325;text-decoration:none;font-size:.82rem;transition:color .2s;}
+    .contacto-row a{color:rgba(242,242,242,.58);text-decoration:none;font-size:.82rem;transition:color .2s;}
+    .contacto-row a{color:rgba(242,242,242,.75);text-decoration:none;font-size:.82rem;transition:color .2s;}
     .contacto-row a:hover{color:var(--dorado);}
     .c-ico{
       width:34px;height:34px;border-radius:8px;flex-shrink:0;
@@ -343,7 +359,7 @@
       font-family:monospace;font-size:.7rem;color:rgba(217, 168, 108, .4);
       letter-spacing:2px;margin-bottom:6px;
     }
-    .footer-copy{font-size:.65rem;color:#2D402E;letter-spacing:1px;}
+    .footer-copy{font-size:.65rem;color:rgba(242,242,242,.35);letter-spacing:1px;}
 
     /* ── LOADING INICIAL ── */
     .loading-overlay{
@@ -358,7 +374,7 @@
       animation:spin .8s linear infinite;
     }
     @keyframes spin{to{transform:rotate(360deg);}}
-    .loading-txt{font-size:.75rem;letter-spacing:3px;color:#593325;text-transform:uppercase;}
+    .loading-txt{font-size:.75rem;letter-spacing:3px;color:rgba(242,242,242,.58);text-transform:uppercase;}
   </style>
 </head>
 <body>
@@ -370,6 +386,7 @@
 </div>
 
 <div class="bg-layers" id="bg"></div>
+<div class="bg-texture" id="bg-texture"></div>
 
 <header>
   <div class="header-logo">QUIE®</div>
@@ -506,8 +523,8 @@
     <!-- Éxito -->
     <div class="registro-card ok" id="reg-ok-card" style="display:none;">
       <div style="font-size:48px;margin-bottom:12px;">QUIE</div>
-      <h3 style="color:var(--verde);font-size:1rem;font-weight:900;margin-bottom:8px;">¡Pieza registrada!</h3>
-      <p style="font-size:.82rem;color:#593325;line-height:1.7;">
+      <h3 style="color:#D9A86C;font-size:1rem;font-weight:900;margin-bottom:8px;">¡Pieza registrada!</h3>
+      <p style="font-size:.82rem;color:rgba(242,242,242,.58);line-height:1.7;">
         Bienvenido a la familia QUIE®.<br/>
         Te contactaremos por WhatsApp con novedades y ofertas exclusivas.
       </p>
@@ -517,7 +534,7 @@
     <div class="registro-card" id="reg-ya-card"
       style="display:none;background:rgba(217, 168, 108, .04);border:1px solid rgba(217, 168, 108, .12);text-align:center;">
       <div style="font-size:32px;margin-bottom:8px;">OK</div>
-      <p style="font-size:.8rem;color:#593325;">Esta pieza ya tiene un propietario registrado.</p>
+      <p style="font-size:.8rem;color:rgba(242,242,242,.58);">Esta pieza ya tiene un propietario registrado.</p>
     </div>
 
   </div>
@@ -555,7 +572,7 @@
     </div>
     <div class="contacto-row">
       <div class="c-ico">Lugar</div>
-      <span style="font-size:.8rem;color:#593325;">Cra 7 #8-12 Centro, Fusagasugá, Colombia</span>
+      <span style="font-size:.8rem;color:rgba(242,242,242,.58);">Cra 7 #8-12 Centro, Fusagasugá, Colombia</span>
     </div>
   </div>
 
@@ -563,6 +580,17 @@
 
 <div class="page-footer">
   <div class="footer-codigo">NFC · {{CODIGO_NFC}}</div>
+  <a href="/origen" style="
+    display:inline-block;margin-bottom:14px;
+    font-family:system-ui,sans-serif;font-size:11px;
+    letter-spacing:.18em;text-transform:uppercase;
+    color:#D4956A;border:1px solid #D4956A;
+    padding:9px 22px;text-decoration:none;
+    transition:background-color .25s;
+  " onmouseover="this.style.backgroundColor='rgba(212,149,106,.13)'"
+     onmouseout="this.style.backgroundColor='transparent'">
+    Nuestra historia
+  </a>
   <div class="footer-copy">© QUIE® · Todos los derechos reservados</div>
 </div>
 
@@ -593,7 +621,8 @@
     const sub     = document.getElementById('sello-sub');
     const badge   = document.getElementById('sello-badge');
     const badgeTxt= document.getElementById('sello-badge-txt');
-    const bg      = document.getElementById('bg');
+    const bg         = document.getElementById('bg');
+    const bgTexture  = document.getElementById('bg-texture');
 
     if (tipo === 'autentico') {
       ring.className = 'sello-ring verde';
@@ -634,6 +663,7 @@
       badge.style.display = 'inline-flex';
       badgeTxt.textContent = totalEscaneos + ' escaneos registrados';
       bg.className = 'bg-layers sospechoso';
+      bgTexture.className = 'bg-texture sospechoso';
     }
   }
 
@@ -644,7 +674,7 @@
         '<div class="historial-item">' +
         '<div class="hist-ico">Nuevo</div>' +
         '<div class="hist-info">' +
-        '<div style="color:var(--verde);font-weight:700;font-size:.82rem;">Primera verificación</div>' +
+        '<div style="color:#D9A86C;font-weight:700;font-size:.82rem;">Primera verificación</div>' +
         '<div class="hist-fecha">Hoy · ' + ciudadRegistro + '</div>' +
         '</div></div>';
     } else {
