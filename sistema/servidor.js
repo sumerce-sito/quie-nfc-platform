@@ -13,7 +13,7 @@ const path           = require('path');
 const fs             = require('fs');
 const os             = require('os');
 
-const { generarLote }                       = require('./codeforge');
+const { generarLote, obtenerCodigosLote }   = require('./codeforge');
 const { generarReporte, registrarEscaneo, detectarAlertas } = require('./scansight');
 const { auditoria }                         = require('./nexo');
 const {
@@ -610,7 +610,8 @@ api.post('/lotes', [
     auditoria('NEXO', 'LOTE_CREADO', `${resultado.lote_id} — ${cantidad} uds`, ip(req));
     res.json(resultado);
   } catch (e) {
-    res.status(500).json({ error: 'Error interno al crear lote' });
+    console.error('[LOTE_ERROR]', e.message);
+    res.status(500).json({ error: 'Error interno al crear lote', detalle: e.message });
   }
 });
 
@@ -878,9 +879,11 @@ api.get('/csv/:lote', [
   const csvPath = path.join(__dirname, `../codigos_csv/${loteId}.csv`);
   if (fs.existsSync(csvPath)) return res.download(csvPath);
 
+  const codigosMemoria = obtenerCodigosLote(loteId);
   const codigosDb = leerDB('codigos').codigos.filter(c => c.lote_id === loteId);
   const codigos = codigosDb.length
     ? codigosDb
+    : codigosMemoria.length ? codigosMemoria
     : loteId === DEMO_NFC_RECORD.lote_id ? DEMO_CSV_CODES : [];
 
   if (!codigos.length) return res.status(404).json({ error: 'CSV no encontrado' });

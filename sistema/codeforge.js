@@ -6,12 +6,32 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
 
 const CHARSET  = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Sin O,0,I,1 para evitar confusión visual
 const BASE_URL = (process.env.BASE_URL || 'https://QUIE®.com').replace(/\/$/, '') + '/v/';
 const DB_CODIGOS = path.join(__dirname, '../base_datos/codigos.json');
 const DB_LOTES   = path.join(__dirname, '../base_datos/lotes.json');
-const CSV_DIR    = path.join(__dirname, '../codigos_csv');
+const IS_VERCEL = !!process.env.VERCEL;
+const CSV_DIR    = IS_VERCEL ? path.join(os.tmpdir(), 'quie-codigos-csv') : path.join(__dirname, '../codigos_csv');
+const LOTES_GENERADOS = new Map();
+
+function leerJsonSeguro(file, fallback) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (_) {
+    return structuredClone(fallback);
+  }
+}
+
+function escribirJsonSeguro(file, data) {
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  } catch (_) {
+    // En Vercel esto es best-effort hasta conectar Aurora/DynamoDB.
+  }
+}
 
 function calcularChecksum(codigo6) {
   let suma = 0;
@@ -38,8 +58,8 @@ function generarCodigoUnico(existentes) {
 }
 
 function generarLote({ lote_id, modelo, color, talla, cantidad, temporada }) {
-  const db = JSON.parse(fs.readFileSync(DB_CODIGOS, 'utf8'));
-  const dbLotes = JSON.parse(fs.readFileSync(DB_LOTES, 'utf8'));
+  const db = leerJsonSeguro(DB_CODIGOS, { codigos: [] });
+  const dbLotes = leerJsonSeguro(DB_LOTES, { lotes: [] });
 
   const existentes = new Set(db.codigos.map(c => c.codigo_nfc));
   const fecha_produccion = new Date().toISOString().split('T')[0];
@@ -68,7 +88,7 @@ function generarLote({ lote_id, modelo, color, talla, cantidad, temporada }) {
 
   // Guardar en BD
   db.codigos.push(...nuevos);
-  fs.writeFileSync(DB_CODIGOS, JSON.stringify(db, null, 2));
+  escribirJsonSeguro(DB_CODIGOS, db);
 
   // Registrar lote si no existe
   const loteExiste = dbLotes.lotes.find(l => l.id === lote_id);
@@ -83,13 +103,14 @@ function generarLote({ lote_id, modelo, color, talla, cantidad, temporada }) {
       total_tags: cantidad,
       estado: 'codigos_generados'
     });
-    fs.writeFileSync(DB_LOTES, JSON.stringify(dbLotes, null, 2));
+    escribirJsonSeguro(DB_LOTES, dbLotes);
   }
 
   // Guardar CSV
   fs.mkdirSync(CSV_DIR, { recursive: true });
   const csvPath = path.join(CSV_DIR, `${lote_id}.csv`);
   fs.writeFileSync(csvPath, csvLineas.join('\n'));
+  LOTES_GENERADOS.set(lote_id, nuevos);
 
   return {
     estado: 'exitoso',
@@ -99,6 +120,10 @@ function generarLote({ lote_id, modelo, color, talla, cantidad, temporada }) {
     ejemplo_codigo: nuevos[0].codigo_nfc,
     ejemplo_url: nuevos[0].url_landing
   };
+}
+
+function obtenerCodigosLote(loteId) {
+  return LOTES_GENERADOS.get(loteId) || [];
 }
 
 // Ejecutar desde línea de comandos
@@ -117,4 +142,4 @@ if (require.main === module) {
   console.log(JSON.stringify(resultado, null, 2));
 }
 
-module.exports = { generarLote };
+module.exports = { generarLote, obtenerCodigosLote };
