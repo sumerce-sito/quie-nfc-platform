@@ -46,18 +46,15 @@ Evitar:
 
 Primaria:
 
-- Terracota: `#C4622D`
-- Verde selva: `#3D5A3E`
-- Dorado arena: `#E8C87A`
+- Verde profundo: `#2D402E`
+- Arena dorada: `#D9A86C`
+- Marfil claro: `#F2F2F2`
 
 Secundaria:
 
-- Arena claro: `#EFE6D8`
-- Cafe cuero: `#6B3F2A`
-- Negro suave: `#1E1E1A`
-- Marfil premium: `#FAF7F0`
-
-Tambien se permite negro carbon `#1A1A1A` cuando se requiera mayor contraste.
+- Terracota: `#BF5630`
+- Cuero oscuro: `#593325`
+Usa verde profundo y cuero oscuro para contraste; evita negro puro fuera de assets externos.
 
 ## Tipografias
 
@@ -74,14 +71,14 @@ Versiones:
 - Principal: simbolo superior + wordmark QUIE. Usar en landing, home, empaque principal y certificados.
 - Horizontal: simbolo pequeno a la izquierda + QUIE a la derecha. Usar en headers, banners y firmas.
 - Isotipo: simbolo geometrico. Usar en favicon, NFC tags, remaches, sellos, stickers y pequenos espacios.
-- Monocromatica: una tinta en dorado, terracota, verde oscuro o negro. Usar para cuero, grabado, bajo relieve, foil y sellos.
+- Monocromatica: una tinta en arena dorada, terracota, verde profundo o cuero oscuro. Usar para cuero, grabado, bajo relieve, foil y sellos.
 
 Reglas:
 
 - No usar iconos de marca anteriores.
 - No agregar sombras fuertes, degradados pesados ni efectos neon.
 - Para cuero o grabado, usar version de una tinta.
-- En UI, usar el logo sobre fondo marfil, blanco o verde profundo con suficiente aire.
+- En UI, usar el logo sobre fondo marfil claro, arena dorada suave o verde profundo con suficiente aire.
 
 ## Linea grafica
 

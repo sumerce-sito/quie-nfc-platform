@@ -7,10 +7,10 @@
   <meta name="robots" content="noindex"/>
   <style>
     :root{
-      --negro:#0A0A0A; --dorado:#C9A84C; --dorado2:#e8c97a; --dorado3:#8a6a1f;
-      --azul:#1A2E6B; --azul2:#0d1a40; --blanco:#F5F5F5;
-      --verde:#1DB954; --rojo:#C0392B; --naranja:#E67E22;
-      --gris:#111; --gris2:#161616;
+      --negro:#2D402E; --dorado:#D9A86C; --dorado2:#D9A86C; --dorado3:#593325;
+      --azul:#2D402E; --azul2:#2D402E; --blanco:#F2F2F2;
+      --verde:#2D402E; --rojo:#BF5630; --naranja:#BF5630;
+      --gris:#2D402E; --gris2:#2D402E;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;}
@@ -24,18 +24,18 @@
     .bg-layers{
       position:fixed;inset:0;pointer-events:none;z-index:0;
       background:
-        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(26,46,107,.5) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(45, 64, 46, .5) 0%, transparent 70%),
         var(--negro);
     }
     .bg-layers.autentico{
       background:
-        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(29,185,84,.15) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(26,46,107,.2) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(45, 64, 46, .15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(45, 64, 46, .2) 0%, transparent 60%),
         var(--negro);
     }
     .bg-layers.sospechoso{
       background:
-        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(192,57,43,.2) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(191, 86, 48, .2) 0%, transparent 60%),
         var(--negro);
     }
 
@@ -52,8 +52,8 @@
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
     .header-badge{
-      font-size:.6rem;letter-spacing:2px;color:#444;
-      border:1px solid #1a1a1a;border-radius:10px;padding:4px 10px;
+      font-size:.6rem;letter-spacing:2px;color:#593325;
+      border:1px solid #2D402E;border-radius:10px;padding:4px 10px;
       text-transform:uppercase;
     }
 
@@ -81,9 +81,9 @@
     }
     .ring-anim:nth-child(2){animation-delay:.7s;}
 
-    .sello-ring.verde .ring-anim{border-color:rgba(29,185,84,.4);}
-    .sello-ring.rojo  .ring-anim{border-color:rgba(192,57,43,.4);}
-    .sello-ring.gold  .ring-anim{border-color:rgba(201,168,76,.4);}
+    .sello-ring.verde .ring-anim{border-color:rgba(45, 64, 46, .4);}
+    .sello-ring.rojo  .ring-anim{border-color:rgba(191, 86, 48, .4);}
+    .sello-ring.gold  .ring-anim{border-color:rgba(217, 168, 108, .4);}
 
     @keyframes ringPulse{
       0%{transform:scale(.85);opacity:.9;}
@@ -98,16 +98,16 @@
       transition:all .5s;
     }
     .sello-ico-wrap.verde{
-      background:rgba(29,185,84,.1);border-color:rgba(29,185,84,.5);
-      box-shadow:0 0 40px rgba(29,185,84,.2),inset 0 0 20px rgba(29,185,84,.05);
+      background:rgba(45, 64, 46, .1);border-color:rgba(45, 64, 46, .5);
+      box-shadow:0 0 40px rgba(45, 64, 46, .2),inset 0 0 20px rgba(45, 64, 46, .05);
     }
     .sello-ico-wrap.rojo{
-      background:rgba(192,57,43,.1);border-color:rgba(192,57,43,.5);
-      box-shadow:0 0 40px rgba(192,57,43,.2);
+      background:rgba(191, 86, 48, .1);border-color:rgba(191, 86, 48, .5);
+      box-shadow:0 0 40px rgba(191, 86, 48, .2);
     }
     .sello-ico-wrap.gold{
-      background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.4);
-      box-shadow:0 0 40px rgba(201,168,76,.15);
+      background:rgba(217, 168, 108, .08);border-color:rgba(217, 168, 108, .4);
+      box-shadow:0 0 40px rgba(217, 168, 108, .15);
     }
     .sello-ico{font-size:52px;}
 
@@ -123,7 +123,7 @@
     }
 
     .sello-sub{
-      font-size:.82rem;color:#777;line-height:1.7;
+      font-size:.82rem;color:#593325;line-height:1.7;
       max-width:320px;margin:0 auto 16px;
     }
 
@@ -132,9 +132,9 @@
       border-radius:20px;padding:6px 16px;font-size:.7rem;
       font-weight:700;letter-spacing:1px;
     }
-    .sello-badge.verde{background:rgba(29,185,84,.12);color:var(--verde);border:1px solid rgba(29,185,84,.3);}
-    .sello-badge.rojo{background:rgba(192,57,43,.12);color:#e74c3c;border:1px solid rgba(192,57,43,.3);}
-    .sello-badge.gold{background:rgba(201,168,76,.1);color:var(--dorado);border:1px solid rgba(201,168,76,.3);}
+    .sello-badge.verde{background:rgba(45, 64, 46, .12);color:var(--verde);border:1px solid rgba(45, 64, 46, .3);}
+    .sello-badge.rojo{background:rgba(191, 86, 48, .12);color:#BF5630;border:1px solid rgba(191, 86, 48, .3);}
+    .sello-badge.gold{background:rgba(217, 168, 108, .1);color:var(--dorado);border:1px solid rgba(217, 168, 108, .3);}
     .badge-dot{width:6px;height:6px;border-radius:50%;}
     .verde .badge-dot{background:var(--verde);}
     .rojo  .badge-dot{background:var(--rojo);}
@@ -143,7 +143,7 @@
     /* ── CARD PRODUCTO ── */
     .card{
       background:var(--gris2);
-      border:1px solid #1e1e1e;
+      border:1px solid #2D402E;
       border-radius:16px;
       padding:20px;
       margin-bottom:14px;
@@ -151,17 +151,17 @@
     }
     .card::before{
       content:'';position:absolute;top:0;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent);
+      background:linear-gradient(90deg,transparent,rgba(217, 168, 108, .2),transparent);
     }
     .card-titulo{
       font-size:.6rem;letter-spacing:3px;color:var(--dorado);
       text-transform:uppercase;margin-bottom:16px;
       display:flex;align-items:center;gap:8px;
     }
-    .card-titulo::after{flex:1;content:'';height:1px;background:#1e1e1e;}
+    .card-titulo::after{flex:1;content:'';height:1px;background:#2D402E;}
     .producto-foto-verificacion{
       display:none;margin:-4px 0 14px;border-radius:14px;overflow:hidden;
-      border:1px solid rgba(201,168,76,.22);background:#0b0b0b;
+      border:1px solid rgba(217, 168, 108, .22);background:#2D402E;
     }
     .producto-foto-verificacion img{
       width:100%;height:auto;max-height:280px;object-fit:cover;display:block;
@@ -169,26 +169,26 @@
 
     .info-row{
       display:flex;justify-content:space-between;align-items:center;
-      padding:10px 0;border-bottom:1px solid #111;font-size:.84rem;
+      padding:10px 0;border-bottom:1px solid #2D402E;font-size:.84rem;
     }
     .info-row:last-child{border:none;padding-bottom:0;}
-    .info-row .lbl{color:#555;}
+    .info-row .lbl{color:#593325;}
     .info-row .val{font-weight:700;color:var(--blanco);}
     .val-codigo{
       font-family:monospace;font-size:.75rem;
-      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);
+      background:rgba(217, 168, 108, .08);border:1px solid rgba(217, 168, 108, .2);
       border-radius:6px;padding:4px 10px;color:var(--dorado);
     }
 
     /* ── HISTORIAL ── */
     .historial-item{
       display:flex;align-items:center;gap:10px;
-      padding:10px 0;border-bottom:1px solid #0d0d0d;font-size:.78rem;
+      padding:10px 0;border-bottom:1px solid #2D402E;font-size:.78rem;
     }
     .historial-item:last-child{border:none;}
     .hist-ico{font-size:1.1rem;width:28px;text-align:center;flex-shrink:0;}
     .hist-info{flex:1;}
-    .hist-fecha{color:#444;font-size:.7rem;margin-top:2px;}
+    .hist-fecha{color:#593325;font-size:.7rem;margin-top:2px;}
 
     /* ── REGISTRO PROPIETARIO ── */
     .registro-card{
@@ -196,59 +196,59 @@
       position:relative;overflow:hidden;
     }
     .registro-card.pendiente{
-      background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(26,46,107,.08));
-      border:1px solid rgba(201,168,76,.25);
+      background:linear-gradient(135deg,rgba(217, 168, 108, .06),rgba(45, 64, 46, .08));
+      border:1px solid rgba(217, 168, 108, .25);
     }
     .registro-card.ok{
-      background:rgba(29,185,84,.06);border:1px solid rgba(29,185,84,.2);
+      background:rgba(45, 64, 46, .06);border:1px solid rgba(45, 64, 46, .2);
       text-align:center;
     }
     .reg-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
     .reg-icon{
       width:46px;height:46px;border-radius:12px;flex-shrink:0;
-      background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);
+      background:rgba(217, 168, 108, .12);border:1px solid rgba(217, 168, 108, .25);
       display:flex;align-items:center;justify-content:center;font-size:1.4rem;
     }
     .reg-header h3{font-size:.95rem;font-weight:900;margin-bottom:4px;}
-    .reg-header p{font-size:.75rem;color:#666;line-height:1.6;}
+    .reg-header p{font-size:.75rem;color:#593325;line-height:1.6;}
 
     .reg-campo{margin-bottom:14px;}
     .reg-campo label{
-      display:block;font-size:.65rem;letter-spacing:2px;color:#555;
+      display:block;font-size:.65rem;letter-spacing:2px;color:#593325;
       text-transform:uppercase;margin-bottom:6px;font-weight:700;
     }
     .reg-campo input{
-      width:100%;background:#0d0d0d;border:1px solid #222;
+      width:100%;background:#2D402E;border:1px solid #2D402E;
       color:var(--blanco);padding:12px 14px;border-radius:10px;
       font-size:.9rem;outline:none;transition:border-color .2s;
       -webkit-appearance:none;
     }
-    .reg-campo input:focus{border-color:rgba(201,168,76,.5);}
-    .reg-campo input::placeholder{color:#333;}
+    .reg-campo input:focus{border-color:rgba(217, 168, 108, .5);}
+    .reg-campo input::placeholder{color:#593325;}
     .reg-campo .opcional{
-      font-size:.65rem;color:#333;margin-left:6px;letter-spacing:0;
+      font-size:.65rem;color:#593325;margin-left:6px;letter-spacing:0;
       text-transform:none;font-weight:400;
     }
     .foto-input{
       display:flex;align-items:center;gap:12px;
-      background:#0d0d0d;border:1px dashed rgba(201,168,76,.35);
-      border-radius:12px;padding:12px 14px;color:#777;
+      background:#2D402E;border:1px dashed rgba(217, 168, 108, .35);
+      border-radius:12px;padding:12px 14px;color:#593325;
     }
     .foto-input input{display:none;}
     .foto-icon{font-size:1.35rem;flex-shrink:0;}
     .foto-copy{flex:1;min-width:0;}
     .foto-copy strong{display:block;color:var(--blanco);font-size:.82rem;margin-bottom:2px;}
-    .foto-copy span{display:block;color:#444;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .foto-copy span{display:block;color:#593325;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .foto-preview{
       display:none;margin-top:10px;border-radius:12px;overflow:hidden;
-      border:1px solid rgba(201,168,76,.25);background:#0a0a0a;
+      border:1px solid rgba(217, 168, 108, .25);background:#2D402E;
     }
     .foto-preview img{display:block;width:100%;max-height:220px;object-fit:cover;}
 
     .btn-registrar{
       width:100%;padding:14px;border-radius:10px;border:none;
-      background:linear-gradient(135deg,#8a6a1f,var(--dorado),#e8c97a);
-      color:#000;font-weight:900;font-size:.9rem;letter-spacing:1px;
+      background:linear-gradient(135deg,#593325,var(--dorado),#D9A86C);
+      color:#2D402E;font-weight:900;font-size:.9rem;letter-spacing:1px;
       cursor:pointer;margin-top:6px;transition:opacity .2s,transform .1s;
     }
     .btn-registrar:hover:not(:disabled){opacity:.88;}
@@ -256,36 +256,36 @@
     .btn-registrar:disabled{opacity:.35;cursor:not-allowed;}
 
     .reg-privacidad{
-      font-size:.65rem;color:#333;text-align:center;margin-top:10px;line-height:1.6;
+      font-size:.65rem;color:#593325;text-align:center;margin-top:10px;line-height:1.6;
     }
     .reg-error{
-      background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.3);
-      border-radius:8px;padding:10px 14px;font-size:.78rem;color:#e74c3c;
+      background:rgba(191, 86, 48, .1);border:1px solid rgba(191, 86, 48, .3);
+      border-radius:8px;padding:10px 14px;font-size:.78rem;color:#BF5630;
       margin-top:10px;display:none;
     }
     .reg-skip{
-      background:none;border:none;color:#333;font-size:.72rem;
+      background:none;border:none;color:#593325;font-size:.72rem;
       cursor:pointer;width:100%;margin-top:10px;padding:4px;
       text-decoration:underline;transition:color .2s;
     }
-    .reg-skip:hover{color:#666;}
+    .reg-skip:hover{color:#593325;}
 
     /* ── SECCIÓN MARCA ── */
     .promo-card{
-      display:none;background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(26,46,107,.12));
-      border:1px solid rgba(201,168,76,.28);border-radius:16px;padding:20px;margin-bottom:14px;
+      display:none;background:linear-gradient(135deg,rgba(217, 168, 108, .12),rgba(45, 64, 46, .12));
+      border:1px solid rgba(217, 168, 108, .28);border-radius:16px;padding:20px;margin-bottom:14px;
     }
     .promo-kicker{font-size:.62rem;letter-spacing:3px;color:var(--dorado);text-transform:uppercase;font-weight:800;margin-bottom:8px;}
     .promo-card h3{font-size:1rem;margin-bottom:8px;}
-    .promo-card p{font-size:.78rem;color:#777;line-height:1.6;margin-bottom:14px;}
+    .promo-card p{font-size:.78rem;color:#593325;line-height:1.6;margin-bottom:14px;}
     .promo-actions{display:flex;gap:10px;flex-wrap:wrap;}
     .promo-btn{flex:1;min-width:130px;text-align:center;text-decoration:none;border-radius:10px;padding:11px 12px;font-size:.76rem;font-weight:900;}
-    .promo-btn.gold{background:var(--dorado);color:#000;}
-    .promo-btn.dark{background:#111;color:#aaa;border:1px solid #242424;}
+    .promo-btn.gold{background:var(--dorado);color:#2D402E;}
+    .promo-btn.dark{background:#2D402E;color:#D9A86C;border:1px solid #2D402E;}
 
     .marca-section{
-      background:linear-gradient(135deg,rgba(26,46,107,.15),rgba(201,168,76,.03));
-      border:1px solid rgba(201,168,76,.1);
+      background:linear-gradient(135deg,rgba(45, 64, 46, .15),rgba(217, 168, 108, .03));
+      border:1px solid rgba(217, 168, 108, .1);
       border-radius:16px;
       padding:24px 20px;
       margin-bottom:14px;
@@ -301,11 +301,11 @@
       margin-bottom:6px;
     }
     @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
-    .marca-desc{font-size:.75rem;color:#555;line-height:1.7;}
+    .marca-desc{font-size:.75rem;color:#593325;line-height:1.7;}
 
     /* ── REDES ── */
     .redes-titulo{
-      font-size:.6rem;letter-spacing:3px;color:#444;
+      font-size:.6rem;letter-spacing:3px;color:#593325;
       text-transform:uppercase;text-align:center;margin-bottom:14px;
     }
     .redes-grid{
@@ -313,37 +313,37 @@
       margin-bottom:14px;
     }
     .red-btn{
-      background:var(--gris2);border:1px solid #1e1e1e;
+      background:var(--gris2);border:1px solid #2D402E;
       border-radius:10px;padding:10px 16px;
-      color:#888;text-decoration:none;font-size:.75rem;font-weight:700;
+      color:#593325;text-decoration:none;font-size:.75rem;font-weight:700;
       transition:border-color .2s,color .2s;display:flex;align-items:center;gap:6px;
     }
-    .red-btn:hover{border-color:rgba(201,168,76,.3);color:var(--dorado);}
+    .red-btn:hover{border-color:rgba(217, 168, 108, .3);color:var(--dorado);}
 
     /* ── CONTACTO ── */
     .contacto-row{
       display:flex;align-items:center;gap:12px;
-      padding:10px 0;border-bottom:1px solid #0d0d0d;
+      padding:10px 0;border-bottom:1px solid #2D402E;
     }
     .contacto-row:last-child{border:none;}
-    .contacto-row a{color:#888;text-decoration:none;font-size:.82rem;transition:color .2s;}
+    .contacto-row a{color:#593325;text-decoration:none;font-size:.82rem;transition:color .2s;}
     .contacto-row a:hover{color:var(--dorado);}
     .c-ico{
       width:34px;height:34px;border-radius:8px;flex-shrink:0;
-      background:rgba(201,168,76,.06);border:1px solid #1e1e1e;
+      background:rgba(217, 168, 108, .06);border:1px solid #2D402E;
       display:flex;align-items:center;justify-content:center;font-size:.95rem;
     }
 
     /* ── FOOTER ── */
     .page-footer{
       text-align:center;padding:20px;
-      border-top:1px solid #111;margin-top:8px;
+      border-top:1px solid #2D402E;margin-top:8px;
     }
     .footer-codigo{
-      font-family:monospace;font-size:.7rem;color:rgba(201,168,76,.4);
+      font-family:monospace;font-size:.7rem;color:rgba(217, 168, 108, .4);
       letter-spacing:2px;margin-bottom:6px;
     }
-    .footer-copy{font-size:.65rem;color:#2a2a2a;letter-spacing:1px;}
+    .footer-copy{font-size:.65rem;color:#2D402E;letter-spacing:1px;}
 
     /* ── LOADING INICIAL ── */
     .loading-overlay{
@@ -354,11 +354,11 @@
     .loading-overlay.fade{opacity:0;pointer-events:none;}
     .spin{
       width:40px;height:40px;border-radius:50%;
-      border:3px solid #1a1a1a;border-top-color:var(--dorado);
+      border:3px solid #2D402E;border-top-color:var(--dorado);
       animation:spin .8s linear infinite;
     }
     @keyframes spin{to{transform:rotate(360deg);}}
-    .loading-txt{font-size:.75rem;letter-spacing:3px;color:#444;text-transform:uppercase;}
+    .loading-txt{font-size:.75rem;letter-spacing:3px;color:#593325;text-transform:uppercase;}
   </style>
 </head>
 <body>
@@ -415,7 +415,7 @@
     </div>
     <div class="info-row">
       <span class="lbl">Lote</span>
-      <span class="val" style="font-family:monospace;font-size:.8rem;color:#aaa;">{{LOTE_ID}}</span>
+      <span class="val" style="font-family:monospace;font-size:.8rem;color:#D9A86C;">{{LOTE_ID}}</span>
     </div>
     <div class="info-row">
       <span class="lbl">Fabricación</span>
@@ -507,7 +507,7 @@
     <div class="registro-card ok" id="reg-ok-card" style="display:none;">
       <div style="font-size:48px;margin-bottom:12px;">QUIE</div>
       <h3 style="color:var(--verde);font-size:1rem;font-weight:900;margin-bottom:8px;">¡Pieza registrada!</h3>
-      <p style="font-size:.82rem;color:#666;line-height:1.7;">
+      <p style="font-size:.82rem;color:#593325;line-height:1.7;">
         Bienvenido a la familia QUIE®.<br/>
         Te contactaremos por WhatsApp con novedades y ofertas exclusivas.
       </p>
@@ -515,9 +515,9 @@
 
     <!-- Ya registrado -->
     <div class="registro-card" id="reg-ya-card"
-      style="display:none;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.12);text-align:center;">
+      style="display:none;background:rgba(217, 168, 108, .04);border:1px solid rgba(217, 168, 108, .12);text-align:center;">
       <div style="font-size:32px;margin-bottom:8px;">OK</div>
-      <p style="font-size:.8rem;color:#666;">Esta pieza ya tiene un propietario registrado.</p>
+      <p style="font-size:.8rem;color:#593325;">Esta pieza ya tiene un propietario registrado.</p>
     </div>
 
   </div>
@@ -555,7 +555,7 @@
     </div>
     <div class="contacto-row">
       <div class="c-ico">Lugar</div>
-      <span style="font-size:.8rem;color:#666;">Cra 7 #8-12 Centro, Fusagasugá, Colombia</span>
+      <span style="font-size:.8rem;color:#593325;">Cra 7 #8-12 Centro, Fusagasugá, Colombia</span>
     </div>
   </div>
 

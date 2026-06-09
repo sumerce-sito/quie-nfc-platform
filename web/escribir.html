@@ -6,9 +6,9 @@
   <title>Programar Piezas — QUIE®</title>
   <style>
     :root{
-      --negro:#0A0A0A; --dorado:#C9A84C; --azul:#1A2E6B;
-      --blanco:#F5F5F5; --verde:#1DB954; --rojo:#C0392B;
-      --naranja:#E67E22; --gris:#111; --gris2:#1A1A1A;
+      --negro:#2D402E; --dorado:#D9A86C; --azul:#2D402E;
+      --blanco:#F2F2F2; --verde:#2D402E; --rojo:#BF5630;
+      --naranja:#BF5630; --gris:#2D402E; --gris2:#2D402E;
     }
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     html,body{height:100%;background:var(--negro);color:var(--blanco);
@@ -26,20 +26,20 @@
     /* ── TOPBAR ── */
     .topbar{
       position:fixed;top:0;left:0;right:0;z-index:10;
-      background:rgba(10,10,10,.97);border-bottom:1px solid #1a1a1a;
+      background:rgba(45, 64, 46, .97);border-bottom:1px solid #2D402E;
       height:52px;display:flex;align-items:center;
       justify-content:space-between;padding:0 16px;
     }
     .topbar-logo{font-size:.82rem;font-weight:900;letter-spacing:2px;color:var(--dorado);}
-    .topbar-prog{font-size:.75rem;color:#555;font-weight:700;}
-    .topbar-sal{font-size:.8rem;color:#444;cursor:pointer;padding:6px 10px;
+    .topbar-prog{font-size:.75rem;color:#593325;font-weight:700;}
+    .topbar-sal{font-size:.8rem;color:#593325;cursor:pointer;padding:6px 10px;
       border-radius:6px;transition:color .2s;}
-    .topbar-sal:hover{color:#888;}
+    .topbar-sal:hover{color:#593325;}
 
     /* ── PANTALLA: SELECCIONAR LOTE ── */
     #s-lote{padding-top:52px;}
     #s-lote .titulo{font-size:1.3rem;font-weight:900;margin-bottom:8px;}
-    #s-lote .sub{font-size:.85rem;color:#888;margin-bottom:32px;line-height:1.6;}
+    #s-lote .sub{font-size:.85rem;color:#593325;margin-bottom:32px;line-height:1.6;}
 
     .lote-lista{
       width:100%;max-width:400px;
@@ -48,22 +48,22 @@
       max-height:55vh;overflow-y:auto;
     }
     .lote-btn{
-      background:var(--gris2);border:2px solid #222;border-radius:12px;
+      background:var(--gris2);border:2px solid #2D402E;border-radius:12px;
       padding:16px 18px;text-align:left;cursor:pointer;
       transition:border-color .2s;width:100%;
     }
     .lote-btn:hover{border-color:var(--dorado);}
     .lote-btn h4{font-size:.85rem;font-weight:800;color:var(--dorado);
       font-family:monospace;margin-bottom:4px;}
-    .lote-btn p{font-size:.78rem;color:#888;}
+    .lote-btn p{font-size:.78rem;color:#593325;}
     .lote-btn .pendientes{color:var(--naranja);font-weight:700;font-size:.75rem;margin-top:4px;}
 
     .aviso-nfc{
-      background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.4);
-      border-radius:10px;padding:14px 16px;font-size:.8rem;color:#e74c3c;
+      background:rgba(191, 86, 48, .1);border:1px solid rgba(191, 86, 48, .4);
+      border-radius:10px;padding:14px 16px;font-size:.8rem;color:#BF5630;
       max-width:380px;line-height:1.6;margin-bottom:20px;
     }
-    .btn-link{background:none;border:none;color:#666;font-size:.78rem;
+    .btn-link{background:none;border:none;color:#593325;font-size:.78rem;
       text-decoration:underline;cursor:pointer;margin-top:8px;}
 
     /* ── PANTALLA: ESCRIBIR ── */
@@ -94,17 +94,17 @@
 
     .circulo-centro{
       width:140px;height:140px;border-radius:50%;
-      background:linear-gradient(135deg,#0d1a40,#111);
+      background:linear-gradient(135deg,#2D402E,#2D402E);
       border:3px solid var(--dorado);
       display:flex;flex-direction:column;align-items:center;justify-content:center;
       gap:6px;position:relative;z-index:1;
       transition:border-color .3s,background .3s;
     }
-    .zona-nfc.ok .circulo-centro{border-color:var(--verde);background:linear-gradient(135deg,#0d3020,#111);}
-    .zona-nfc.error .circulo-centro{border-color:var(--rojo);background:linear-gradient(135deg,#300d0d,#111);}
+    .zona-nfc.ok .circulo-centro{border-color:var(--verde);background:linear-gradient(135deg,#2D402E,#2D402E);}
+    .zona-nfc.error .circulo-centro{border-color:var(--rojo);background:linear-gradient(135deg,#593325,#2D402E);}
     .zona-nfc.escribiendo .circulo-centro{border-color:var(--naranja);}
     .circulo-ico{font-size:44px;transition:all .3s;}
-    .circulo-sub{font-size:.65rem;color:#444;letter-spacing:1px;text-transform:uppercase;}
+    .circulo-sub{font-size:.65rem;color:#593325;letter-spacing:1px;text-transform:uppercase;}
 
     /* Instrucción principal */
     .instruccion{font-size:1.2rem;font-weight:900;margin-bottom:6px;
@@ -114,23 +114,23 @@
     .instruccion.escribiendo{color:var(--naranja);}
 
     /* Detalle pequeño */
-    .detalle{font-size:.82rem;color:#666;min-height:20px;margin-bottom:16px;line-height:1.5;}
+    .detalle{font-size:.82rem;color:#593325;min-height:20px;margin-bottom:16px;line-height:1.5;}
 
     /* Info del tag actual */
     .info-tag{
-      background:var(--gris2);border:1px solid #222;border-radius:10px;
+      background:var(--gris2);border:1px solid #2D402E;border-radius:10px;
       padding:10px 14px;width:100%;max-width:340px;margin-bottom:16px;
     }
     .info-tag-row{display:flex;justify-content:space-between;font-size:.78rem;padding:3px 0;}
-    .info-tag-row .k{color:#555;}
+    .info-tag-row .k{color:#593325;}
     .info-tag-row .v{color:var(--blanco);font-weight:600;}
 
     /* Barra progreso */
     .barra-wrap{width:100%;max-width:340px;margin-bottom:6px;}
-    .barra-bg{background:#1a1a1a;border-radius:20px;height:8px;overflow:hidden;}
+    .barra-bg{background:#2D402E;border-radius:20px;height:8px;overflow:hidden;}
     .barra-fill{height:100%;background:var(--verde);border-radius:20px;
       transition:width .5s cubic-bezier(.4,0,.2,1);}
-    .barra-txt{font-size:.72rem;color:#555;margin-top:5px;font-weight:700;}
+    .barra-txt{font-size:.72rem;color:#593325;margin-top:5px;font-weight:700;}
 
     /* Botones acción */
     .btns-accion{
@@ -142,23 +142,23 @@
       letter-spacing:.5px;
     }
     .btn-accion:active{opacity:.7;}
-    .btn-saltar{background:#1a1a1a;color:#888;border:1px solid #2a2a2a;}
-    .btn-parar{background:transparent;color:var(--rojo);border:1px solid rgba(192,57,43,.4);}
+    .btn-saltar{background:#2D402E;color:#593325;border:1px solid #2D402E;}
+    .btn-parar{background:transparent;color:var(--rojo);border:1px solid rgba(191, 86, 48, .4);}
 
     /* ── PANTALLA: FIN ── */
     #s-fin .ico-fin{font-size:80px;margin-bottom:16px;}
     #s-fin h2{font-size:1.3rem;font-weight:900;color:var(--verde);margin-bottom:8px;}
-    #s-fin .sub-fin{font-size:.85rem;color:#888;margin-bottom:28px;line-height:1.6;}
+    #s-fin .sub-fin{font-size:.85rem;color:#593325;margin-bottom:28px;line-height:1.6;}
 
     .nums-fin{
       display:flex;gap:16px;margin-bottom:28px;
     }
     .num-fin{
-      background:var(--gris2);border:1px solid #222;border-radius:12px;
+      background:var(--gris2);border:1px solid #2D402E;border-radius:12px;
       padding:18px 24px;text-align:center;flex:1;
     }
     .num-fin .n{font-size:2rem;font-weight:900;}
-    .num-fin .l{font-size:.68rem;color:#666;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+    .num-fin .l{font-size:.68rem;color:#593325;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
     .num-fin.ok .n{color:var(--verde);}
     .num-fin.skip .n{color:var(--naranja);}
 
@@ -168,16 +168,16 @@
       margin-bottom:10px;transition:opacity .2s;
     }
     .btn-fin:active{opacity:.8;}
-    .btn-fin-gold{background:var(--dorado);color:#000;}
-    .btn-fin-out{background:transparent;color:#888;border:1px solid #333;}
+    .btn-fin-gold{background:var(--dorado);color:#2D402E;}
+    .btn-fin-out{background:transparent;color:#593325;border:1px solid #593325;}
 
     /* ── EMPTY STATE ── */
-    .empty-lotes{text-align:center;padding:32px 20px;color:#555;max-width:320px;}
+    .empty-lotes{text-align:center;padding:32px 20px;color:#593325;max-width:320px;}
     .empty-lotes .ei{font-size:48px;display:block;margin-bottom:12px;}
     .empty-lotes p{font-size:.85rem;line-height:1.6;}
     .btn-crear-lote{
       margin-top:16px;padding:12px 24px;background:var(--dorado);
-      color:#000;border:none;border-radius:8px;font-weight:800;
+      color:#2D402E;border:none;border-radius:8px;font-weight:800;
       font-size:.85rem;cursor:pointer;
     }
   </style>

@@ -213,7 +213,7 @@ app.get('/api/qr', async (req, res) => {
       margin: 1,
       width: 180,
       errorCorrectionLevel: 'M',
-      color: { dark: '#000000', light: '#ffffff' }
+      color: { dark: '#2D402E', light: '#F2F2F2' }
     });
     res.type('image/svg+xml').send(svg);
   } catch (_) {

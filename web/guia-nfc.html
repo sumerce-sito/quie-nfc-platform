@@ -5,28 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Guía de Programación NFC — QUIE®</title>
   <style>
-    :root{--negro:#0A0A0A;--dorado:#C9A84C;--azul:#1A2E6B;--blanco:#F5F5F5;
-      --verde:#1DB954;--rojo:#C0392B;--gris:#111;--gris2:#1A1A1A;--naranja:#E67E22;}
+    :root{--negro:#2D402E;--dorado:#D9A86C;--azul:#2D402E;--blanco:#F2F2F2;
+      --verde:#2D402E;--rojo:#BF5630;--gris:#2D402E;--gris2:#2D402E;--naranja:#BF5630;}
     *{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;}
     body{background:var(--negro);color:var(--blanco);font-family:'Segoe UI',Arial,sans-serif;}
 
     /* NAV */
-    nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.97);
+    nav{position:sticky;top:0;z-index:100;background:rgba(45, 64, 46, .97);
       border-bottom:2px solid var(--dorado);padding:16px 5%;
       display:flex;justify-content:space-between;align-items:center;}
     .nav-logo{font-size:.95rem;font-weight:900;letter-spacing:3px;color:var(--dorado);}
     .nav-links{display:flex;gap:20px;list-style:none;}
-    .nav-links a{color:#888;text-decoration:none;font-size:.78rem;letter-spacing:1px;transition:color .2s;}
+    .nav-links a{color:#593325;text-decoration:none;font-size:.78rem;letter-spacing:1px;transition:color .2s;}
     .nav-links a:hover{color:var(--dorado);}
 
     /* HERO */
     .hero{padding:60px 5% 50px;text-align:center;
-      background:linear-gradient(180deg,#0d1a40 0%,#0A0A0A 100%);}
+      background:linear-gradient(180deg,#2D402E 0%,#2D402E 100%);}
     .hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;letter-spacing:4px;
       color:var(--dorado);margin-bottom:12px;}
-    .hero p{font-size:.9rem;color:#888;max-width:600px;margin:0 auto;line-height:1.7;}
-    .chip-badge{display:inline-flex;align-items:center;gap:8px;background:#1a1a1a;
+    .hero p{font-size:.9rem;color:#593325;max-width:600px;margin:0 auto;line-height:1.7;}
+    .chip-badge{display:inline-flex;align-items:center;gap:8px;background:#2D402E;
       border:1px solid var(--dorado);border-radius:20px;padding:8px 20px;
       font-size:.78rem;color:var(--dorado);margin-top:20px;letter-spacing:2px;}
 
@@ -38,18 +38,18 @@
 
     /* APPS */
     .apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
-    .app-card{background:var(--gris2);border:1px solid #2a2a2a;border-radius:12px;padding:24px;}
+    .app-card{background:var(--gris2);border:1px solid #2D402E;border-radius:12px;padding:24px;}
     .app-card .app-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
     .app-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;
       justify-content:center;font-size:28px;flex-shrink:0;}
-    .app-icon.android{background:linear-gradient(135deg,#00b894,#00cec9);}
-    .app-icon.ios{background:linear-gradient(135deg,#636e72,#2d3436);}
-    .app-icon.both{background:linear-gradient(135deg,var(--azul),#0d1a40);}
+    .app-icon.android{background:linear-gradient(135deg,#2D402E,#2D402E);}
+    .app-icon.ios{background:linear-gradient(135deg,#593325,#2D402E);}
+    .app-icon.both{background:linear-gradient(135deg,var(--azul),#2D402E);}
     .app-card h3{font-size:.95rem;font-weight:800;color:var(--blanco);}
-    .app-card .plat{font-size:.72rem;color:#666;margin-top:2px;}
-    .app-card p{font-size:.82rem;color:#888;line-height:1.6;}
+    .app-card .plat{font-size:.72rem;color:#593325;margin-top:2px;}
+    .app-card p{font-size:.82rem;color:#593325;line-height:1.6;}
     .recomendado{border-color:var(--dorado);}
-    .rec-badge{background:var(--dorado);color:#000;font-size:.65rem;font-weight:800;
+    .rec-badge{background:var(--dorado);color:#2D402E;font-size:.65rem;font-weight:800;
       padding:2px 8px;border-radius:10px;letter-spacing:1px;margin-left:8px;}
 
     /* STEPS */
@@ -57,78 +57,78 @@
     .steps-list{display:flex;flex-direction:column;gap:0;}
     .step{display:flex;gap:0;cursor:pointer;}
     .step-left{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
-    .step-dot{width:36px;height:36px;border-radius:50%;background:#1a1a1a;border:2px solid #333;
+    .step-dot{width:36px;height:36px;border-radius:50%;background:#2D402E;border:2px solid #593325;
       display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;
-      color:#666;transition:all .3s;flex-shrink:0;}
-    .step.active .step-dot{background:var(--dorado);border-color:var(--dorado);color:#000;}
-    .step.done .step-dot{background:var(--verde);border-color:var(--verde);color:#fff;}
-    .step-line{width:2px;background:#1a1a1a;flex:1;margin:4px 0;}
+      color:#593325;transition:all .3s;flex-shrink:0;}
+    .step.active .step-dot{background:var(--dorado);border-color:var(--dorado);color:#2D402E;}
+    .step.done .step-dot{background:var(--verde);border-color:var(--verde);color:#F2F2F2;}
+    .step-line{width:2px;background:#2D402E;flex:1;margin:4px 0;}
     .step:last-child .step-line{display:none;}
     .step-content{padding:0 0 28px 16px;}
     .step-content h3{font-size:.95rem;font-weight:700;margin-bottom:6px;transition:color .3s;}
     .step.active .step-content h3{color:var(--dorado);}
     .step.done .step-content h3{color:var(--verde);}
-    .step-content p{font-size:.82rem;color:#777;line-height:1.6;}
-    .step-detail{display:none;margin-top:12px;background:#111;border:1px solid #222;
+    .step-content p{font-size:.82rem;color:#593325;line-height:1.6;}
+    .step-detail{display:none;margin-top:12px;background:#2D402E;border:1px solid #2D402E;
       border-radius:8px;padding:16px;}
     .step.active .step-detail{display:block;}
-    .step-detail code{display:block;background:#0a0a0a;border:1px solid #1a1a1a;
+    .step-detail code{display:block;background:#2D402E;border:1px solid #2D402E;
       border-radius:6px;padding:10px 14px;font-family:monospace;font-size:.78rem;
       color:var(--dorado);margin:8px 0;overflow-x:auto;}
-    .step-detail ul{padding-left:18px;font-size:.82rem;color:#999;line-height:1.8;}
-    .step-detail .tip{background:rgba(201,168,76,.08);border-left:3px solid var(--dorado);
-      padding:10px 14px;font-size:.8rem;color:#ccc;border-radius:0 6px 6px 0;margin-top:10px;}
-    .step-detail .warn{background:rgba(192,57,43,.08);border-left:3px solid var(--rojo);
-      padding:10px 14px;font-size:.8rem;color:#ccc;border-radius:0 6px 6px 0;margin-top:10px;}
+    .step-detail ul{padding-left:18px;font-size:.82rem;color:#593325;line-height:1.8;}
+    .step-detail .tip{background:rgba(217, 168, 108, .08);border-left:3px solid var(--dorado);
+      padding:10px 14px;font-size:.8rem;color:#D9A86C;border-radius:0 6px 6px 0;margin-top:10px;}
+    .step-detail .warn{background:rgba(191, 86, 48, .08);border-left:3px solid var(--rojo);
+      padding:10px 14px;font-size:.8rem;color:#D9A86C;border-radius:0 6px 6px 0;margin-top:10px;}
 
     /* MOCKUP TELÉFONO */
-    .phone-mockup{position:sticky;top:80px;background:#1a1a1a;border:3px solid #333;
+    .phone-mockup{position:sticky;top:80px;background:#2D402E;border:3px solid #593325;
       border-radius:40px;padding:20px 12px;max-width:260px;margin:0 auto;
-      box-shadow:0 0 60px rgba(201,168,76,.15);}
-    .phone-screen{background:#0a0a0a;border-radius:28px;overflow:hidden;min-height:460px;
+      box-shadow:0 0 60px rgba(217, 168, 108, .15);}
+    .phone-screen{background:#2D402E;border-radius:28px;overflow:hidden;min-height:460px;
       display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
     .screen-content{text-align:center;width:100%;}
-    .screen-app{font-size:.65rem;color:#555;letter-spacing:2px;margin-bottom:20px;
+    .screen-app{font-size:.65rem;color:#593325;letter-spacing:2px;margin-bottom:20px;
       text-transform:uppercase;}
     .screen-icon{font-size:48px;margin-bottom:12px;display:block;}
     .screen-title{font-size:.85rem;font-weight:800;letter-spacing:2px;
       color:var(--dorado);margin-bottom:6px;}
-    .screen-sub{font-size:.7rem;color:#666;line-height:1.5;}
-    .screen-field{background:#111;border:1px solid #2a2a2a;border-radius:6px;
+    .screen-sub{font-size:.7rem;color:#593325;line-height:1.5;}
+    .screen-field{background:#2D402E;border:1px solid #2D402E;border-radius:6px;
       padding:8px 12px;margin:6px 0;font-size:.7rem;text-align:left;width:100%;}
-    .screen-field .lbl{color:#555;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;}
+    .screen-field .lbl{color:#593325;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;}
     .screen-field .val{color:var(--blanco);margin-top:2px;}
-    .screen-btn{background:var(--dorado);color:#000;padding:10px;border-radius:8px;
+    .screen-btn{background:var(--dorado);color:#2D402E;padding:10px;border-radius:8px;
       font-weight:800;font-size:.75rem;letter-spacing:1px;margin-top:10px;width:100%;}
-    .screen-success{background:rgba(29,185,84,.15);border:2px solid var(--verde);
+    .screen-success{background:rgba(45, 64, 46, .15);border:2px solid var(--verde);
       border-radius:10px;padding:12px;margin-top:10px;}
     .screen-success .ico{font-size:1.8rem;display:block;margin-bottom:4px;}
     .screen-success p{font-size:.7rem;color:var(--verde);font-weight:700;}
 
     /* CHECKLIST */
-    .checklist{background:var(--gris);border:1px solid #1a1a1a;}
+    .checklist{background:var(--gris);border:1px solid #2D402E;}
     .check-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;
-      border-bottom:1px solid #1a1a1a;}
+      border-bottom:1px solid #2D402E;}
     .check-item:last-child{border:none;}
-    .check-box{width:24px;height:24px;border:2px solid #333;border-radius:4px;flex-shrink:0;
+    .check-box{width:24px;height:24px;border:2px solid #593325;border-radius:4px;flex-shrink:0;
       display:flex;align-items:center;justify-content:center;margin-top:2px;cursor:pointer;
       transition:all .2s;font-size:.9rem;}
     .check-box.checked{background:var(--verde);border-color:var(--verde);}
     .check-item .ci-text h4{font-size:.88rem;font-weight:700;margin-bottom:4px;}
-    .check-item .ci-text p{font-size:.78rem;color:#888;line-height:1.5;}
-    .check-progress{background:#1a1a1a;border-radius:8px;height:6px;margin-bottom:20px;overflow:hidden;}
+    .check-item .ci-text p{font-size:.78rem;color:#593325;line-height:1.5;}
+    .check-progress{background:#2D402E;border-radius:8px;height:6px;margin-bottom:20px;overflow:hidden;}
     .check-bar{height:100%;background:var(--verde);border-radius:8px;transition:width .4s;}
 
     /* ERRORES */
     .error-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
-    .error-card{background:var(--gris2);border:1px solid #2a2a2a;border-radius:10px;padding:20px;}
+    .error-card{background:var(--gris2);border:1px solid #2D402E;border-radius:10px;padding:20px;}
     .error-card h4{font-size:.85rem;font-weight:700;color:var(--rojo);margin-bottom:8px;}
-    .error-card .causa{font-size:.78rem;color:#666;margin-bottom:8px;}
-    .error-card .sol{font-size:.82rem;color:#ccc;line-height:1.5;}
+    .error-card .causa{font-size:.78rem;color:#593325;margin-bottom:8px;}
+    .error-card .sol{font-size:.82rem;color:#D9A86C;line-height:1.5;}
 
     /* FOOTER */
-    footer{background:#050505;border-top:1px solid #111;padding:28px 5%;text-align:center;}
-    footer p{font-size:.72rem;color:#444;letter-spacing:1px;}
+    footer{background:#2D402E;border-top:1px solid #2D402E;padding:28px 5%;text-align:center;}
+    footer p{font-size:.72rem;color:#593325;letter-spacing:1px;}
 
     @media(max-width:768px){
       .steps-container{grid-template-columns:1fr;}
@@ -198,7 +198,7 @@
 
   </div>
 
-  <div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:20px;margin-top:24px;font-size:.85rem;color:#888;">
+  <div style="background:#2D402E;border:1px solid #2D402E;border-radius:10px;padding:20px;margin-top:24px;font-size:.85rem;color:#593325;">
     <strong style="color:var(--dorado);">📌 Importante:</strong> El NFC debe estar ACTIVADO en tu teléfono.<br/>
     Android: Ajustes → Conexiones → NFC → Activar<br/>
     iPhone: Funciona automáticamente en iPhone 7 o superior con iOS 11+
@@ -206,7 +206,7 @@
 </section>
 
 <!-- PROCESO PASO A PASO -->
-<section id="proceso" style="background:var(--gris);border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;">
+<section id="proceso" style="background:var(--gris);border-top:1px solid #2D402E;border-bottom:1px solid #2D402E;">
   <p class="sec-label">Proceso completo</p>
   <h2>Programar un Tag — Paso a Paso</h2>
 
@@ -381,7 +381,7 @@
   <div class="check-progress">
     <div class="check-bar" id="check-bar" style="width:0%"></div>
   </div>
-  <div id="check-progress-text" style="font-size:.78rem;color:#666;margin-bottom:20px;">0 / 6 completado</div>
+  <div id="check-progress-text" style="font-size:.78rem;color:#593325;margin-bottom:20px;">0 / 6 completado</div>
 
   <div class="card checklist">
     <div class="check-item">
@@ -428,12 +428,12 @@
     </div>
   </div>
 
-  <div id="check-complete" style="display:none;background:rgba(29,185,84,.1);border:2px solid var(--verde);
+  <div id="check-complete" style="display:none;background:rgba(45, 64, 46, .1);border:2px solid var(--verde);
     border-radius:10px;padding:20px;text-align:center;margin-top:20px;">
     <div style="font-size:2rem;margin-bottom:8px;">OK</div>
     <strong style="color:var(--verde);">¡Tag completado y listo!</strong>
-    <p style="font-size:.82rem;color:#aaa;margin-top:6px;">Puedes resetear y continuar con el siguiente.</p>
-    <button onclick="resetChecklist()" style="background:var(--verde);color:#000;border:none;
+    <p style="font-size:.82rem;color:#D9A86C;margin-top:6px;">Puedes resetear y continuar con el siguiente.</p>
+    <button onclick="resetChecklist()" style="background:var(--verde);color:#2D402E;border:none;
       padding:8px 20px;border-radius:6px;font-weight:800;cursor:pointer;margin-top:10px;">
       ▶ Siguiente Tag
     </button>
@@ -441,7 +441,7 @@
 </section>
 
 <!-- ERRORES COMUNES -->
-<section id="errores" style="background:var(--gris);border-top:1px solid #1a1a1a;">
+<section id="errores" style="background:var(--gris);border-top:1px solid #2D402E;">
   <p class="sec-label">Resolución de problemas</p>
   <h2>Errores Comunes</h2>
   <div class="error-grid">

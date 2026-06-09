@@ -7,48 +7,48 @@
   <meta name="description" content="Catalogo editable de accesorios QUIE® con modelos, descripciones, colores y autenticidad NFC."/>
   <style>
     :root{
-      --negro:#0A0A0A;--gris:#111;--gris2:#171717;--texto:#f5f5f5;
-      --sutil:#777;--dorado:#C9A84C;--azul:#1A2E6B;--verde:#1DB954;
+      --negro:#2D402E;--gris:#2D402E;--gris2:#2D402E;--texto:#F2F2F2;
+      --sutil:#593325;--dorado:#D9A86C;--azul:#2D402E;--verde:#2D402E;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--negro);color:var(--texto);font-family:'Segoe UI',Arial,sans-serif;line-height:1.5}
     a{color:inherit}
     .wrap{width:min(1120px,92vw);margin:0 auto}
-    header{position:sticky;top:0;z-index:20;background:rgba(10,10,10,.94);border-bottom:1px solid rgba(201,168,76,.14);backdrop-filter:blur(14px)}
+    header{position:sticky;top:0;z-index:20;background:rgba(45, 64, 46, .94);border-bottom:1px solid rgba(217, 168, 108, .14);backdrop-filter:blur(14px)}
     nav{height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px}
     .brand{font-weight:900;letter-spacing:3px;color:var(--dorado);font-size:.88rem;text-transform:uppercase}
     .navlinks{display:flex;gap:18px;align-items:center;font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px}
-    .navlinks a{text-decoration:none;color:#888}
+    .navlinks a{text-decoration:none;color:#593325}
     .navlinks a:hover{color:var(--dorado)}
     .hero{padding:72px 0 34px}
     .tag{color:var(--dorado);letter-spacing:4px;text-transform:uppercase;font-size:.68rem;font-weight:800;margin-bottom:14px}
     h1{font-size:clamp(2.4rem,8vw,5.8rem);line-height:.95;text-transform:uppercase;letter-spacing:2px;max-width:850px}
-    .lead{color:#999;max-width:680px;margin-top:18px;font-size:1rem}
+    .lead{color:#593325;max-width:680px;margin-top:18px;font-size:1rem}
     .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
     .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:6px;text-decoration:none;font-weight:900;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase}
-    .btn.gold{background:var(--dorado);color:#000}
-    .btn.ghost{border:1px solid #292929;color:#bbb}
+    .btn.gold{background:var(--dorado);color:#2D402E}
+    .btn.ghost{border:1px solid #2D402E;color:#D9A86C}
     .filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 26px}
-    .filter{background:#101010;border:1px solid #242424;color:#aaa;border-radius:999px;padding:8px 12px;font-size:.75rem;cursor:pointer}
-    .filter.active{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.55);color:var(--dorado)}
+    .filter{background:#2D402E;border:1px solid #2D402E;color:#D9A86C;border-radius:999px;padding:8px 12px;font-size:.75rem;cursor:pointer}
+    .filter.active{background:rgba(217, 168, 108, .14);border-color:rgba(217, 168, 108, .55);color:var(--dorado)}
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-bottom:72px}
-    .card{background:linear-gradient(180deg,#151515,#0f0f0f);border:1px solid #242424;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:440px}
+    .card{background:linear-gradient(180deg,#2D402E,#2D402E);border:1px solid #2D402E;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:440px}
     .visual{height:150px;background:
-      radial-gradient(circle at 25% 20%,rgba(201,168,76,.22),transparent 26%),
-      linear-gradient(135deg,rgba(26,46,107,.45),rgba(201,168,76,.08)),
-      #101010;display:flex;align-items:center;justify-content:center;font-size:56px}
+      radial-gradient(circle at 25% 20%,rgba(217, 168, 108, .22),transparent 26%),
+      linear-gradient(135deg,rgba(45, 64, 46, .45),rgba(217, 168, 108, .08)),
+      #2D402E;display:flex;align-items:center;justify-content:center;font-size:56px}
     .visual img{width:100%;height:100%;object-fit:cover;display:block}
     .body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
     .meta{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{font-size:.68rem;color:var(--dorado);border:1px solid rgba(201,168,76,.24);background:rgba(201,168,76,.06);padding:4px 8px;border-radius:999px}
-    .pill.green{color:var(--verde);border-color:rgba(29,185,84,.28);background:rgba(29,185,84,.07)}
+    .pill{font-size:.68rem;color:var(--dorado);border:1px solid rgba(217, 168, 108, .24);background:rgba(217, 168, 108, .06);padding:4px 8px;border-radius:999px}
+    .pill.green{color:var(--verde);border-color:rgba(45, 64, 46, .28);background:rgba(45, 64, 46, .07)}
     .card h2{font-size:1.08rem;line-height:1.2}
-    .short{color:#d8d8d8;font-size:.86rem}
-    .desc{color:#888;font-size:.8rem}
-    .spec{border-top:1px solid #222;padding-top:10px;color:#777;font-size:.74rem}
-    .spec strong{color:#aaa}
+    .short{color:#F2F2F2;font-size:.86rem}
+    .desc{color:#593325;font-size:.8rem}
+    .spec{border-top:1px solid #2D402E;padding-top:10px;color:#593325;font-size:.74rem}
+    .spec strong{color:#D9A86C}
     .card .btn{margin-top:auto;width:100%}
-    .empty{padding:42px 0;color:#777}
+    .empty{padding:42px 0;color:#593325}
     @media(max-width:860px){.grid{grid-template-columns:1fr 1fr}.navlinks{gap:10px}.navlinks a{font-size:.68rem}}
     @media(max-width:620px){.grid{grid-template-columns:1fr}.hero{padding-top:48px}.navlinks a:nth-child(2){display:none}}
   </style>

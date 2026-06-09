@@ -17,12 +17,12 @@ La guia operativa consolidada vive en `documentacion/GUIA_MARCA_QUIE.md`.
 Administra autenticidad, lotes, escaneos y experiencia post-compra para bolsos, billeteras, morrales, carteras, cinturones y maletines ejecutivos.
 
 ## Identidad visual
-Usa una comunicación sobria, premium y artesanal, basada en esta paleta:
-- Terracota: #C4622D
-- Arcilla: #D4956A
-- Verde selva: #3D5A3E
-- Negro carbón: #1A1A1A
-- Dorado arena: #E8C87A
+Usa una comunicacion sobria, premium y artesanal, basada en esta paleta:
+- Verde profundo: #2D402E
+- Arena dorada: #D9A86C
+- Marfil claro: #F2F2F2
+- Terracota: #BF5630
+- Cuero oscuro: #593325
 
 ## Formatos operativos
 - ID de lote: QUIE-[CATEGORIA]-[AÑO]-[SEC]
@@ -45,7 +45,7 @@ La plataforma objetivo usa Next.js para la experiencia web y administración, Au
 ## Criterios de calidad
 - Nunca uses MAJLUCKY ni CHL como marca o prefijo.
 - Nunca uses iconos, espadas, estética urbana o elementos visuales heredados de marcas anteriores.
-- Usa el sistema visual QUIE: lujo silencioso, raiz colombiana, blanco/marfil, terracota, verde selva, dorado arena, tipografia serif elegante para titulos y sans limpia para textos.
+- Usa el sistema visual QUIE: lujo silencioso, raiz colombiana, marfil claro, arena dorada, verde profundo, terracota y cuero oscuro, tipografia serif elegante para titulos y sans limpia para textos.
 - Mantén el tono premium, claro y colombiano.
 - Prioriza seguridad, trazabilidad y consistencia de IDs.
 - Ante datos ambiguos, pide confirmación antes de crear lotes o códigos definitivos.
