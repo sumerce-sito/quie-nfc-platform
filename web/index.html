@@ -12,6 +12,11 @@
       --marfil: #F2F2F2;
       --terracota: #BF5630;
       --cuero: #593325;
+      --texture-hero: url("/assets/quie/textures/hero-background.png");
+      --texture-verde: url("/assets/quie/textures/leather-verde.png");
+      --texture-terracota: url("/assets/quie/textures/leather-terracota.png");
+      --texture-arcilla: url("/assets/quie/textures/arcilla.png");
+      --texture-tejido: url("/assets/quie/textures/tejido-artesanal.png");
       --display: Georgia, "Times New Roman", serif;
       --text: "Segoe UI", Arial, sans-serif;
     }
@@ -19,7 +24,9 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--marfil);
+      background:
+        linear-gradient(rgba(242, 242, 242, .94), rgba(242, 242, 242, .94)),
+        var(--texture-arcilla) center / 900px auto repeat;
       color: var(--cuero);
       font-family: var(--text);
       overflow-x: hidden;
@@ -37,7 +44,9 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 42px;
-      background: rgba(242, 242, 242, .92);
+      background:
+        linear-gradient(rgba(242, 242, 242, .92), rgba(242, 242, 242, .92)),
+        var(--texture-arcilla) center / 680px auto repeat;
       border-bottom: 1px solid rgba(89, 51, 37, .14);
       backdrop-filter: blur(14px);
     }
@@ -71,7 +80,9 @@
       min-height: 100vh;
       display: grid;
       grid-template-columns: minmax(380px, 42%) minmax(0, 58%);
-      background: var(--marfil);
+      background:
+        linear-gradient(90deg, rgba(242, 242, 242, .95), rgba(242, 242, 242, .87)),
+        var(--texture-hero) center / cover no-repeat;
       padding-top: 96px;
     }
     .hero-panel {
@@ -81,6 +92,9 @@
       justify-content: space-between;
       min-height: calc(100vh - 96px);
       border-right: 1px solid rgba(89, 51, 37, .14);
+      background:
+        linear-gradient(rgba(242, 242, 242, .88), rgba(242, 242, 242, .88)),
+        var(--texture-arcilla) center / 820px auto repeat;
     }
     .hero-mark {
       max-width: 520px;
@@ -143,7 +157,9 @@
       min-height: calc(100vh - 96px);
       position: relative;
       overflow: hidden;
-      background: var(--verde);
+      background:
+        linear-gradient(rgba(45, 64, 46, .32), rgba(45, 64, 46, .32)),
+        var(--texture-verde) center / cover no-repeat;
     }
     .hero-photo img {
       height: 100%;
@@ -155,12 +171,15 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(45, 64, 46, .18), rgba(45, 64, 46, 0));
+      background:
+        linear-gradient(90deg, rgba(45, 64, 46, .26), rgba(45, 64, 46, 0)),
+        linear-gradient(0deg, rgba(89, 51, 37, .14), rgba(89, 51, 37, 0) 45%);
       pointer-events: none;
     }
 
     .section {
       padding: 96px 42px;
+      position: relative;
     }
     .section-head {
       display: grid;
@@ -194,7 +213,9 @@
       padding: 34px;
       min-height: 220px;
       border-right: 1px solid rgba(89, 51, 37, .2);
-      background: var(--marfil);
+      background:
+        linear-gradient(rgba(242, 242, 242, .9), rgba(242, 242, 242, .9)),
+        var(--texture-tejido) center / cover no-repeat;
     }
     .brand-card:last-child { border-right: none; }
     .brand-card h3 {
@@ -213,7 +234,9 @@
       display: grid;
       grid-template-columns: minmax(0, 58%) minmax(340px, 42%);
       min-height: 620px;
-      background: var(--verde);
+      background:
+        linear-gradient(rgba(45, 64, 46, .82), rgba(45, 64, 46, .82)),
+        var(--texture-verde) center / cover no-repeat;
       color: var(--marfil);
     }
     .feature-band img {
@@ -225,6 +248,9 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      background:
+        linear-gradient(rgba(45, 64, 46, .78), rgba(45, 64, 46, .78)),
+        var(--texture-verde) center / cover no-repeat;
     }
     .feature-copy h2,
     .feature-copy .label,
@@ -237,12 +263,16 @@
       gap: 24px;
     }
     .product-card {
-      background: var(--marfil);
+      background:
+        linear-gradient(rgba(242, 242, 242, .88), rgba(242, 242, 242, .88)),
+        var(--texture-arcilla) center / 720px auto repeat;
       border: 1px solid rgba(89, 51, 37, .18);
     }
     .product-card figure {
       aspect-ratio: 1 / 1;
-      background: var(--arena);
+      background:
+        linear-gradient(rgba(217, 168, 108, .48), rgba(217, 168, 108, .48)),
+        var(--texture-tejido) center / cover no-repeat;
       overflow: hidden;
     }
     .product-card img {
@@ -267,7 +297,9 @@
     }
 
     .nfc {
-      background: var(--cuero);
+      background:
+        linear-gradient(rgba(89, 51, 37, .88), rgba(89, 51, 37, .88)),
+        var(--texture-terracota) center / cover no-repeat;
       color: var(--marfil);
     }
     .nfc h2,
@@ -282,7 +314,9 @@
       margin-top: 42px;
     }
     .nfc-step {
-      background: var(--cuero);
+      background:
+        linear-gradient(rgba(89, 51, 37, .88), rgba(89, 51, 37, .88)),
+        var(--texture-terracota) center / cover no-repeat;
       padding: 30px;
       min-height: 210px;
     }
@@ -307,10 +341,15 @@
       aspect-ratio: 4 / 5;
       height: 100%;
       object-fit: cover;
+      background:
+        linear-gradient(rgba(45, 64, 46, .18), rgba(45, 64, 46, .18)),
+        var(--texture-verde) center / cover no-repeat;
     }
 
     .footer {
-      background: var(--verde);
+      background:
+        linear-gradient(rgba(45, 64, 46, .9), rgba(45, 64, 46, .9)),
+        var(--texture-verde) center / cover no-repeat;
       color: var(--marfil);
       padding: 48px 42px;
       display: flex;
