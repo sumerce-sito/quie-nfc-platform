@@ -44,7 +44,6 @@
     .pill.green{color:var(--verde);border-color:rgba(45, 64, 46, .28);background:rgba(45, 64, 46, .07)}
     .product-title{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
     .card h2{font-size:1.08rem;line-height:1.2}
-    .price{color:var(--dorado);font-size:1rem;font-weight:900;letter-spacing:.5px;white-space:nowrap}
     .short{color:rgba(242,242,242,.9);font-size:.86rem}
     .desc{color:rgba(242,242,242,.62);font-size:.8rem}
     .spec{border-top:1px solid rgba(217,168,108,.15);padding-top:10px;color:rgba(242,242,242,.55);font-size:.74rem}
@@ -98,7 +97,6 @@ const productosBase = [
     nombre: 'Tarjetero Origen',
     modelo: 'Tarjetero',
     color: 'Verde profundo',
-    precio: 89000,
     foto_producto: '/assets/quie/productos/tarjetero.png',
     descripcion_corta: 'Formato compacto con serie NFC.',
     descripcion: 'Tarjetero en cuero para uso diario, pensado como pieza de entrada a la marca.',
@@ -111,7 +109,6 @@ const productosBase = [
     nombre: 'Billetera Tierra',
     modelo: 'Billetera',
     color: 'Cuero oscuro',
-    precio: 159000,
     foto_producto: '/assets/quie/productos/billetera.png',
     descripcion_corta: 'Pieza diaria con acabados sobrios.',
     descripcion: 'Billetera de cuero con compartimentos funcionales y autenticidad digital.',
@@ -124,7 +121,6 @@ const productosBase = [
     nombre: 'Llavero NFC Sello',
     modelo: 'Llavero NFC',
     color: 'Terracota',
-    precio: 49000,
     foto_producto: '/assets/quie/productos/llavero.png',
     descripcion_corta: 'Accesorio pequeno con verificacion digital.',
     descripcion: 'Llavero en cuero para demo NFC, certificado y activaciones de marca.',
@@ -137,7 +133,6 @@ const productosBase = [
     nombre: 'Correa Selva',
     modelo: 'Correa',
     color: 'Verde profundo',
-    precio: 189000,
     foto_producto: '/assets/quie/productos/correa.png',
     descripcion_corta: 'Cuero, herraje y sello discreto.',
     descripcion: 'Correa premium con lectura NFC para validar lote, origen y cuidado.',
@@ -150,7 +145,6 @@ const productosBase = [
     nombre: 'Bolso Raiz',
     modelo: 'Bolso',
     color: 'Terracota y verde',
-    precio: 429000,
     foto_producto: '/assets/quie/productos/bolso.png',
     descripcion_corta: 'La pieza editorial de mayor impacto.',
     descripcion: 'Bolso QUIE con mezcla de cuero, textura artesanal y presencia de marca.',
@@ -163,7 +157,6 @@ const productosBase = [
     nombre: 'Maletin Ejecutivo Monte',
     modelo: 'Maletin',
     color: 'Cuero oscuro',
-    precio: 679000,
     foto_producto: '/assets/quie/productos/maletin-ejecutivo.png',
     descripcion_corta: 'Linea ejecutiva con trazabilidad NFC.',
     descripcion: 'Maletin para portatil y documentos con acabados premium y certificado digital.',
@@ -175,15 +168,6 @@ const productosBase = [
 ];
 let productos = [];
 let filtro = 'Todos';
-
-function formatoPrecio(valor) {
-  if (!valor) return 'Cotizar';
-  return new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    maximumFractionDigits: 0
-  }).format(valor);
-}
 
 function modelosDisponibles() {
   return ['Todos'].concat([...new Set(productos.map(p => p.modelo).filter(Boolean))]);
@@ -209,8 +193,7 @@ function renderCatalogo() {
     return;
   }
   cont.innerHTML = lista.map(p => {
-    const precio = formatoPrecio(p.precio);
-    const msg = encodeURIComponent('Hola QUIE, quiero cotizar: ' + p.nombre + ' - ' + precio);
+    const msg = encodeURIComponent('Hola QUIE, quiero cotizar: ' + p.nombre);
     return '<article class="card">' +
       '<div class="visual">' + (p.foto_producto ? '<img src="' + p.foto_producto + '" alt="' + p.nombre + '">' : (iconos[p.modelo] || 'QUIE')) + '</div>' +
       '<div class="body">' +
@@ -219,7 +202,7 @@ function renderCatalogo() {
           '<span class="pill">' + (p.color || 'Color a elegir') + '</span>' +
           (p.nfc ? '<span class="pill green">NFC</span>' : '') +
         '</div>' +
-        '<div class="product-title"><h2>' + p.nombre + '</h2><div class="price">' + precio + '</div></div>' +
+        '<div class="product-title"><h2>' + p.nombre + '</h2></div>' +
         '<p class="short">' + (p.descripcion_corta || '') + '</p>' +
         '<p class="desc">' + (p.descripcion || '') + '</p>' +
         '<div class="spec"><strong>Materiales:</strong> ' + (p.materiales || 'Segun disponibilidad') + '</div>' +
