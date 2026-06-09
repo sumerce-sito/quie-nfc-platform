@@ -346,6 +346,139 @@
         var(--texture-verde) center / cover no-repeat;
     }
 
+    .contact {
+      background:
+        linear-gradient(rgba(242, 242, 242, .92), rgba(242, 242, 242, .92)),
+        var(--texture-arcilla) center / 840px auto repeat;
+      border-top: 1px solid rgba(89, 51, 37, .14);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 38%) minmax(0, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+    .contact-panel,
+    .branch-map {
+      border: 1px solid rgba(89, 51, 37, .18);
+      background:
+        linear-gradient(rgba(242, 242, 242, .86), rgba(242, 242, 242, .86)),
+        var(--texture-tejido) center / cover no-repeat;
+    }
+    .contact-panel {
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .contact-logo {
+      width: 180px;
+      margin-bottom: 8px;
+    }
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--cuero);
+    }
+    .contact-list strong {
+      display: block;
+      color: var(--verde);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: auto;
+    }
+    .contact-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--verde);
+      color: var(--verde);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .contact-button.primary {
+      background: var(--verde);
+      color: var(--marfil);
+    }
+    .branch-map {
+      min-height: 520px;
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      background:
+        linear-gradient(rgba(45, 64, 46, .82), rgba(45, 64, 46, .82)),
+        var(--texture-verde) center / cover no-repeat;
+      color: var(--marfil);
+    }
+    .map-title {
+      position: relative;
+      z-index: 2;
+      max-width: 360px;
+    }
+    .map-title h3 {
+      font-family: var(--display);
+      font-size: clamp(30px, 3vw, 46px);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--marfil);
+      margin-top: 12px;
+    }
+    .map-shape {
+      position: absolute;
+      right: 7%;
+      top: 14%;
+      width: min(460px, 58%);
+      aspect-ratio: 3 / 4;
+      border: 1px solid rgba(217, 168, 108, .32);
+      background:
+        radial-gradient(circle at 52% 16%, rgba(217, 168, 108, .4), transparent 8%),
+        radial-gradient(circle at 45% 34%, rgba(217, 168, 108, .3), transparent 9%),
+        radial-gradient(circle at 56% 52%, rgba(217, 168, 108, .34), transparent 8%),
+        radial-gradient(circle at 48% 72%, rgba(217, 168, 108, .28), transparent 9%),
+        linear-gradient(145deg, rgba(242, 242, 242, .08), rgba(217, 168, 108, .16));
+      clip-path: polygon(48% 0, 70% 7%, 82% 22%, 76% 40%, 88% 57%, 73% 78%, 55% 100%, 34% 88%, 16% 70%, 23% 48%, 12% 30%, 27% 12%);
+      opacity: .95;
+    }
+    .branch-list {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 110px;
+      max-width: 620px;
+    }
+    .branch {
+      background: rgba(242, 242, 242, .08);
+      border: 1px solid rgba(217, 168, 108, .24);
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+    .branch strong {
+      display: block;
+      color: var(--arena);
+      margin-bottom: 6px;
+    }
+    .branch span {
+      display: block;
+      color: rgba(242, 242, 242, .78);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     .footer {
       background:
         linear-gradient(rgba(45, 64, 46, .9), rgba(45, 64, 46, .9)),
@@ -384,6 +517,7 @@
       .hero,
       .section-head,
       .feature-band,
+      .contact-grid,
       .footer {
         grid-template-columns: 1fr;
       }
@@ -405,6 +539,9 @@
       .section { padding: 72px 22px; }
       .brand-card { border-right: none; border-bottom: 1px solid rgba(89, 51, 37, .2); }
       .feature-copy { padding: 54px 24px; }
+      .branch-map { min-height: 620px; }
+      .map-shape { width: 74%; right: -5%; top: 18%; }
+      .branch-list { grid-template-columns: 1fr; margin-top: 72px; }
       .footer { align-items: flex-start; }
     }
   </style>
@@ -552,9 +689,71 @@
         <img src="/assets/quie/uso/joven-correa.png" alt="Joven usando correa QUIE" />
       </div>
     </section>
+
+    <section class="section contact" id="contacto">
+      <div class="section-head">
+        <p class="label">Contacto</p>
+        <div>
+          <h2>Atencion privada para piezas, pedidos y autenticidad.</h2>
+          <p class="lead">Datos de demostracion para la experiencia QUIE®. El canal directo de WhatsApp si esta activo para contacto real.</p>
+        </div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-panel">
+          <img class="contact-logo" src="/assets/quie/brand/quie.png" alt="QUIE" />
+          <div class="contact-list">
+            <div>
+              <strong>WhatsApp real</strong>
+              <a href="https://wa.me/573156056978?text=Hola%20QUIE%2C%20quiero%20hablar%20con%20un%20asesor" target="_blank" rel="noreferrer">+57 315 605 6978</a>
+            </div>
+            <div>
+              <strong>Correo de demostracion</strong>
+              contacto@quieatelier.co
+            </div>
+            <div>
+              <strong>Atencion</strong>
+              Lunes a sabado, 9:00 a.m. - 6:00 p.m.
+            </div>
+            <div>
+              <strong>Showroom principal</strong>
+              Calle 78 # 11-42, Bogota, Colombia
+            </div>
+          </div>
+          <div class="contact-actions">
+            <a class="contact-button primary" href="https://wa.me/573156056978?text=Hola%20QUIE%2C%20quiero%20conocer%20la%20coleccion" target="_blank" rel="noreferrer">WhatsApp</a>
+            <a class="contact-button" href="/catalogo">Ver catalogo</a>
+          </div>
+        </div>
+        <div class="branch-map" aria-label="Mapa conceptual de sucursales QUIE en Colombia">
+          <div class="map-title">
+            <p class="label">Mapa de presencia</p>
+            <h3>Sucursales de referencia para la demo.</h3>
+          </div>
+          <div class="map-shape" aria-hidden="true"></div>
+          <div class="branch-list">
+            <div class="branch">
+              <strong>Bogota - Zona T</strong>
+              <span>Calle 78 # 11-42<br />Showroom y autenticidad NFC</span>
+            </div>
+            <div class="branch">
+              <strong>Medellin - Provenza</strong>
+              <span>Carrera 35 # 8A-21<br />Citas privadas y coleccion</span>
+            </div>
+            <div class="branch">
+              <strong>Cali - Granada</strong>
+              <span>Avenida 9N # 13-48<br />Pedidos especiales</span>
+            </div>
+            <div class="branch">
+              <strong>Cartagena - Centro</strong>
+              <span>Calle de la Mantilla # 3-18<br />Temporada y piezas limitadas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="footer" id="contacto">
+  <footer class="footer">
     <div>
       <img src="/assets/quie/brand/quie.png" alt="QUIE" />
       <p>Accesorios de lujo colombiano. De la tierra. Para siempre.</p>
