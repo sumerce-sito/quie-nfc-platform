@@ -24,10 +24,11 @@ const {
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
+const IS_VERCEL = !!process.env.VERCEL;
 const WEB  = path.join(__dirname, '../web');
 const DB   = (n) => path.join(__dirname, `../base_datos/${n}.json`);
 const FORCE_HTTPS = process.env.FORCE_HTTPS === 'true';
-const UPLOADS = path.join(__dirname, '../uploads');
+const UPLOADS = IS_VERCEL ? path.join(os.tmpdir(), 'quie-uploads') : path.join(__dirname, '../uploads');
 const CLIENTE_FOTOS = path.join(UPLOADS, 'clientes');
 const PRODUCTO_FOTOS = path.join(UPLOADS, 'productos');
 const cspDirectives = {
@@ -803,19 +804,10 @@ function generarLoteId(modelo) {
 //  ARRANQUE
 // ─────────────────────────────────────────────────────────────────────────────
 
-app.listen(PORT, () => {
-  console.log(`
-╔══════════════════════════════════════════════════╗
-║   QUIE® NFC System — NEXO v2.0 SECURE  ║
-║   http://localhost:${PORT}                          ║
-║                                                  ║
-║   Seguridad activa:                              ║
-║   OK Helmet CSP/HSTS/XSS/noSniff               ║
-║   OK Rate limiting (general + login + NFC)      ║
-║   OK JWT httpOnly cookie (2h)                   ║
-║   OK Brute-force protection (5 intentos/15min)  ║
-║   OK Input validation en todos los endpoints    ║
-║   OK Auditoría de eventos de seguridad          ║
-╚══════════════════════════════════════════════════╝
-  `);
-});
+if (!IS_VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`QUIE NFC System listo en http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
