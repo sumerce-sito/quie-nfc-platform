@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 require('dotenv').config();
 
 const express        = require('express');
@@ -147,9 +147,9 @@ const uploadFotoProducto = multer({
   }
 }).single('foto_producto');
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  SEGURIDAD â€” CABECERAS HTTP
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  SEGURIDAD — CABECERAS HTTP
+// ─────────────────────────────────────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: {
     useDefaults: false,
@@ -176,9 +176,9 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'quie-hackathon-demo-cookie-se
 // Eliminar cabecera X-Powered-By
 app.disable('x-powered-by');
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 //  RATE LIMITING
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 // General: 100 req/minuto por IP
 const limiterGeneral = rateLimit({
@@ -199,7 +199,7 @@ const limiterLogin = rateLimit({
   message: { error: 'Demasiados intentos de login. Espera 15 minutos.' }
 });
 
-// Escaneos NFC pÃºblicos: 30 req/min por IP (evita bots)
+// Escaneos NFC públicos: 30 req/min por IP (evita bots)
 const limiterEscaneo = rateLimit({
   windowMs: 60 * 1000,
   max:      30,
@@ -210,7 +210,7 @@ const limiterEscaneo = rateLimit({
 const limiterRegistro = rateLimit({
   windowMs: 10 * 60 * 1000,
   max:      5,
-  message:  { error: 'Demasiados registros. Intenta mÃ¡s tarde.' }
+  message:  { error: 'Demasiados registros. Intenta más tarde.' }
 });
 
 app.use(limiterGeneral);
@@ -227,13 +227,13 @@ app.use('/uploads', express.static(UPLOADS, {
   }
 }));
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  HELPER: validaciÃ³n de inputs
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  HELPER: validación de inputs
+// ─────────────────────────────────────────────────────────────────────────────
 function validar(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ error: 'Datos invÃ¡lidos', detalles: errors.array() });
+    return res.status(400).json({ error: 'Datos inválidos', detalles: errors.array() });
   }
   return null;
 }
@@ -283,9 +283,9 @@ function demoRecordForCode(codigo) {
     estado: 'demo'
   };
 }
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  RUTAS PÃšBLICAS (sin auth)
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  RUTAS PÚBLICAS (sin auth)
+// ─────────────────────────────────────────────────────────────────────────────
 
 app.get('/', (req, res) => res.sendFile(path.join(WEB, 'index.html')));
 app.get('/guia-nfc', (req, res) => res.sendFile(path.join(WEB, 'guia-nfc.html')));
@@ -311,7 +311,7 @@ app.get('/api/qr', async (req, res) => {
   }
 });
 
-// Registro de propietario de pieza â€” pÃºblico, llamado desde autenticidad.html
+// Registro de propietario de pieza — público, llamado desde autenticidad.html
 app.get('/api/catalogo', (req, res) => {
   const db = leerDB('productos');
   const productos = db.productos.filter(p => p.estado === 'activo');
@@ -324,11 +324,11 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
     return res.status(400).json({ error: err.message || 'No se pudo subir la foto' });
   });
 }, [
-  body('codigo_nfc').trim().matches(/^QUIE-[A-Z0-9]{6}-[0-9]{2}$/).withMessage('CÃ³digo invÃ¡lido'),
+  body('codigo_nfc').trim().matches(/^QUIE-[A-Z0-9]{6}-[0-9]{2}$/).withMessage('Código inválido'),
   body('nombre').trim().notEmpty().isLength({ min: 2, max: 80 }).withMessage('Nombre requerido'),
-  body('whatsapp').trim().notEmpty().matches(/^[\d\s\+\-\(\)]{7,20}$/).withMessage('WhatsApp invÃ¡lido'),
+  body('whatsapp').trim().notEmpty().matches(/^[\d\s\+\-\(\)]{7,20}$/).withMessage('WhatsApp inválido'),
   body('ciudad').optional({ checkFalsy: true }).trim().isLength({ max: 60 }).withMessage('Ciudad demasiado larga'),
-  body('email').optional({ checkFalsy: true }).trim().isEmail().withMessage('Email invÃ¡lido').normalizeEmail()
+  body('email').optional({ checkFalsy: true }).trim().isEmail().withMessage('Email inválido').normalizeEmail()
 ], (req, res) => {
   const borrarFotoSubida = () => {
     if (req.file?.path && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
@@ -341,15 +341,15 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
 
   const { codigo_nfc, nombre, whatsapp, ciudad, email } = req.body;
 
-  // Verificar que el cÃ³digo existe
+  // Verificar que el código existe
   const dbCodigos = leerDB('codigos');
   const codigo = dbCodigos.codigos.find(c => c.codigo_nfc === codigo_nfc.toUpperCase());
   if (!codigo) {
     borrarFotoSubida();
-    return res.status(404).json({ error: 'CÃ³digo no encontrado' });
+    return res.status(404).json({ error: 'Código no encontrado' });
   }
 
-  // Verificar que no estÃ© ya registrado
+  // Verificar que no esté ya registrado
   const db = leerDB('clientes');
   if (db.clientes.some(c => c.codigo_nfc === codigo_nfc.toUpperCase())) {
     borrarFotoSubida();
@@ -363,7 +363,7 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
     modelo:         codigo.modelo,
     color:          codigo.color,
     nombre:         nombre,
-    whatsapp:       whatsapp.replace(/\D/g, '').slice(-10), // solo dÃ­gitos, Ãºltimos 10
+    whatsapp:       whatsapp.replace(/\D/g, '').slice(-10), // solo dígitos, últimos 10
     ciudad:         ciudad || '',
     email:          email  || '',
     foto_pieza:     req.file ? `/uploads/clientes/${req.file.filename}` : '',
@@ -374,9 +374,9 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
 
   db.clientes.push(nuevo);
   guardarDB('clientes', db);
-  auditoria('DataVault', 'CLIENTE_REGISTRADO', `${nombre} â€” ${codigo_nfc}`, ip(req));
+  auditoria('DataVault', 'CLIENTE_REGISTRADO', `${nombre} — ${codigo_nfc}`, ip(req));
 
-  res.json({ ok: true, mensaje: 'Â¡Registro exitoso! Bienvenido a QUIEÂ®' });
+  res.json({ ok: true, mensaje: '¡Registro exitoso! Bienvenido a QUIE®' });
 });
 
 // Preview de autenticidad (solo en desarrollo)
@@ -388,7 +388,7 @@ app.get('/v/demo', (req, res) => {
     .replace(/\{\{CODIGO_NFC\}\}/g,           'QUIE-A7B3X9-42')
     .replace(/\{\{MODELO\}\}/g,               'Tarjetero')
     .replace(/\{\{COLOR\}\}/g,                'Negro / Dorado')
-    .replace(/\{\{TALLA\}\}/g,                'Ãšnica')
+    .replace(/\{\{TALLA\}\}/g,                'Única')
     .replace(/\{\{LOTE_ID\}\}/g,              'QUIE-TAR-2025-001')
     .replace(/\{\{FECHA_PRODUCCION\}\}/g,     '2026-06-05')
     .replace(/\{\{FECHA_PRIMER_ESCANEO\}\}/g, '5 de junio de 2026')
@@ -396,17 +396,17 @@ app.get('/v/demo', (req, res) => {
     .replace(/\{\{ES_PRIMER_ESCANEO\}\}/g,    tipo === 'autentico' ? 'true' : 'false')
     .replace(/\{\{TOTAL_ESCANEOS\}\}/g,       tipo === 'sospechoso' ? '87' : tipo === 'rescan' ? '4' : '1')
     .replace(/\{\{YA_REGISTRADO\}\}/g,        tipo === 'rescan' ? 'true' : 'false')
-    .replace(/\{\{NOMBRE_PROPIETARIO\}\}/g,   tipo === 'rescan' ? 'Carlos RodrÃ­guez' : '')
+    .replace(/\{\{NOMBRE_PROPIETARIO\}\}/g,   tipo === 'rescan' ? 'Carlos Rodríguez' : '')
     .replace(/\{\{FOTO_PRODUCTO\}\}/g,        '/assets/quie/productos/tarjetero.png');
   res.send(html);
 });
 
-// Landing de autenticidad NFC â€” pÃºblica pero con rate limiting
+// Landing de autenticidad NFC — pública pero con rate limiting
 app.get('/v/:codigo', limiterEscaneo, [
   param('codigo')
     .trim()
     .matches(/^QUIE-[A-Z0-9]{6}-[0-9]{2}$/)
-    .withMessage('Formato de cÃ³digo invÃ¡lido')
+    .withMessage('Formato de código inválido')
 ], (req, res) => {
   if (validar(req, res)) return;
 
@@ -446,7 +446,7 @@ app.get('/v/:codigo', limiterEscaneo, [
       });
 
   if (!esDemo) {
-    auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} â€” ${escaneo.mensaje}`, ip(req));
+    auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} — ${escaneo.mensaje}`, ip(req));
   }
 
   const dbEsc = leerDB('escaneos');
@@ -503,9 +503,9 @@ app.get('/v/:codigo', limiterEscaneo, [
   res.send(html);
 });
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  AUTH â€” Login / Logout / Verify
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  AUTH — Login / Logout / Verify
+// ─────────────────────────────────────────────────────────────────────────────
 
 app.post('/api/auth/login', limiterLogin, [
   body('username').trim().notEmpty().isLength({ max: 50 }),
@@ -517,7 +517,7 @@ app.post('/api/auth/login', limiterLogin, [
 
   if (estaBloquada(clientIp)) {
     const mins = tiempoRestanteBloqueo(clientIp);
-    logSeguridad('LOGIN_BLOQUEO', `IP bloqueada â€” ${mins} min restantes`, clientIp);
+    logSeguridad('LOGIN_BLOQUEO', `IP bloqueada — ${mins} min restantes`, clientIp);
     return res.status(429).json({
       error: `IP bloqueada por demasiados intentos fallidos. Espera ${mins} minuto(s).`
     });
@@ -528,7 +528,7 @@ app.post('/api/auth/login', limiterLogin, [
   if (!verificarCredenciales(username, password)) {
     const intentos = registrarFallo(clientIp);
     const restantes = Math.max(0, 5 - intentos);
-    logSeguridad('LOGIN_FALLO', `Usuario: ${username} â€” intento ${intentos}`, clientIp);
+    logSeguridad('LOGIN_FALLO', `Usuario: ${username} — intento ${intentos}`, clientIp);
     return res.status(401).json({
       error: restantes > 0
         ? `Credenciales incorrectas. ${restantes} intento(s) restantes.`
@@ -554,21 +554,21 @@ app.get('/api/auth/verify', requireAuth, (req, res) => {
   res.json({ ok: true, usuario: req.admin.sub, expira: new Date(req.admin.exp * 1000).toISOString() });
 });
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  PANEL ADMIN â€” protegido
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  PANEL ADMIN — protegido
+// ─────────────────────────────────────────────────────────────────────────────
 
 app.get('/admin', requireAuth, (req, res) => res.sendFile(path.join(WEB, 'admin.html')));
 app.get('/escribir', requireAuth, (req, res) => res.sendFile(path.join(WEB, 'escribir.html')));
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  API REST â€” todas protegidas con requireAuth
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  API REST — todas protegidas con requireAuth
+// ─────────────────────────────────────────────────────────────────────────────
 
 const api = express.Router();
 api.use(requireAuth);
 
-// Info del sistema (IP local para conexiÃ³n Android)
+// Info del sistema (IP local para conexión Android)
 api.get('/sistema/info', (req, res) => {
   const nets = os.networkInterfaces();
   let lanIP = 'localhost';
@@ -620,12 +620,12 @@ api.post('/lotes', [
     const resultado = generarLote({
       lote_id:   generarLoteId(modelo),
       modelo, color,
-      talla:     talla || 'Ãšnica',
+      talla:     talla || 'Única',
       cantidad:  parseInt(cantidad),
       temporada: temporada || String(new Date().getFullYear()),
       base_url:  baseUrl(req)
     });
-    auditoria('NEXO', 'LOTE_CREADO', `${resultado.lote_id} â€” ${cantidad} uds`, ip(req));
+    auditoria('NEXO', 'LOTE_CREADO', `${resultado.lote_id} — ${cantidad} uds`, ip(req));
     res.json(resultado);
   } catch (e) {
     console.error('[LOTE_ERROR]', e.message);
@@ -654,11 +654,11 @@ api.patch('/lotes/:id/estado', [
   lote.estado = req.body.estado;
   lote.fecha_cambio_estado = new Date().toISOString();
   guardarDB('lotes', db);
-  auditoria('DataVault', 'ESTADO_LOTE', `${req.params.id} â†’ ${req.body.estado}`, ip(req));
+  auditoria('DataVault', 'ESTADO_LOTE', `${req.params.id} → ${req.body.estado}`, ip(req));
   res.json(lote);
 });
 
-// CÃ³digos
+// Códigos
 api.delete('/lotes/:id', [
   param('id').matches(/^QUIE-[A-Z0-9]+-\d{4}-\d{3}$/)
 ], (req, res) => {
@@ -715,7 +715,7 @@ api.get('/codigos/:codigo', [
 ], (req, res) => {
   if (validar(req, res)) return;
   const codigo = leerDB('codigos').codigos.find(c => c.codigo_nfc === req.params.codigo.toUpperCase());
-  if (!codigo) return res.status(404).json({ error: 'CÃ³digo no encontrado' });
+  if (!codigo) return res.status(404).json({ error: 'Código no encontrado' });
   const escaneos = leerDB('escaneos').escaneos.filter(e => e.codigo_id === codigo.codigo_nfc);
   res.json({ ...codigo, total_escaneos: escaneos.length });
 });
@@ -864,7 +864,7 @@ api.get('/reportes/:tipo', [
   res.json(reporte);
 });
 
-// CRM â€” Clientes registrados
+// CRM — Clientes registrados
 api.get('/clientes', (req, res) => {
   const db = leerDB('clientes');
   let lista = [...db.clientes].reverse();
@@ -914,9 +914,9 @@ api.get('/csv/:lote', [
 
 app.use('/api', api);
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-//  MANEJO DE ERRORES â€” nunca exponer stack traces
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
+//  MANEJO DE ERRORES — nunca exponer stack traces
+// ─────────────────────────────────────────────────────────────────────────────
 
 app.use((req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
 
@@ -925,9 +925,9 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 //  HELPERS
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 function generarLoteId(modelo) {
   const db    = leerDB('lotes');
@@ -937,9 +937,9 @@ function generarLoteId(modelo) {
   return `QUIE-${abrev}-${anio}-${seq}`;
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 //  ARRANQUE
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 if (!IS_VERCEL) {
   app.listen(PORT, () => {
