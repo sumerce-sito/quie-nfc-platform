@@ -42,6 +42,27 @@ const DEMO_NFC_RECORD = {
   estado: 'activo',
   foto_producto: '/assets/quie/productos/tarjetero.png'
 };
+const DEMO_CSV_CODES = [
+  DEMO_NFC_RECORD,
+  {
+    codigo_nfc: 'QUIE-B8K2M5-47',
+    modelo: 'Billetera Tierra',
+    color: 'Cuero oscuro',
+    talla: 'Unica',
+    lote_id: DEMO_NFC_RECORD.lote_id,
+    fecha_produccion: DEMO_NFC_RECORD.fecha_produccion,
+    estado: 'generado'
+  },
+  {
+    codigo_nfc: 'QUIE-C9P4T7-51',
+    modelo: 'Correa Selva',
+    color: 'Verde profundo',
+    talla: 'Unica',
+    lote_id: DEMO_NFC_RECORD.lote_id,
+    fecha_produccion: DEMO_NFC_RECORD.fecha_produccion,
+    estado: 'generado'
+  }
+];
 const cspDirectives = {
   defaultSrc:     ["'self'"],
   scriptSrc:      ["'self'", "'unsafe-inline'"],
@@ -218,6 +239,36 @@ function validar(req, res) {
 
 function ip(req) {
   return (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+}
+
+function baseUrl(req) {
+  const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+  const host = req.headers['x-forwarded-host'] || req.headers.host || process.env.BASE_URL || 'localhost:3000';
+  return String(host).startsWith('http') ? String(host).replace(/\/$/, '') : `${proto}://${host}`;
+}
+
+function csvCell(value) {
+  const text = String(value ?? '');
+  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function construirCsvCodigos(codigos, req) {
+  const origen = baseUrl(req);
+  const columnas = ['codigo_nfc','lote_id','modelo','color','talla','url_landing','estado','fecha_produccion'];
+  const filas = codigos.map(c => {
+    const url = c.url_landing || `${origen}/v/${c.codigo_nfc}`;
+    return [
+      c.codigo_nfc,
+      c.lote_id,
+      c.modelo,
+      c.color,
+      c.talla || 'Unica',
+      url,
+      c.estado || 'generado',
+      c.fecha_produccion || DEMO_NFC_RECORD.fecha_produccion
+    ].map(csvCell).join(',');
+  });
+  return [columnas.join(','), ...filas].join('\n');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -823,9 +874,21 @@ api.get('/csv/:lote', [
   param('lote').matches(/^QUIE-[A-Z0-9]+-\d{4}-\d{3}$/)
 ], (req, res) => {
   if (validar(req, res)) return;
-  const csvPath = path.join(__dirname, `../codigos_csv/${req.params.lote}.csv`);
-  if (!fs.existsSync(csvPath)) return res.status(404).json({ error: 'CSV no encontrado' });
-  res.download(csvPath);
+  const loteId = req.params.lote;
+  const csvPath = path.join(__dirname, `../codigos_csv/${loteId}.csv`);
+  if (fs.existsSync(csvPath)) return res.download(csvPath);
+
+  const codigosDb = leerDB('codigos').codigos.filter(c => c.lote_id === loteId);
+  const codigos = codigosDb.length
+    ? codigosDb
+    : loteId === DEMO_NFC_RECORD.lote_id ? DEMO_CSV_CODES : [];
+
+  if (!codigos.length) return res.status(404).json({ error: 'CSV no encontrado' });
+
+  const csv = construirCsvCodigos(codigos, req);
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="${loteId}.csv"`);
+  res.send('\uFEFF' + csv);
 });
 
 app.use('/api', api);
