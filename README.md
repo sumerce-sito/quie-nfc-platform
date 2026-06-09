@@ -48,7 +48,7 @@ Next.js /v/[codigo]
 web/                         Landing y pantallas prototipo de experiencia NFC
 sistema/                     Logica prototipo para generacion y validacion NFC
 database/aurora/             Schema Aurora PostgreSQL y seeds [DEMO]
-documentacion/               Guia de marca QUIE y decisiones de producto
+documentacion/               Guias de marca, seguridad y decisiones de producto
 logos y marcas/              Logo, brand board y concepto visual
 guias_tags/                  Guia operativa NTAG213
 landing_pages/               Plantilla de autenticidad NFC
@@ -156,6 +156,14 @@ Principios:
 - Autenticidad NFC.
 - Piezas hechas para durar.
 
+## Seguridad
+
+La postura de seguridad implementada para la demo esta documentada en:
+
+- `documentacion/SEGURIDAD_QUIE.md`
+
+Incluye autenticacion admin, JWT en cookie `httpOnly`, hashing con `bcrypt`, rate limiting, bloqueo por intentos fallidos, validacion estricta de codigos NFC, cabeceras de seguridad con Helmet y deteccion basica antifraude en escaneos.
+
 ## Estado del proyecto
 
 Listo:
@@ -163,6 +171,7 @@ Listo:
 - Limpieza completa de marca heredada.
 - Landing premium v1.
 - Guia de marca QUIE®.
+- Documento de seguridad QUIE NFC.
 - Schema Aurora PostgreSQL.
 - Seeds [DEMO].
 - Documento de submission.
