@@ -1,0 +1,24 @@
+{
+  "name": "quie-nfc-platform",
+  "version": "1.0.0",
+  "description": "Plataforma NFC de autenticidad QUIE® — Hackathon AWS + Vercel",
+  "main": "sistema/servidor.js",
+  "scripts": {
+    "start": "node sistema/servidor.js",
+    "dev": "npx nodemon sistema/servidor.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.5.2",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "qrcode": "^1.5.4",
+    "uuid": "^9.0.1"
+  }
+}

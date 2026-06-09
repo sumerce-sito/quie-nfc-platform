@@ -1,0 +1,10 @@
+node_modules/
+.env
+servidor.log
+*.log
+codigos_csv/
+reportes/
+auditoria/
+base_datos/
+uploads/
+dist/

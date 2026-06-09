@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel QUIE®</title>
+  <style>
+    :root{
+      --negro:#0A0A0A; --dorado:#C9A84C; --azul:#1A2E6B;
+      --blanco:#F5F5F5; --gris:#111111; --gris2:#1A1A1A;
+      --verde:#1DB954; --rojo:#C0392B; --naranja:#E67E22;
+      --texto:#CCCCCC; --sutil:#666;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--negro);color:var(--blanco);font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;}
+
+    /* ── TOPBAR ── */
+    .topbar{
+      position:sticky;top:0;z-index:100;
+      background:rgba(10,10,10,.97);border-bottom:2px solid var(--dorado);
+      padding:0 24px;height:56px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .topbar-logo{font-size:.9rem;font-weight:900;letter-spacing:3px;color:var(--dorado);}
+    .topbar-right{display:flex;align-items:center;gap:12px;}
+    .topbar-user{font-size:.72rem;color:var(--sutil);}
+    .btn-logout{background:transparent;border:1px solid #222;color:var(--sutil);
+      padding:6px 12px;border-radius:6px;font-size:.72rem;cursor:pointer;
+      transition:all .2s;}
+    .btn-logout:hover{border-color:var(--rojo);color:var(--rojo);}
+    .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--rojo);
+      display:none;margin-left:4px;}
+
+    /* ── CONTENIDO ── */
+    .contenido{max-width:900px;margin:0 auto;padding:32px 20px;}
+
+    /* ── PANTALLAS ── */
+    .pantalla{display:none;}
+    .pantalla.activa{display:block;}
+
+    /* ── SALUDO ── */
+    .saludo{margin-bottom:32px;}
+    .saludo h1{font-size:1.5rem;font-weight:900;margin-bottom:4px;}
+    .saludo p{font-size:.88rem;color:var(--sutil);}
+
+    /* ── TARJETAS DE ACCIÓN PRINCIPALES ── */
+    .acciones-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;margin-bottom:32px;
+    }
+    .accion-card{
+      background:var(--gris2);border:2px solid #222;border-radius:16px;
+      padding:28px 20px;cursor:pointer;
+      transition:border-color .2s, transform .15s;
+      display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+    }
+    .accion-card:hover{border-color:var(--dorado);transform:translateY(-2px);}
+    .accion-card.destacada{border-color:rgba(201,168,76,.4);
+      background:linear-gradient(135deg,#1a1600 0%,var(--gris2) 100%);}
+    .accion-icon{font-size:2.4rem;}
+    .accion-card h3{font-size:1rem;font-weight:800;color:var(--blanco);}
+    .accion-card p{font-size:.8rem;color:var(--sutil);line-height:1.5;}
+    .accion-arrow{margin-top:auto;font-size:.8rem;color:var(--dorado);font-weight:700;}
+
+    /* ── RESUMEN RÁPIDO ── */
+    .resumen-strip{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px;
+    }
+    .resumen-item{
+      background:var(--gris2);border:1px solid #222;border-radius:12px;
+      padding:16px;text-align:center;
+    }
+    .resumen-item .num{font-size:1.8rem;font-weight:900;color:var(--dorado);}
+    .resumen-item .lbl{font-size:.68rem;color:var(--sutil);letter-spacing:1px;
+      text-transform:uppercase;margin-top:4px;}
+
+    /* ── ALERTA BANNER ── */
+    .alerta-banner{
+      background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.4);
+      border-radius:10px;padding:14px 16px;margin-bottom:20px;
+      display:none;align-items:center;gap:12px;
+    }
+    .alerta-banner.visible{display:flex;}
+    .alerta-banner p{font-size:.82rem;color:#e74c3c;line-height:1.5;}
+
+    /* ── WIZARD ── */
+    .wizard-header{margin-bottom:28px;}
+    .wizard-pasos{display:flex;align-items:center;gap:0;margin-bottom:24px;}
+    .wizard-paso{
+      display:flex;align-items:center;gap:8px;
+      font-size:.75rem;color:var(--sutil);flex:1;
+    }
+    .wizard-paso .circulo{
+      width:28px;height:28px;border-radius:50%;border:2px solid #333;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.75rem;font-weight:800;flex-shrink:0;transition:all .3s;
+    }
+    .wizard-paso.activo .circulo{background:var(--dorado);border-color:var(--dorado);color:#000;}
+    .wizard-paso.hecho .circulo{background:var(--verde);border-color:var(--verde);color:#fff;}
+    .wizard-paso.activo{color:var(--dorado);}
+    .wizard-paso.hecho{color:var(--verde);}
+    .wizard-linea{flex:1;height:2px;background:#222;margin:0 4px;flex-shrink:1;}
+    .wizard-linea.hecha{background:var(--verde);}
+
+    .wizard-titulo{font-size:1.2rem;font-weight:900;margin-bottom:6px;}
+    .wizard-desc{font-size:.85rem;color:var(--sutil);margin-bottom:24px;line-height:1.6;}
+
+    /* ── CAMPOS ── */
+    .campo-grupo{margin-bottom:20px;}
+    .campo-grupo label{
+      display:block;font-size:.78rem;font-weight:700;
+      margin-bottom:8px;color:var(--texto);
+    }
+    .campo-grupo .ayuda{font-size:.72rem;color:var(--sutil);margin-top:4px;}
+
+    .opciones-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
+    .opcion{
+      background:var(--gris);border:2px solid #222;border-radius:10px;
+      padding:14px 10px;text-align:center;cursor:pointer;
+      transition:border-color .2s,background .2s;
+    }
+    .opcion:hover{border-color:#444;}
+    .opcion.seleccionada{border-color:var(--dorado);background:rgba(201,168,76,.08);}
+    .opcion .opcion-ico{font-size:1.8rem;display:block;margin-bottom:6px;}
+    .opcion .opcion-nom{font-size:.8rem;font-weight:700;}
+    .opcion .opcion-sub{font-size:.68rem;color:var(--sutil);margin-top:2px;}
+
+    input[type=number], input[type=text], select{
+      width:100%;background:var(--gris);border:2px solid #222;
+      color:var(--blanco);padding:12px 16px;border-radius:10px;
+      font-size:.95rem;outline:none;transition:border-color .2s;
+    }
+    input:focus, select:focus{border-color:var(--dorado);}
+    .input-grande{font-size:1.4rem;font-weight:900;text-align:center;padding:16px;}
+
+    /* ── BOTONES ── */
+    .btns-fila{display:flex;gap:12px;margin-top:24px;}
+    .btn-primario{
+      background:var(--dorado);color:#000;padding:14px 28px;border:none;
+      border-radius:10px;font-size:.9rem;font-weight:800;letter-spacing:1px;
+      cursor:pointer;transition:opacity .2s;flex:1;
+    }
+    .btn-primario:hover:not(:disabled){opacity:.85;}
+    .btn-primario:disabled{opacity:.35;cursor:not-allowed;}
+    .btn-secundario{
+      background:transparent;color:var(--texto);padding:14px 20px;
+      border:1px solid #333;border-radius:10px;font-size:.85rem;
+      cursor:pointer;transition:border-color .2s;
+    }
+    .btn-secundario:hover{border-color:#666;}
+
+    /* ── CONFIRMACIÓN ── */
+    .confirm-card{
+      background:var(--gris2);border:2px solid rgba(201,168,76,.3);
+      border-radius:16px;padding:24px;margin-bottom:20px;
+    }
+    .confirm-card h3{font-size:.68rem;letter-spacing:3px;color:var(--dorado);
+      text-transform:uppercase;margin-bottom:16px;}
+    .confirm-fila{display:flex;justify-content:space-between;padding:10px 0;
+      border-bottom:1px solid #1a1a1a;font-size:.88rem;}
+    .confirm-fila:last-child{border:none;}
+    .confirm-fila .cl{color:var(--sutil);}
+    .confirm-fila .cv{font-weight:700;}
+
+    /* ── ÉXITO ── */
+    .exito-box{text-align:center;padding:20px 0;}
+    .exito-ico{font-size:72px;display:block;margin-bottom:16px;}
+    .exito-box h2{font-size:1.4rem;font-weight:900;color:var(--verde);margin-bottom:8px;}
+    .exito-box p{font-size:.88rem;color:var(--sutil);line-height:1.7;max-width:400px;margin:0 auto 24px;}
+    .codigo-ejemplo{
+      font-family:monospace;font-size:.85rem;background:#111;
+      border:1px solid #2a2a2a;border-radius:8px;padding:10px 16px;
+      color:var(--dorado);display:inline-block;margin:8px 0;
+    }
+    .proximos-pasos{
+      background:var(--gris2);border:1px solid #222;border-radius:12px;
+      padding:20px;text-align:left;max-width:420px;margin:0 auto 24px;
+    }
+    .proximos-pasos h4{font-size:.7rem;letter-spacing:2px;color:var(--dorado);
+      text-transform:uppercase;margin-bottom:12px;}
+    .paso-siguiente{
+      display:flex;align-items:flex-start;gap:12px;padding:8px 0;
+      border-bottom:1px solid #111;font-size:.83rem;
+    }
+    .paso-siguiente:last-child{border:none;}
+    .paso-siguiente .num{
+      background:var(--dorado);color:#000;width:22px;height:22px;
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:.7rem;font-weight:900;flex-shrink:0;
+    }
+
+    /* ── LISTA DE LOTES ── */
+    .lotes-lista{display:flex;flex-direction:column;gap:12px;}
+    .lote-item{
+      background:var(--gris2);border:1px solid #222;border-radius:12px;
+      padding:18px 20px;display:flex;align-items:center;justify-content:space-between;
+      gap:16px;
+    }
+    .lote-info h4{font-size:.92rem;font-weight:800;color:var(--dorado);
+      font-family:monospace;margin-bottom:4px;}
+    .lote-info p{font-size:.78rem;color:var(--sutil);}
+    .lote-estado{
+      padding:4px 12px;border-radius:20px;font-size:.68rem;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;white-space:nowrap;
+    }
+    .est-generado{background:rgba(201,168,76,.15);color:var(--dorado);}
+    .est-activo{background:rgba(29,185,84,.15);color:var(--verde);}
+    .est-inactivo{background:#1a1a1a;color:#444;}
+    .lote-accion{display:flex;gap:8px;flex-shrink:0;}
+    .btn-mini{padding:6px 14px;border-radius:6px;font-size:.72rem;font-weight:700;
+      cursor:pointer;border:none;transition:opacity .2s;}
+    .btn-mini:hover{opacity:.8;}
+    .btn-mini-gold{background:var(--dorado);color:#000;}
+    .btn-mini-outline{background:transparent;border:1px solid #333;color:var(--texto);}
+
+    /* ── ESTADÍSTICAS ── */
+    .stats-seccion{margin-bottom:28px;}
+    .stats-seccion h3{font-size:.7rem;letter-spacing:3px;color:var(--dorado);
+      text-transform:uppercase;margin-bottom:16px;}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
+    .stat-card{background:var(--gris2);border:1px solid #222;border-radius:12px;
+      padding:18px;text-align:center;}
+    .stat-card .snum{font-size:2rem;font-weight:900;color:var(--dorado);}
+    .stat-card .slbl{font-size:.68rem;color:var(--sutil);letter-spacing:1px;
+      text-transform:uppercase;margin-top:4px;}
+
+    /* ── TOAST ── */
+    #toast{
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(30px);
+      background:var(--verde);color:#000;padding:12px 28px;
+      border-radius:30px;font-weight:800;font-size:.85rem;
+      opacity:0;transition:all .3s;z-index:999;pointer-events:none;
+      white-space:nowrap;
+    }
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+    /* ── EMPTY STATE ── */
+    .empty{text-align:center;padding:48px 20px;color:var(--sutil);}
+    .empty .empty-ico{font-size:48px;display:block;margin-bottom:12px;opacity:.4;}
+    .empty p{font-size:.85rem;line-height:1.6;}
+
+    /* ── VOLVER ── */
+    .btn-volver{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:.78rem;color:var(--sutil);cursor:pointer;
+      background:none;border:none;margin-bottom:20px;transition:color .2s;
+    }
+    .btn-volver:hover{color:var(--blanco);}
+
+    /* ── CRM / CLIENTES ── */
+    .crm-barra{
+      display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;
+    }
+    .crm-search{
+      flex:1;min-width:200px;background:var(--gris);border:2px solid #222;
+      color:var(--blanco);padding:10px 14px;border-radius:10px;
+      font-size:.85rem;outline:none;transition:border-color .2s;
+    }
+    .crm-search:focus{border-color:var(--dorado);}
+    .crm-total{font-size:.75rem;color:var(--sutil);white-space:nowrap;}
+
+    .cliente-card{
+      background:var(--gris2);border:1px solid #1e1e1e;border-radius:12px;
+      padding:16px 18px;margin-bottom:10px;
+      display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;
+      transition:border-color .2s;
+    }
+    .cliente-card:hover{border-color:rgba(201,168,76,.2);}
+    .cli-nombre{font-size:.95rem;font-weight:800;margin-bottom:4px;}
+    .cli-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:.75rem;color:var(--sutil);}
+    .cli-tag{
+      background:#111;border:1px solid #222;border-radius:6px;
+      padding:2px 8px;display:inline-flex;align-items:center;gap:4px;
+    }
+    .cli-pieza{
+      font-family:monospace;font-size:.7rem;color:var(--dorado);
+      background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);
+      border-radius:6px;padding:3px 8px;margin-top:5px;display:inline-block;
+    }
+    .cli-foto{
+      display:inline-block;margin-top:6px;font-size:.72rem;color:var(--dorado);
+      text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35);
+    }
+    .catalogo-form{
+      background:var(--gris2);border:1px solid #1f1f1f;border-radius:12px;
+      padding:18px;margin-bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;
+    }
+    .catalogo-form .full{grid-column:1/-1;}
+    .catalogo-form textarea{
+      width:100%;background:#0d0d0d;border:1px solid #222;color:var(--blanco);
+      padding:12px 14px;border-radius:10px;font-size:.85rem;outline:none;min-height:82px;
+      resize:vertical;font-family:inherit;
+    }
+    .producto-item{
+      background:var(--gris2);border:1px solid #1f1f1f;border-radius:12px;
+      padding:16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:12px;
+    }
+    .producto-item h4{font-size:.96rem;color:var(--dorado);margin-bottom:4px;}
+    .producto-item p{font-size:.78rem;color:var(--sutil);line-height:1.5;}
+    .producto-foto{
+      width:76px;height:76px;border-radius:8px;object-fit:cover;
+      border:1px solid rgba(201,168,76,.25);background:#0b0b0b;
+    }
+    .foto-actual{font-size:.72rem;color:var(--dorado);margin-top:6px;display:none;}
+    .qr-box{
+      display:none;background:#fff;border-radius:12px;padding:12px;
+      width:178px;margin:0 auto 14px;
+    }
+    .qr-box img{display:block;width:154px;height:154px;}
+    .cli-acciones{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .btn-wsp{
+      background:#128C7E;color:#fff;border:none;border-radius:6px;
+      padding:6px 12px;font-size:.72rem;font-weight:700;cursor:pointer;
+      text-decoration:none;display:inline-block;transition:opacity .2s;
+      white-space:nowrap;
+    }
+    .btn-wsp:hover{opacity:.85;}
+    .cli-fecha{font-size:.65rem;color:#333;text-align:right;}
+
+    @media(max-width:600px){
+      .acciones-grid{grid-template-columns:1fr;}
+      .resumen-strip{grid-template-columns:1fr 1fr 1fr;}
+      .opciones-grid{grid-template-columns:1fr 1fr;}
+      .lote-item{flex-direction:column;align-items:flex-start;}
+      .cliente-card{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">QUIE®</div>
+  <div class="topbar-right">
+    <span class="topbar-user" id="topbar-user"></span>
+    <div class="notif-dot" id="notif-dot"></div>
+    <button class="btn-logout" id="btn-logout">Salir</button>
+  </div>
+</div>
+
+<div class="contenido">
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA: INICIO
+  ══════════════════════════════════════════ -->
+  <div class="pantalla activa" id="p-inicio">
+    <div class="saludo">
+      <h1>¿Qué quieres hacer hoy?</h1>
+      <p>Selecciona una opción para comenzar</p>
+    </div>
+
+    <div id="alerta-banner" class="alerta-banner">
+      <span style="font-size:1.4rem">🚨</span>
+      <p id="alerta-txt"></p>
+    </div>
+
+    <div class="resumen-strip">
+      <div class="resumen-item">
+        <div class="num" id="r-lotes">—</div>
+        <div class="lbl">Lotes creados</div>
+      </div>
+      <div class="resumen-item">
+        <div class="num" id="r-tags">—</div>
+        <div class="lbl">Tags programados</div>
+      </div>
+      <div class="resumen-item">
+        <div class="num" id="r-escaneos">—</div>
+        <div class="lbl">Verificaciones</div>
+      </div>
+    </div>
+
+    <div class="acciones-grid">
+      <div class="accion-card destacada" onclick="irA('p-nuevo-lote'); wizardPaso(1)">
+        <div class="accion-icon">📦</div>
+        <h3>Crear lote de piezas</h3>
+        <p>Registra un nuevo grupo de piezas y genera los códigos únicos para cada una.</p>
+        <div class="accion-arrow">Comenzar →</div>
+      </div>
+      <div class="accion-card" onclick="irA('p-programar')">
+        <div class="accion-icon">📡</div>
+        <h3>Programar tags NFC</h3>
+        <p>Escribe los chips de las piezas con tu teléfono Android. Proceso guiado paso a paso.</p>
+        <div class="accion-arrow">Ir a programar →</div>
+      </div>
+      <div class="accion-card" onclick="irA('p-lotes')">
+        <div class="accion-icon">📋</div>
+        <h3>Ver mis lotes</h3>
+        <p>Revisa el estado de todos tus lotes: cuántos están activos, pendientes o en proceso.</p>
+        <div class="accion-arrow">Ver lotes →</div>
+      </div>
+      <div class="accion-card" onclick="irA('p-catalogo')">
+        <div class="accion-icon">🧢</div>
+        <h3>Catalogo de accesorios</h3>
+        <p>Crea modelos con descripciones comerciales para mostrar en la página pública.</p>
+        <div class="accion-arrow">Editar catálogo →</div>
+      </div>
+      <div class="accion-card" onclick="irA('p-estadisticas')">
+        <div class="accion-icon">📊</div>
+        <h3>Estadísticas</h3>
+        <p>¿Cuántas piezas se han verificado? ¿Desde dónde? Aquí están los datos.</p>
+        <div class="accion-arrow">Ver datos →</div>
+      </div>
+      <div class="accion-card" onclick="irA('p-clientes')" style="grid-column:1/-1;">
+        <div class="accion-icon">👥</div>
+        <h3>Clientes registrados <span id="r-clientes-badge" style="display:none;background:var(--dorado);color:#000;font-size:.65rem;padding:2px 8px;border-radius:10px;font-weight:900;margin-left:8px;vertical-align:middle;"></span></h3>
+        <p>Personas que registraron su pieza al escanear el chip NFC. Base de datos para tu CRM y marketing directo.</p>
+        <div class="accion-arrow">Ver clientes →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA: NUEVO LOTE (WIZARD 3 PASOS)
+  ══════════════════════════════════════════ -->
+  <div class="pantalla" id="p-nuevo-lote">
+    <button class="btn-volver" onclick="irA('p-inicio')">← Volver al inicio</button>
+
+    <!-- Pasos visuales -->
+    <div class="wizard-pasos" id="wizard-pasos">
+      <div class="wizard-paso activo" id="wp-1">
+        <div class="circulo">1</div>
+        <span>Tu lote</span>
+      </div>
+      <div class="wizard-linea" id="wl-1"></div>
+      <div class="wizard-paso" id="wp-2">
+        <div class="circulo">2</div>
+        <span>Confirmar</span>
+      </div>
+      <div class="wizard-linea" id="wl-2"></div>
+      <div class="wizard-paso" id="wp-3">
+        <div class="circulo">3</div>
+        <span>¡Listo!</span>
+      </div>
+    </div>
+
+    <!-- PASO 1: DATOS -->
+    <div id="wizard-p1">
+      <div class="wizard-titulo">Cuéntame sobre este lote</div>
+      <div class="wizard-desc">Completa la información de las piezas que vas a registrar.</div>
+
+      <div class="campo-grupo">
+        <label>¿Qué modelo son?</label>
+        <div class="opciones-grid" id="op-modelo">
+          <div class="opcion" data-val="Accesorio" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">🧢</span>
+            <div class="opcion-nom">Accesorio</div>
+            <div class="opcion-sub">Cierre trasero</div>
+          </div>
+          <div class="opcion" data-val="Trucker" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">🎩</span>
+            <div class="opcion-nom">Trucker</div>
+            <div class="opcion-sub">Con malla</div>
+          </div>
+          <div class="opcion" data-val="Beisbolera" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">⛺</span>
+            <div class="opcion-nom">Beisbolera</div>
+            <div class="opcion-sub">Clásica 6 panel</div>
+          </div>
+          <div class="opcion" data-val="Panel 5" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">🏴</span>
+            <div class="opcion-nom">Panel 5</div>
+            <div class="opcion-sub">Asimétrica</div>
+          </div>
+          <div class="opcion" data-val="Plana" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">🔲</span>
+            <div class="opcion-nom">Plana</div>
+            <div class="opcion-sub">Visera recta</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label>¿De qué color?</label>
+        <div class="opciones-grid" id="op-color">
+          <div class="opcion" data-val="Negro/Dorado" onclick="seleccionarOpcion('color',this)">
+            <span class="opcion-ico">⚫</span>
+            <div class="opcion-nom">Negro / Dorado</div>
+          </div>
+          <div class="opcion" data-val="Negro/Blanco" onclick="seleccionarOpcion('color',this)">
+            <span class="opcion-ico">🖤</span>
+            <div class="opcion-nom">Negro / Blanco</div>
+          </div>
+          <div class="opcion" data-val="Azul Rey/Dorado" onclick="seleccionarOpcion('color',this)">
+            <span class="opcion-ico">🔵</span>
+            <div class="opcion-nom">Azul Rey / Dorado</div>
+          </div>
+          <div class="opcion" data-val="Rojo/Blanco" onclick="seleccionarOpcion('color',this)">
+            <span class="opcion-ico">🔴</span>
+            <div class="opcion-nom">Rojo / Blanco</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label>¿Cuántas piezas tiene este lote?</label>
+        <input type="number" class="input-grande" id="nl-cantidad"
+          placeholder="Ej: 50" min="1" max="500" inputmode="numeric"/>
+        <p class="ayuda">Máximo 500 por lote. Puedes crear más lotes después.</p>
+      </div>
+
+      <div class="btns-fila">
+        <button class="btn-primario" id="btn-paso2" disabled onclick="wizardPaso(2)">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+
+    <!-- PASO 2: CONFIRMAR -->
+    <div id="wizard-p2" style="display:none">
+      <div class="wizard-titulo">¿Todo está bien?</div>
+      <div class="wizard-desc">Revisa los datos antes de crear el lote. Luego se generarán los códigos únicos.</div>
+
+      <div class="confirm-card">
+        <h3>Resumen del lote</h3>
+        <div class="confirm-fila"><span class="cl">Modelo</span><span class="cv" id="c-modelo">—</span></div>
+        <div class="confirm-fila"><span class="cl">Color</span><span class="cv" id="c-color">—</span></div>
+        <div class="confirm-fila"><span class="cl">Cantidad</span><span class="cv" id="c-cantidad">—</span></div>
+        <div class="confirm-fila"><span class="cl">Se crearán</span><span class="cv" id="c-codigos" style="color:var(--dorado)">— códigos únicos</span></div>
+      </div>
+
+      <div class="btns-fila">
+        <button class="btn-secundario" onclick="wizardPaso(1)">← Corregir</button>
+        <button class="btn-primario" id="btn-crear" onclick="crearLote()">
+          ✅ Crear lote ahora
+        </button>
+      </div>
+    </div>
+
+    <!-- PASO 3: ÉXITO -->
+    <div id="wizard-p3" style="display:none">
+      <div class="exito-box">
+        <span class="exito-ico">🎉</span>
+        <h2>¡Lote creado!</h2>
+        <p>
+          Se generaron <strong id="e-cantidad" style="color:var(--dorado)">0</strong> códigos únicos
+          para tu lote <span id="e-lote-id" class="codigo-ejemplo"></span>
+        </p>
+        <div class="proximos-pasos">
+          <h4>¿Qué sigue ahora?</h4>
+          <div class="paso-siguiente">
+            <div class="num">1</div>
+            <div>Descarga el archivo con los códigos y guárdalo.</div>
+          </div>
+          <div class="paso-siguiente">
+            <div class="num">2</div>
+            <div>Conecta tu Android al WiFi y abre la herramienta de programación.</div>
+          </div>
+          <div class="paso-siguiente">
+            <div class="num">3</div>
+            <div>Pega los chips en las piezas y activa el lote.</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:340px;margin:0 auto;">
+          <button class="btn-primario" id="btn-descargar-csv">
+            📥 Descargar archivo de códigos
+          </button>
+          <button class="btn-primario" style="background:var(--azul);color:var(--blanco);"
+            onclick="irA('p-programar')">
+            📡 Ir a programar los tags NFC
+          </button>
+          <button class="btn-secundario" onclick="irA('p-inicio');cargarInicio()">
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA: PROGRAMAR NFC
+  ══════════════════════════════════════════ -->
+  <div class="pantalla" id="p-programar">
+    <button class="btn-volver" onclick="irA('p-inicio')">← Volver al inicio</button>
+    <div class="wizard-titulo">Programar tags NFC</div>
+    <div class="wizard-desc">Para escribir los chips necesitas usar tu <strong>teléfono Android</strong> con Chrome. Es muy fácil.</div>
+
+    <!-- TARJETA PRINCIPAL: URL para Android -->
+    <div style="background:var(--gris2);border:2px solid rgba(201,168,76,.3);border-radius:16px;padding:28px;margin-bottom:16px;">
+      <div style="font-size:2.5rem;margin-bottom:12px;text-align:center;">📱</div>
+      <h3 style="font-size:1rem;font-weight:800;text-align:center;margin-bottom:20px;">Abre esto en tu Android</h3>
+      <div class="qr-box" id="qr-android">
+        <img id="qr-android-img" alt="QR para abrir la pantalla de escritura NFC">
+      </div>
+
+      <!-- URL caja -->
+      <div style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:10px;padding:16px;text-align:center;margin-bottom:12px;position:relative;">
+        <div style="font-size:.65rem;color:var(--sutil);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;">Dirección a escribir en Chrome</div>
+        <div id="url-android" style="font-family:monospace;font-size:.95rem;color:var(--dorado);font-weight:700;word-break:break-all;line-height:1.6;">
+          Detectando IP...
+        </div>
+      </div>
+
+      <!-- Botón copiar -->
+      <button id="btn-copiar-url" onclick="copiarUrl()"
+        style="width:100%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);
+        color:var(--dorado);padding:10px;border-radius:8px;font-size:.82rem;font-weight:700;
+        cursor:pointer;margin-bottom:20px;transition:background .2s;">
+        📋 Copiar dirección
+      </button>
+
+      <!-- Aviso si es localhost -->
+      <div id="aviso-localhost" style="display:none;background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.3);border-radius:8px;padding:10px 14px;font-size:.76rem;color:#e67e22;margin-bottom:16px;line-height:1.6;">
+        ⚠️ Se detectó <strong>localhost</strong> — esto solo funciona en este mismo PC.<br/>
+        Para usarlo desde el Android, actualiza <code>BASE_URL</code> en el archivo <code>.env</code> con la IP de tu PC.
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:var(--texto);">
+          <span style="font-size:1.2rem;flex-shrink:0;">1️⃣</span>
+          <span>Asegúrate de que el PC y el Android estén en el <strong>mismo WiFi</strong></span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:var(--texto);">
+          <span style="font-size:1.2rem;flex-shrink:0;">2️⃣</span>
+          <span>Abre <strong>Chrome</strong> en el Android y escribe la dirección de arriba</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:var(--texto);">
+          <span style="font-size:1.2rem;flex-shrink:0;">3️⃣</span>
+          <span>Inicia sesión con las mismas credenciales de aquí</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:var(--texto);">
+          <span style="font-size:1.2rem;flex-shrink:0;">4️⃣</span>
+          <span>Sigue las instrucciones en pantalla — el teléfono hace todo solo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IP de red detectada -->
+    <div id="info-ip-red" style="display:none;background:rgba(29,185,84,.06);border:1px solid rgba(29,185,84,.2);border-radius:10px;padding:12px 16px;font-size:.78rem;color:#aaa;margin-bottom:16px;">
+      🌐 IP de red detectada: <strong id="ip-detectada" style="color:var(--verde);font-family:monospace;"></strong>
+      — usa esta IP en el Android si la dirección de arriba no funciona.
+    </div>
+
+    <div style="background:rgba(26,46,107,.2);border:1px solid rgba(26,46,107,.5);border-radius:10px;padding:14px 16px;font-size:.8rem;color:#aaa;line-height:1.6;">
+      <strong style="color:var(--dorado);">¿No tienes Android?</strong> También puedes usar la app
+      <strong>NFC TagWriter by NXP</strong> (gratis en Play Store) o <strong>NFC Tools Pro</strong>.
+      Abre la guía completa para ver el paso a paso.
+    </div>
+    <button class="btn-secundario" style="margin-top:16px;width:100%;"
+      onclick="window.open('/guia-nfc','_blank')">
+      📖 Ver guía completa de programación
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA: MIS LOTES
+  ══════════════════════════════════════════ -->
+  <div class="pantalla" id="p-lotes">
+    <button class="btn-volver" onclick="irA('p-inicio')">← Volver al inicio</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <div>
+        <div class="wizard-titulo" style="margin-bottom:4px;">Mis lotes</div>
+        <div style="font-size:.82rem;color:var(--sutil);">Todos los lotes de piezas registrados</div>
+      </div>
+      <button class="btn-primario" style="flex:unset;padding:10px 18px;font-size:.8rem;"
+        onclick="irA('p-nuevo-lote');wizardPaso(1)">
+        + Nuevo lote
+      </button>
+    </div>
+    <div id="lista-lotes">
+      <div class="empty"><span class="empty-ico">📦</span><p>Cargando lotes...</p></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA: ESTADÍSTICAS
+  ══════════════════════════════════════════ -->
+  <div class="pantalla" id="p-estadisticas">
+    <button class="btn-volver" onclick="irA('p-inicio')">← Volver al inicio</button>
+    <div class="wizard-titulo" style="margin-bottom:4px;">Estadísticas</div>
+    <div style="font-size:.82rem;color:var(--sutil);margin-bottom:24px;">Actividad de tus piezas en el mundo real</div>
+
+    <div class="stats-seccion">
+      <h3>Resumen general</h3>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="snum" id="st-lotes">—</div><div class="slbl">Lotes creados</div></div>
+        <div class="stat-card"><div class="snum" id="st-tags">—</div><div class="slbl">Tags generados</div></div>
+        <div class="stat-card"><div class="snum" id="st-escaneos">—</div><div class="slbl">Verificaciones</div></div>
+        <div class="stat-card"><div class="snum" id="st-alertas" style="color:var(--rojo)">—</div><div class="slbl">Alertas</div></div>
+      </div>
+    </div>
+
+    <div class="stats-seccion">
+      <h3>Últimas verificaciones</h3>
+      <div id="ultimos-escaneos">
+        <div class="empty"><span class="empty-ico">📡</span><p>Sin verificaciones aún.<br/>Cuando alguien escanee una pieza, aparecerá aquí.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA: CLIENTES / CRM
+  ══════════════════════════════════════════ -->
+  <div class="pantalla" id="p-clientes">
+    <button class="btn-volver" onclick="irA('p-inicio')">← Volver al inicio</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="wizard-titulo" style="margin-bottom:4px;">Clientes registrados</div>
+        <div style="font-size:.82rem;color:var(--sutil);">Personas que activaron su garantía al escanear el NFC</div>
+      </div>
+      <button class="btn-primario" style="flex:unset;padding:10px 16px;font-size:.78rem;"
+        id="btn-exportar-crm">
+        📥 Exportar CSV
+      </button>
+    </div>
+
+    <div class="crm-barra">
+      <input class="crm-search" type="search" id="crm-search"
+        placeholder="🔍 Buscar por nombre, WhatsApp, ciudad..."
+        autocomplete="off"/>
+      <span class="crm-total" id="crm-total"></span>
+    </div>
+
+    <div id="lista-clientes">
+      <div class="empty"><span class="empty-ico">👥</span>
+        <p>Aún no hay clientes registrados.<br/>Cuando alguien registre su pieza al escanear el NFC, aparecerá aquí.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pantalla" id="p-catalogo">
+    <button class="btn-volver" onclick="irA('p-inicio')">← Volver al inicio</button>
+    <div class="wizard-titulo">Catalogo de accesorios</div>
+    <div style="font-size:.82rem;color:var(--sutil);margin-bottom:20px;">Crea y edita los productos que aparecen en <strong>/catalogo</strong>.</div>
+
+    <div class="catalogo-form">
+      <input id="cat-id" type="hidden">
+      <div>
+        <label>Nombre</label>
+        <input id="cat-nombre" type="text" placeholder="Ej: Accesorio Negro/Dorado" maxlength="80">
+      </div>
+      <div>
+        <label>Modelo</label>
+        <input id="cat-modelo" type="text" placeholder="Ej: Pieza Rapera, Plana Premium, Trucker Malla" maxlength="80">
+      </div>
+      <div>
+        <label>Color</label>
+        <input id="cat-color" type="text" placeholder="Ej: Negro/Dorado" maxlength="50">
+      </div>
+      <div>
+        <label>Estado</label>
+        <select id="cat-estado">
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+      <div class="full">
+        <label>Descripción corta</label>
+        <input id="cat-corta" type="text" placeholder="Frase comercial breve" maxlength="160">
+      </div>
+      <div class="full">
+        <label>Descripción completa</label>
+        <textarea id="cat-descripcion" placeholder="Describe estilo, uso, ventajas y personalidad de la pieza"></textarea>
+      </div>
+      <div>
+        <label>Materiales</label>
+        <input id="cat-materiales" type="text" placeholder="Drill, malla, broche ajustable...">
+      </div>
+      <div>
+        <label>Ideal para</label>
+        <input id="cat-ideal" type="text" placeholder="Empresas, streetwear, eventos...">
+      </div>
+      <div class="full">
+        <label>Personalización</label>
+        <input id="cat-personalizacion" type="text" placeholder="Bordado, parche, etiqueta, NFC...">
+      </div>
+      <div class="full">
+        <label>Foto del modelo <span style="color:#555;font-size:.72rem;">(opcional)</span></label>
+        <input id="cat-foto" type="file" accept="image/jpeg,image/png,image/webp">
+        <div class="foto-actual" id="cat-foto-actual"></div>
+      </div>
+      <button class="btn-primario" onclick="guardarProducto()">Guardar producto</button>
+      <button class="btn-secundario" onclick="limpiarProductoForm()">Limpiar</button>
+    </div>
+
+    <div id="lista-productos"></div>
+  </div>
+
+</div><!-- /contenido -->
+
+<div id="toast"></div>
+
+<script>
+// ── Estado del wizard ────────────────────────────────────────────────────────
+const loteData = { modelo: '', color: '', cantidad: 0 };
+let ultimoLote = null;
+let catalogoProductos = [];
+
+// ── Navegación entre pantallas ───────────────────────────────────────────────
+function irA(id) {
+  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+  document.getElementById(id).classList.add('activa');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'p-nuevo-lote')   cargarOpcionesCatalogo();
+  if (id === 'p-lotes')        cargarLotes();
+  if (id === 'p-estadisticas') cargarEstadisticas();
+  if (id === 'p-programar')    mostrarUrlAndroid();
+  if (id === 'p-clientes')     cargarClientes();
+  if (id === 'p-catalogo')     cargarProductos();
+}
+
+// ── API ──────────────────────────────────────────────────────────────────────
+async function api(ruta, opts = {}) {
+  const r = await fetch('/api' + ruta, {
+    ...opts,
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) }
+  });
+  if (r.status === 401) { window.location.href = '/login'; return null; }
+  return r.json();
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function toast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = color || 'var(--verde)';
+  t.style.color = color ? '#fff' : '#000';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Pantalla INICIO ──────────────────────────────────────────────────────────
+function iconoModelo(modelo) {
+  return {
+    Accesorio: '🧢',
+    Trucker: '🎩',
+    Beisbolera: '⛺',
+    'Panel 5': '◼',
+    Plana: '▰'
+  }[modelo] || '🧢';
+}
+
+async function cargarOpcionesCatalogo() {
+  const productos = await api('/productos');
+  catalogoProductos = (productos || []).filter(p => p.estado !== 'inactivo');
+  if (!catalogoProductos.length) return;
+
+  document.getElementById('op-modelo').innerHTML = catalogoProductos.map(p =>
+    '<div class="opcion" data-val="' + (p.modelo || p.nombre) + '" data-color="' + (p.color || '') + '" onclick="seleccionarOpcion(&quot;modelo&quot;,this)">' +
+      '<span class="opcion-ico">' + iconoModelo(p.modelo) + '</span>' +
+      '<div class="opcion-nom">' + p.nombre + '</div>' +
+      '<div class="opcion-sub">' + (p.modelo || 'Modelo') + ' · ' + (p.color || 'Color') + '</div>' +
+    '</div>'
+  ).join('');
+
+  renderColoresCatalogo();
+}
+
+function renderColoresCatalogo() {
+  const colores = [];
+  const vistos = new Set();
+  const base = loteData.modelo
+    ? catalogoProductos.filter(p => p.modelo === loteData.modelo)
+    : catalogoProductos;
+
+  base.forEach(p => {
+    if (p.color && !vistos.has(p.color)) {
+      vistos.add(p.color);
+      colores.push(p.color);
+    }
+  });
+
+  if (!colores.length) return;
+  document.getElementById('op-color').innerHTML = colores.map(color =>
+    '<div class="opcion ' + (color === loteData.color ? 'seleccionada' : '') + '" data-val="' + color + '" onclick="seleccionarOpcion(&quot;color&quot;,this)">' +
+      '<span class="opcion-ico">●</span>' +
+      '<div class="opcion-nom">' + color + '</div>' +
+    '</div>'
+  ).join('');
+}
+
+async function cargarInicio() {
+  const [data, crm] = await Promise.all([api('/estado'), api('/clientes')]);
+  if (!data) return;
+  document.getElementById('r-lotes').textContent    = data.lotes_total;
+  document.getElementById('r-tags').textContent     = data.codigos_total;
+  document.getElementById('r-escaneos').textContent = data.escaneos_total;
+
+  if (crm && crm.total > 0) {
+    const badge = document.getElementById('r-clientes-badge');
+    badge.textContent = crm.total;
+    badge.style.display = 'inline-block';
+  }
+
+  if (data.alertas_activas > 0) {
+    document.getElementById('alerta-banner').classList.add('visible');
+    document.getElementById('alerta-txt').textContent =
+      '⚠️ Hay ' + data.alertas_activas + ' alerta(s) de autenticidad activa(s). Revisa tus lotes.';
+    document.getElementById('notif-dot').style.display = 'block';
+  }
+}
+
+// ── Sesión ───────────────────────────────────────────────────────────────────
+async function cargarSesion() {
+  const data = await api('/auth/verify');
+  if (!data) return;
+  document.getElementById('topbar-user').textContent = '👤 ' + data.usuario;
+}
+
+document.getElementById('btn-logout').addEventListener('click', async function() {
+  await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+  window.location.href = '/login';
+});
+
+// ── Wizard nuevo lote ────────────────────────────────────────────────────────
+function seleccionarOpcion(campo, el) {
+  const grupo = el.closest('.opciones-grid');
+  grupo.querySelectorAll('.opcion').forEach(o => o.classList.remove('seleccionada'));
+  el.classList.add('seleccionada');
+  loteData[campo] = el.dataset.val;
+  if (campo === 'modelo' && catalogoProductos.length) {
+    loteData.color = el.dataset.color || '';
+    renderColoresCatalogo();
+  }
+  validarPaso1();
+}
+
+function validarPaso1() {
+  const ok = loteData.modelo && loteData.color &&
+    parseInt(document.getElementById('nl-cantidad').value) > 0;
+  document.getElementById('btn-paso2').disabled = !ok;
+}
+
+document.getElementById('nl-cantidad').addEventListener('input', validarPaso1);
+
+function wizardPaso(n) {
+  // Actualizar indicadores visuales
+  [1,2,3].forEach(i => {
+    const wp = document.getElementById('wp-' + i);
+    const wl = document.getElementById('wl-' + i);
+    wp.className = 'wizard-paso' + (i < n ? ' hecho' : i === n ? ' activo' : '');
+    if (wl) wl.className = 'wizard-linea' + (i < n ? ' hecha' : '');
+  });
+
+  // Mostrar panel correcto
+  document.getElementById('wizard-p1').style.display = n === 1 ? 'block' : 'none';
+  document.getElementById('wizard-p2').style.display = n === 2 ? 'block' : 'none';
+  document.getElementById('wizard-p3').style.display = n === 3 ? 'block' : 'none';
+
+  if (n === 2) {
+    loteData.cantidad = parseInt(document.getElementById('nl-cantidad').value);
+    document.getElementById('c-modelo').textContent   = loteData.modelo;
+    document.getElementById('c-color').textContent    = loteData.color;
+    document.getElementById('c-cantidad').textContent = loteData.cantidad + ' piezas';
+    document.getElementById('c-codigos').textContent  = loteData.cantidad + ' códigos únicos';
+  }
+
+  if (n === 1) {
+    // Limpiar selecciones
+    loteData.modelo = ''; loteData.color = '';
+    document.querySelectorAll('.opcion').forEach(o => o.classList.remove('seleccionada'));
+    document.getElementById('nl-cantidad').value = '';
+    document.getElementById('btn-paso2').disabled = true;
+  }
+}
+
+async function crearLote() {
+  const btn = document.getElementById('btn-crear');
+  btn.disabled = true;
+  btn.textContent = 'Creando...';
+
+  const data = await api('/lotes', {
+    method: 'POST',
+    body: JSON.stringify({
+      modelo:    loteData.modelo,
+      color:     loteData.color,
+      talla:     'Única',
+      cantidad:  loteData.cantidad,
+      temporada: new Date().toLocaleDateString('es-CO', { month: 'long', year: 'numeric' })
+    })
+  });
+
+  btn.disabled = false;
+  btn.textContent = '✅ Crear lote ahora';
+
+  if (!data || data.error) {
+    toast('❌ ' + (data?.error || 'Error al crear el lote'), 'var(--rojo)');
+    return;
+  }
+
+  ultimoLote = data;
+  document.getElementById('e-cantidad').textContent = data.codigos_generados;
+  document.getElementById('e-lote-id').textContent  = data.lote_id;
+  document.getElementById('btn-descargar-csv').onclick = () => {
+    window.location.href = '/api/csv/' + data.lote_id;
+  };
+  wizardPaso(3);
+}
+
+// ── Lista de lotes ───────────────────────────────────────────────────────────
+async function cargarLotes() {
+  const lotes = await api('/lotes');
+  const cont  = document.getElementById('lista-lotes');
+  if (!lotes || !lotes.length) {
+    cont.innerHTML = '<div class="empty"><span class="empty-ico">📦</span><p>Todavía no has creado ningún lote.<br/>Empieza creando uno desde el inicio.</p></div>';
+    return;
+  }
+
+  const etiquetaEstado = {
+    codigos_generados: ['est-generado', 'Códigos listos'],
+    tags_programados:  ['est-generado', 'Tags programados'],
+    paginas_creadas:   ['est-generado', 'Páginas creadas'],
+    activo:            ['est-activo',   'Activo ✓'],
+    inactivo:          ['est-inactivo', 'Inactivo']
+  };
+
+  cont.innerHTML = lotes.reverse().map(l => {
+    const [cls, txt] = etiquetaEstado[l.estado] || ['est-inactivo', l.estado];
+    return `
+    <div class="lote-item">
+      <div class="lote-info">
+        <h4>${l.id}</h4>
+        <p>${l.modelo} · ${l.color} · ${l.total_tags} piezas · ${l.temporada || ''}</p>
+      </div>
+      <div class="lote-accion">
+        <span class="lote-estado ${cls}">${txt}</span>
+        <a href="/api/csv/${l.id}" class="btn-mini btn-mini-outline">CSV</a>
+        ${l.estado !== 'activo'
+          ? `<button class="btn-mini btn-mini-gold" onclick="activarLote('${l.id}')">Activar</button>`
+          : ''}
+        <button class="btn-mini btn-mini-outline" onclick="eliminarLote('${l.id}')">Eliminar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function activarLote(id) {
+  if (!confirm('¿Activar el lote ' + id + '? Los clientes podrán verificar sus piezas.')) return;
+  const data = await api('/lotes/' + id + '/estado', {
+    method: 'PATCH',
+    body: JSON.stringify({ estado: 'activo' })
+  });
+  if (data && !data.error) {
+    toast('✅ Lote activado correctamente');
+    cargarLotes();
+  }
+}
+
+// ── Estadísticas ─────────────────────────────────────────────────────────────
+async function eliminarLote(id) {
+  const msg = 'Eliminar el lote ' + id + ' tambien borrara sus codigos, CSV, escaneos y clientes asociados. Esta accion no se puede deshacer.';
+  if (!confirm(msg)) return;
+  const data = await api('/lotes/' + id, { method: 'DELETE' });
+  if (data && !data.error) {
+    toast('Lote eliminado correctamente');
+    cargarLotes();
+    cargarInicio();
+  } else {
+    toast('Error al eliminar el lote', 'var(--rojo)');
+  }
+}
+
+async function cargarEstadisticas() {
+  const [estado, escaneos] = await Promise.all([
+    api('/estado'),
+    api('/escaneos?limit=10')
+  ]);
+  if (!estado) return;
+  document.getElementById('st-lotes').textContent    = estado.lotes_total;
+  document.getElementById('st-tags').textContent     = estado.codigos_total;
+  document.getElementById('st-escaneos').textContent = estado.escaneos_total;
+  document.getElementById('st-alertas').textContent  = estado.alertas_activas;
+
+  const cont = document.getElementById('ultimos-escaneos');
+  if (!escaneos || !escaneos.length) return;
+
+  cont.innerHTML = escaneos.map(e => `
+    <div style="display:flex;justify-content:space-between;align-items:center;
+      padding:12px 0;border-bottom:1px solid #111;font-size:.82rem;">
+      <div>
+        <span style="font-family:monospace;color:var(--dorado);font-size:.75rem;">${e.codigo_id}</span>
+        <span style="color:var(--sutil);margin-left:10px;">${e.ciudad}, ${e.pais}</span>
+      </div>
+      <div style="color:var(--sutil);font-size:.72rem;">
+        ${new Date(e.timestamp).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}
+        &nbsp;·&nbsp;${e.dispositivo}
+        &nbsp;
+        <span style="color:${e.es_primer_escaneo ? 'var(--verde)' : 'var(--dorado)'};font-weight:700;">
+          ${e.es_primer_escaneo ? '✅ 1er escaneo' : '🔄 Re-scan'}
+        </span>
+      </div>
+    </div>`).join('');
+}
+
+// ── CRM / Clientes ───────────────────────────────────────────────────────────
+let todosClientes = [];
+
+async function cargarClientes(q) {
+  const ruta = '/clientes' + (q ? '?q=' + encodeURIComponent(q) : '');
+  const data  = await api(ruta);
+  const cont  = document.getElementById('lista-clientes');
+  const total = document.getElementById('crm-total');
+  if (!data) return;
+
+  todosClientes = data.clientes;
+  total.textContent = data.total + ' clientes en total';
+
+  if (!data.clientes.length) {
+    cont.innerHTML = '<div class="empty"><span class="empty-ico">👥</span>' +
+      '<p>' + (q ? 'Sin resultados para "' + q + '"' : 'Aún no hay clientes registrados.') + '</p></div>';
+    return;
+  }
+
+  cont.innerHTML = data.clientes.map(function(c) {
+    const tel = c.whatsapp ? '57' + c.whatsapp : '';
+    const msg = encodeURIComponent('Hola ' + c.nombre + ', te escribe QUIE® 👋');
+    const fecha = new Date(c.fecha_registro).toLocaleDateString('es-CO', { dateStyle: 'medium' });
+    return '<div class="cliente-card">' +
+      '<div>' +
+        '<div class="cli-nombre">' + c.nombre + '</div>' +
+        '<div class="cli-meta">' +
+          (c.whatsapp ? '<span class="cli-tag">📱 ' + c.whatsapp + '</span>' : '') +
+          (c.ciudad   ? '<span class="cli-tag">📍 ' + c.ciudad + '</span>' : '') +
+          (c.email    ? '<span class="cli-tag">✉️ ' + c.email + '</span>' : '') +
+        '</div>' +
+        '<div class="cli-pieza">' + c.codigo_nfc + ' · ' + c.modelo + ' ' + c.color + '</div>' +
+        (c.foto_gorra ? '<br><a class="cli-foto" href="' + c.foto_gorra + '" target="_blank">Ver foto de la pieza</a>' : '') +
+      '</div>' +
+      '<div class="cli-acciones">' +
+        (tel ? '<a class="btn-wsp" href="https://wa.me/' + tel + '?text=' + msg + '" target="_blank">💬 WhatsApp</a>' : '') +
+        '<div class="cli-fecha">' + fecha + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// Buscador con debounce
+let searchTimer;
+document.getElementById('crm-search').addEventListener('input', function() {
+  clearTimeout(searchTimer);
+  const q = this.value.trim();
+  searchTimer = setTimeout(function() { cargarClientes(q); }, 350);
+});
+
+// Exportar CSV
+document.getElementById('btn-exportar-crm').addEventListener('click', function() {
+  if (!todosClientes.length) { toast('Sin datos para exportar', 'var(--naranja)'); return; }
+  const cols = ['nombre','whatsapp','ciudad','email','codigo_nfc','modelo','color','foto_gorra','fecha_registro'];
+  const csv  = [cols.join(',')]
+    .concat(todosClientes.map(function(c) {
+      return cols.map(function(k) { return '"' + (c[k] || '').replace(/"/g, '""') + '"'; }).join(',');
+    }))
+    .join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'clientes_chl_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('✅ CSV exportado');
+});
+
+// ── URL Android ──────────────────────────────────────────────────────────────
+async function cargarProductos() {
+  const productos = await api('/productos');
+  const cont = document.getElementById('lista-productos');
+  if (!productos || !productos.length) {
+    cont.innerHTML = '<div class="empty"><span class="empty-ico">🧢</span><p>No hay productos en el catálogo.</p></div>';
+    return;
+  }
+
+  cont.innerHTML = productos.map(p => (
+    '<div class="producto-item">' +
+      '<div>' +
+        '<h4>' + p.nombre + '</h4>' +
+        '<p><strong>' + p.modelo + '</strong> · ' + p.color + ' · ' + (p.estado || 'activo') + '</p>' +
+        '<p>' + (p.descripcion_corta || '') + '</p>' +
+      '</div>' +
+      '<div class="lote-accion">' +
+        (p.foto_producto ? '<img class="producto-foto" src="' + p.foto_producto + '" alt="' + p.nombre + '">' : '') +
+        '<button class="btn-mini btn-mini-outline" onclick="editarProducto(&quot;' + p.id + '&quot;)">Editar</button>' +
+        '<button class="btn-mini btn-mini-outline" onclick="eliminarProducto(&quot;' + p.id + '&quot;)">Eliminar</button>' +
+      '</div>' +
+    '</div>'
+  )).join('');
+}
+
+async function editarProducto(id) {
+  const productos = await api('/productos');
+  const p = (productos || []).find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('cat-id').value = p.id;
+  document.getElementById('cat-nombre').value = p.nombre || '';
+  document.getElementById('cat-modelo').value = p.modelo || '';
+  document.getElementById('cat-color').value = p.color || '';
+  document.getElementById('cat-estado').value = p.estado || 'activo';
+  document.getElementById('cat-corta').value = p.descripcion_corta || '';
+  document.getElementById('cat-descripcion').value = p.descripcion || '';
+  document.getElementById('cat-materiales').value = p.materiales || '';
+  document.getElementById('cat-ideal').value = p.ideal_para || '';
+  document.getElementById('cat-personalizacion').value = p.personalizacion || '';
+  document.getElementById('cat-foto').value = '';
+  const fotoActual = document.getElementById('cat-foto-actual');
+  fotoActual.style.display = p.foto_producto ? 'block' : 'none';
+  fotoActual.textContent = p.foto_producto ? 'Foto actual guardada' : '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function productoFormData() {
+  return {
+    nombre: document.getElementById('cat-nombre').value.trim(),
+    modelo: document.getElementById('cat-modelo').value,
+    color: document.getElementById('cat-color').value.trim(),
+    estado: document.getElementById('cat-estado').value,
+    descripcion_corta: document.getElementById('cat-corta').value.trim(),
+    descripcion: document.getElementById('cat-descripcion').value.trim(),
+    materiales: document.getElementById('cat-materiales').value.trim(),
+    ideal_para: document.getElementById('cat-ideal').value.trim(),
+    personalizacion: document.getElementById('cat-personalizacion').value.trim(),
+    nfc: true
+  };
+}
+
+async function guardarProducto() {
+  const id = document.getElementById('cat-id').value;
+  const data = productoFormData();
+  if (!data.nombre || !data.color || !data.descripcion_corta || !data.descripcion) {
+    toast('Completa nombre, color y descripciones', 'var(--rojo)');
+    return;
+  }
+  const formData = new FormData();
+  Object.entries(data).forEach(([k, v]) => formData.append(k, v));
+  const foto = document.getElementById('cat-foto').files[0];
+  if (foto) formData.append('foto_producto', foto);
+
+  const r = await fetch('/api' + (id ? '/productos/' + id : '/productos'), {
+    method: id ? 'PATCH' : 'POST',
+    credentials: 'same-origin',
+    body: formData
+  });
+  if (r.status === 401) { window.location.href = '/login'; return; }
+  const guardado = await r.json();
+  if (guardado && !guardado.error) {
+    toast('Producto guardado');
+    limpiarProductoForm();
+    cargarProductos();
+  } else {
+    toast('Error al guardar producto', 'var(--rojo)');
+  }
+}
+
+function limpiarProductoForm() {
+  ['cat-id','cat-nombre','cat-color','cat-corta','cat-descripcion','cat-materiales','cat-ideal','cat-personalizacion','cat-foto'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('cat-modelo').value = '';
+  document.getElementById('cat-estado').value = 'activo';
+  document.getElementById('cat-foto-actual').style.display = 'none';
+  document.getElementById('cat-foto-actual').textContent = '';
+}
+
+async function eliminarProducto(id) {
+  if (!confirm('Eliminar este producto del catálogo?')) return;
+  const data = await api('/productos/' + id, { method: 'DELETE' });
+  if (data && !data.error) {
+    toast('Producto eliminado');
+    cargarProductos();
+  } else {
+    toast('Error al eliminar producto', 'var(--rojo)');
+  }
+}
+
+async function mostrarUrlAndroid() {
+  const info = await api('/sistema/info');
+  const urlEl   = document.getElementById('url-android');
+  const avisEl  = document.getElementById('aviso-localhost');
+  const ipInfoEl = document.getElementById('info-ip-red');
+  const ipEl    = document.getElementById('ip-detectada');
+
+  const urlEscribir = window.location.protocol + '//' + window.location.host + '/escribir';
+
+  urlEl.textContent = urlEscribir;
+  const qrBox = document.getElementById('qr-android');
+  const qrImg = document.getElementById('qr-android-img');
+  qrImg.src = '/api/qr?data=' + encodeURIComponent(urlEscribir);
+  qrBox.style.display = 'block';
+
+  if (info && info.lan_ip && info.lan_ip !== 'localhost') {
+    ipEl.textContent = info.lan_ip;
+    ipInfoEl.style.display = 'block';
+  }
+
+  const esLocalhost = urlEscribir.includes('localhost') || urlEscribir.includes('127.0.0.1');
+  avisEl.style.display = esLocalhost ? 'block' : 'none';
+}
+
+function copiarUrl() {
+  const url = document.getElementById('url-android').textContent;
+  navigator.clipboard.writeText(url).then(function() {
+    const btn = document.getElementById('btn-copiar-url');
+    btn.textContent = '✅ ¡Copiado!';
+    setTimeout(function() { btn.textContent = '📋 Copiar dirección'; }, 2000);
+  }).catch(function() {
+    // fallback para contextos sin clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('✅ URL copiada');
+  });
+}
+
+// ── Arranque ─────────────────────────────────────────────────────────────────
+cargarSesion();
+cargarInicio();
+</script>
+</body>
+</html>

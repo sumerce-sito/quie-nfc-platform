@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEXO Admin — QUIE®</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <style>
+    :root{--negro:#0A0A0A;--dorado:#C9A84C;--azul:#1A2E6B;--blanco:#F5F5F5;
+      --rojo:#C0392B;--verde:#1DB954;--gris:#111;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--negro);color:var(--blanco);font-family:'Segoe UI',Arial,sans-serif;
+      min-height:100vh;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;padding:20px;
+      background-image:radial-gradient(ellipse at 50% 0%,rgba(26,46,107,.4) 0%,transparent 60%);}
+
+    .login-box{width:100%;max-width:380px;}
+
+    /* LOGO */
+    .logo{text-align:center;margin-bottom:40px;}
+    .logo .escudo{font-size:56px;display:block;margin-bottom:12px;}
+    .logo h1{font-size:1.1rem;font-weight:900;letter-spacing:4px;color:var(--dorado);}
+    .logo p{font-size:.7rem;color:#555;letter-spacing:2px;margin-top:4px;}
+
+    /* CARD */
+    .card{background:#111;border:1px solid #1a1a1a;border-radius:14px;padding:32px;
+      box-shadow:0 20px 60px rgba(0,0,0,.5);}
+    .card h2{font-size:.7rem;letter-spacing:3px;color:var(--dorado);text-transform:uppercase;
+      margin-bottom:24px;text-align:center;}
+
+    /* FORM */
+    .form-group{margin-bottom:18px;}
+    label{display:block;font-size:.7rem;color:#777;letter-spacing:1px;
+      text-transform:uppercase;margin-bottom:6px;}
+    input{width:100%;background:#0a0a0a;border:1px solid #2a2a2a;color:var(--blanco);
+      padding:12px 14px;border-radius:8px;font-size:.9rem;outline:none;
+      transition:border-color .2s;}
+    input:focus{border-color:var(--dorado);}
+    input::placeholder{color:#333;}
+
+    /* PASSWORD TOGGLE */
+    .input-wrap{position:relative;}
+    .input-wrap input{padding-right:44px;}
+    .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+      background:none;border:none;color:#555;cursor:pointer;font-size:1.1rem;
+      padding:4px;transition:color .2s;}
+    .toggle-pw:hover{color:var(--dorado);}
+
+    /* BOTÓN */
+    .btn-login{width:100%;background:var(--dorado);color:#000;padding:13px;
+      border:none;border-radius:8px;font-size:.88rem;font-weight:800;
+      letter-spacing:2px;cursor:pointer;margin-top:8px;
+      transition:opacity .2s,transform .1s;text-transform:uppercase;}
+    .btn-login:hover:not(:disabled){opacity:.85;}
+    .btn-login:active:not(:disabled){transform:scale(.98);}
+    .btn-login:disabled{opacity:.4;cursor:not-allowed;}
+
+    /* ERROR / LOADING */
+    .msg{text-align:center;font-size:.8rem;padding:10px 14px;border-radius:8px;
+      margin-top:14px;display:none;}
+    .msg.error{background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.3);
+      color:#e74c3c;display:block;}
+    .msg.info{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);
+      color:var(--dorado);display:block;}
+    .msg.ok{background:rgba(29,185,84,.1);border:1px solid rgba(29,185,84,.3);
+      color:var(--verde);display:block;}
+
+    /* LOADER SPINNER */
+    .spinner{display:inline-block;width:16px;height:16px;border:2px solid #000;
+      border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;
+      vertical-align:middle;margin-right:8px;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* INTENTOS */
+    .intentos{text-align:center;font-size:.72rem;color:#444;margin-top:20px;}
+
+    /* FOOTER */
+    .login-footer{text-align:center;margin-top:24px;font-size:.7rem;color:#333;}
+    .login-footer a{color:#444;text-decoration:none;}
+    .login-footer a:hover{color:var(--dorado);}
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <div class="logo">
+    <span class="escudo"></span>
+    <h1>NEXO ADMIN</h1>
+    <p>QUIE® · Sistema NFC</p>
+  </div>
+
+  <div class="card">
+    <h2>Ingresa tus credenciales</h2>
+
+    <form id="login-form" autocomplete="off" novalidate>
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username"
+          placeholder="Usuario administrador"
+          autocomplete="username" required maxlength="50"/>
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password"
+            placeholder="••••••••••••"
+            autocomplete="current-password" required maxlength="128"/>
+          <button type="button" class="toggle-pw" id="toggle-pw" tabindex="-1"
+            aria-label="Mostrar contraseña">👁</button>
+        </div>
+      </div>
+      <button class="btn-login" type="submit" id="btn-submit">
+        Ingresar al Panel
+      </button>
+    </form>
+
+    <div class="msg" id="msg"></div>
+    <div class="intentos" id="intentos-txt"></div>
+  </div>
+
+  <div class="login-footer">
+    <a href="/">← Volver al sitio público</a>
+  </div>
+</div>
+
+<script>
+  let intentosFallidos = 0;
+
+  function setMsg(texto, tipo) {
+    const el = document.getElementById('msg');
+    el.textContent = texto;
+    el.className = 'msg ' + tipo;
+  }
+
+  // Toggle contraseña visible/oculta
+  document.getElementById('toggle-pw').addEventListener('click', function() {
+    const inp = document.getElementById('password');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  });
+
+  // Submit del formulario
+  document.getElementById('login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn      = document.getElementById('btn-submit');
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!username || !password) {
+      setMsg('Completa todos los campos.', 'error'); return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Verificando...';
+    setMsg('', '');
+
+    try {
+      const r = await fetch('/api/auth/login', {
+        method:      'POST',
+        headers:     { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body:        JSON.stringify({ username, password })
+      });
+      const data = await r.json();
+
+      if (r.ok) {
+        setMsg('✅ Acceso autorizado. Redirigiendo...', 'ok');
+        setTimeout(function() { window.location.href = '/admin'; }, 800);
+        return;
+      }
+
+      intentosFallidos++;
+      setMsg(data.error || 'Credenciales incorrectas.', 'error');
+      if (intentosFallidos >= 3) {
+        document.getElementById('intentos-txt').textContent =
+          intentosFallidos + ' intento(s) fallido(s). IP será bloqueada tras 5 intentos.';
+      }
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+
+    } catch (_) {
+      setMsg('Error de conexión. Verifica que el servidor esté activo.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Ingresar al Panel';
+    }
+  });
+
+  // Si ya hay sesión activa, ir directo al admin
+  fetch('/api/auth/verify', { credentials: 'same-origin' })
+    .then(function(r) { if (r.ok) window.location.href = '/admin'; })
+    .catch(function() {});
+</script>
+</body>
+</html>

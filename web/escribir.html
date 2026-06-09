@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>Programar Piezas — QUIE®</title>
+  <style>
+    :root{
+      --negro:#0A0A0A; --dorado:#C9A84C; --azul:#1A2E6B;
+      --blanco:#F5F5F5; --verde:#1DB954; --rojo:#C0392B;
+      --naranja:#E67E22; --gris:#111; --gris2:#1A1A1A;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{height:100%;background:var(--negro);color:var(--blanco);
+      font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;}
+
+    /* ── PANTALLAS ── */
+    .screen{
+      position:fixed;inset:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:24px 20px;text-align:center;
+      transition:opacity .25s,transform .25s;
+    }
+    .screen.fuera{opacity:0;pointer-events:none;transform:scale(.97);}
+
+    /* ── TOPBAR ── */
+    .topbar{
+      position:fixed;top:0;left:0;right:0;z-index:10;
+      background:rgba(10,10,10,.97);border-bottom:1px solid #1a1a1a;
+      height:52px;display:flex;align-items:center;
+      justify-content:space-between;padding:0 16px;
+    }
+    .topbar-logo{font-size:.82rem;font-weight:900;letter-spacing:2px;color:var(--dorado);}
+    .topbar-prog{font-size:.75rem;color:#555;font-weight:700;}
+    .topbar-sal{font-size:.8rem;color:#444;cursor:pointer;padding:6px 10px;
+      border-radius:6px;transition:color .2s;}
+    .topbar-sal:hover{color:#888;}
+
+    /* ── PANTALLA: SELECCIONAR LOTE ── */
+    #s-lote{padding-top:52px;}
+    #s-lote .titulo{font-size:1.3rem;font-weight:900;margin-bottom:8px;}
+    #s-lote .sub{font-size:.85rem;color:#888;margin-bottom:32px;line-height:1.6;}
+
+    .lote-lista{
+      width:100%;max-width:400px;
+      display:flex;flex-direction:column;gap:10px;
+      margin-bottom:24px;
+      max-height:55vh;overflow-y:auto;
+    }
+    .lote-btn{
+      background:var(--gris2);border:2px solid #222;border-radius:12px;
+      padding:16px 18px;text-align:left;cursor:pointer;
+      transition:border-color .2s;width:100%;
+    }
+    .lote-btn:hover{border-color:var(--dorado);}
+    .lote-btn h4{font-size:.85rem;font-weight:800;color:var(--dorado);
+      font-family:monospace;margin-bottom:4px;}
+    .lote-btn p{font-size:.78rem;color:#888;}
+    .lote-btn .pendientes{color:var(--naranja);font-weight:700;font-size:.75rem;margin-top:4px;}
+
+    .aviso-nfc{
+      background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.4);
+      border-radius:10px;padding:14px 16px;font-size:.8rem;color:#e74c3c;
+      max-width:380px;line-height:1.6;margin-bottom:20px;
+    }
+    .btn-link{background:none;border:none;color:#666;font-size:.78rem;
+      text-decoration:underline;cursor:pointer;margin-top:8px;}
+
+    /* ── PANTALLA: ESCRIBIR ── */
+    #s-escribir{padding-top:52px;gap:0;}
+
+    /* Círculo central gigante */
+    .zona-nfc{
+      position:relative;
+      width:220px;height:220px;
+      margin:0 auto 24px;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;
+    }
+    .onda{
+      position:absolute;inset:0;border-radius:50%;
+      border:3px solid var(--dorado);
+      animation:onda 2s ease-out infinite;
+    }
+    .onda:nth-child(2){animation-delay:.6s;}
+    .onda:nth-child(3){animation-delay:1.2s;}
+    @keyframes onda{
+      0%{transform:scale(.8);opacity:.9;}
+      100%{transform:scale(1.4);opacity:0;}
+    }
+    .zona-nfc.ok .onda{border-color:var(--verde);animation:none;opacity:0;}
+    .zona-nfc.error .onda{border-color:var(--rojo);animation:none;opacity:0;}
+    .zona-nfc.escribiendo .onda{border-color:var(--naranja);}
+
+    .circulo-centro{
+      width:140px;height:140px;border-radius:50%;
+      background:linear-gradient(135deg,#0d1a40,#111);
+      border:3px solid var(--dorado);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:6px;position:relative;z-index:1;
+      transition:border-color .3s,background .3s;
+    }
+    .zona-nfc.ok .circulo-centro{border-color:var(--verde);background:linear-gradient(135deg,#0d3020,#111);}
+    .zona-nfc.error .circulo-centro{border-color:var(--rojo);background:linear-gradient(135deg,#300d0d,#111);}
+    .zona-nfc.escribiendo .circulo-centro{border-color:var(--naranja);}
+    .circulo-ico{font-size:44px;transition:all .3s;}
+    .circulo-sub{font-size:.65rem;color:#444;letter-spacing:1px;text-transform:uppercase;}
+
+    /* Instrucción principal */
+    .instruccion{font-size:1.2rem;font-weight:900;margin-bottom:6px;
+      min-height:32px;transition:color .3s;}
+    .instruccion.ok{color:var(--verde);}
+    .instruccion.error{color:var(--rojo);}
+    .instruccion.escribiendo{color:var(--naranja);}
+
+    /* Detalle pequeño */
+    .detalle{font-size:.82rem;color:#666;min-height:20px;margin-bottom:16px;line-height:1.5;}
+
+    /* Info del tag actual */
+    .info-tag{
+      background:var(--gris2);border:1px solid #222;border-radius:10px;
+      padding:10px 14px;width:100%;max-width:340px;margin-bottom:16px;
+    }
+    .info-tag-row{display:flex;justify-content:space-between;font-size:.78rem;padding:3px 0;}
+    .info-tag-row .k{color:#555;}
+    .info-tag-row .v{color:var(--blanco);font-weight:600;}
+
+    /* Barra progreso */
+    .barra-wrap{width:100%;max-width:340px;margin-bottom:6px;}
+    .barra-bg{background:#1a1a1a;border-radius:20px;height:8px;overflow:hidden;}
+    .barra-fill{height:100%;background:var(--verde);border-radius:20px;
+      transition:width .5s cubic-bezier(.4,0,.2,1);}
+    .barra-txt{font-size:.72rem;color:#555;margin-top:5px;font-weight:700;}
+
+    /* Botones acción */
+    .btns-accion{
+      display:flex;gap:10px;width:100%;max-width:340px;margin-top:8px;
+    }
+    .btn-accion{
+      flex:1;padding:11px 6px;border-radius:8px;font-size:.78rem;
+      font-weight:700;cursor:pointer;border:none;transition:opacity .2s;
+      letter-spacing:.5px;
+    }
+    .btn-accion:active{opacity:.7;}
+    .btn-saltar{background:#1a1a1a;color:#888;border:1px solid #2a2a2a;}
+    .btn-parar{background:transparent;color:var(--rojo);border:1px solid rgba(192,57,43,.4);}
+
+    /* ── PANTALLA: FIN ── */
+    #s-fin .ico-fin{font-size:80px;margin-bottom:16px;}
+    #s-fin h2{font-size:1.3rem;font-weight:900;color:var(--verde);margin-bottom:8px;}
+    #s-fin .sub-fin{font-size:.85rem;color:#888;margin-bottom:28px;line-height:1.6;}
+
+    .nums-fin{
+      display:flex;gap:16px;margin-bottom:28px;
+    }
+    .num-fin{
+      background:var(--gris2);border:1px solid #222;border-radius:12px;
+      padding:18px 24px;text-align:center;flex:1;
+    }
+    .num-fin .n{font-size:2rem;font-weight:900;}
+    .num-fin .l{font-size:.68rem;color:#666;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+    .num-fin.ok .n{color:var(--verde);}
+    .num-fin.skip .n{color:var(--naranja);}
+
+    .btn-fin{
+      width:100%;max-width:320px;padding:14px;border-radius:10px;
+      font-size:.9rem;font-weight:800;cursor:pointer;border:none;
+      margin-bottom:10px;transition:opacity .2s;
+    }
+    .btn-fin:active{opacity:.8;}
+    .btn-fin-gold{background:var(--dorado);color:#000;}
+    .btn-fin-out{background:transparent;color:#888;border:1px solid #333;}
+
+    /* ── EMPTY STATE ── */
+    .empty-lotes{text-align:center;padding:32px 20px;color:#555;max-width:320px;}
+    .empty-lotes .ei{font-size:48px;display:block;margin-bottom:12px;}
+    .empty-lotes p{font-size:.85rem;line-height:1.6;}
+    .btn-crear-lote{
+      margin-top:16px;padding:12px 24px;background:var(--dorado);
+      color:#000;border:none;border-radius:8px;font-weight:800;
+      font-size:.85rem;cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">Programar piezas</div>
+  <div class="topbar-prog" id="top-prog"></div>
+  <div class="topbar-sal" onclick="window.location.href='/admin'">← Panel</div>
+</div>
+
+<!-- ══ PANTALLA 1: ELEGIR LOTE ══ -->
+<div class="screen" id="s-lote">
+
+  <div class="titulo">¿Qué lote vas a programar?</div>
+  <div class="sub">
+    Selecciona el grupo de piezas al que vas a poner los chips NFC hoy.
+  </div>
+
+  <div id="aviso-nfc"></div>
+  <div class="lote-lista" id="lista-lotes"></div>
+
+  <button class="btn-link" onclick="window.location.href='/guia-nfc'">
+    ¿Primera vez? Ver guía completa
+  </button>
+</div>
+
+<!-- ══ PANTALLA 2: ESCRIBIR ══ -->
+<div class="screen fuera" id="s-escribir">
+
+  <div class="zona-nfc" id="zona">
+    <div class="onda"></div>
+    <div class="onda"></div>
+    <div class="onda"></div>
+    <div class="circulo-centro">
+      <div class="circulo-ico" id="c-ico">📡</div>
+      <div class="circulo-sub">NFC</div>
+    </div>
+  </div>
+
+  <div class="instruccion" id="instruccion">Acerca la pieza al teléfono</div>
+  <div class="detalle" id="detalle">Pon la parte trasera del teléfono sobre el chip de la pieza</div>
+
+  <div class="info-tag" id="info-tag">
+    <div class="info-tag-row">
+      <span class="k">Código</span>
+      <span class="v" id="it-codigo" style="font-family:monospace;color:var(--dorado);font-size:.72rem">—</span>
+    </div>
+    <div class="info-tag-row">
+      <span class="k">Modelo</span>
+      <span class="v" id="it-modelo">—</span>
+    </div>
+    <div class="info-tag-row">
+      <span class="k">Color</span>
+      <span class="v" id="it-color">—</span>
+    </div>
+  </div>
+
+  <div class="barra-wrap">
+    <div class="barra-bg">
+      <div class="barra-fill" id="barra" style="width:0%"></div>
+    </div>
+    <div class="barra-txt" id="barra-txt">0 de 0 piezas listas</div>
+  </div>
+
+  <div class="btns-accion">
+    <button class="btn-accion btn-saltar" id="btn-saltar">Saltar esta</button>
+    <button class="btn-accion btn-parar" id="btn-parar">Detener</button>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 3: FIN ══ -->
+<div class="screen fuera" id="s-fin">
+  <div class="ico-fin">🎉</div>
+  <h2>¡Terminaste!</h2>
+  <p class="sub-fin" id="fin-desc">Lote programado correctamente.</p>
+
+  <div class="nums-fin">
+    <div class="num-fin ok">
+      <div class="n" id="fin-ok">0</div>
+      <div class="l">Escritas</div>
+    </div>
+    <div class="num-fin skip">
+      <div class="n" id="fin-skip">0</div>
+      <div class="l">Saltadas</div>
+    </div>
+  </div>
+
+  <button class="btn-fin btn-fin-gold" id="btn-otro-lote">Programar otro lote</button>
+  <button class="btn-fin btn-fin-out" onclick="window.location.href='/admin'">
+    Ir al panel principal
+  </button>
+</div>
+
+<script>
+// ── Estado ───────────────────────────────────────────────────────────────────
+let codigos    = [];
+let idx        = 0;
+let escritos   = 0;
+let saltados   = 0;
+let ndef       = null;
+let ocupado    = false;
+
+// ── Verificar soporte NFC ────────────────────────────────────────────────────
+const tieneNFC = ('NDEFReader' in window);
+if (!tieneNFC) {
+  document.getElementById('aviso-nfc').innerHTML =
+    '<div class="aviso-nfc">' +
+    '⚠️ Este teléfono no puede escribir chips NFC desde el navegador.<br/><br/>' +
+    '<strong>Necesitas:</strong> Android + Chrome versión 89 o superior.<br/>' +
+    'En iPhone no está disponible esta función.' +
+    '</div>';
+}
+
+// ── Cargar lotes disponibles ─────────────────────────────────────────────────
+async function cargarLotes() {
+  let lotes;
+  try {
+    const r = await fetch('/api/lotes', { credentials: 'same-origin' });
+    if (r.status === 401) { window.location.href = '/login'; return; }
+    lotes = await r.json();
+  } catch(e) {
+    document.getElementById('lista-lotes').innerHTML =
+      '<div class="aviso-nfc">Error de conexión. Asegúrate de estar en el mismo WiFi.</div>';
+    return;
+  }
+
+  const pendientes = lotes.filter(l => l.estado !== 'activo' && l.total_tags > 0);
+  const cont = document.getElementById('lista-lotes');
+
+  if (!pendientes.length) {
+    cont.innerHTML =
+      '<div class="empty-lotes">' +
+      '<span class="ei">📦</span>' +
+      '<p>No hay lotes pendientes de programar.<br/>Crea un lote primero desde el panel principal.</p>' +
+      '<button class="btn-crear-lote" onclick="window.location.href=\'/admin\'">Ir a crear un lote</button>' +
+      '</div>';
+    return;
+  }
+
+  cont.innerHTML = pendientes.map(l =>
+    '<button class="lote-btn" data-id="' + l.id + '">' +
+    '<h4>' + l.id + '</h4>' +
+    '<p>' + l.modelo + ' · ' + l.color + ' · ' + l.temporada + '</p>' +
+    '<div class="pendientes">📦 ' + l.total_tags + ' piezas pendientes</div>' +
+    '</button>'
+  ).join('');
+
+  cont.querySelectorAll('.lote-btn').forEach(btn => {
+    btn.addEventListener('click', function() { iniciarLote(this.dataset.id); });
+  });
+}
+
+// ── Iniciar lote ─────────────────────────────────────────────────────────────
+async function iniciarLote(loteId) {
+  const r = await fetch('/api/codigos?lote=' + loteId, { credentials: 'same-origin' });
+  const todos = await r.json();
+  codigos = todos.filter(c => c.estado !== 'activo');
+
+  if (!codigos.length) {
+    alert('Todos los tags de este lote ya están escritos. 🎉');
+    return;
+  }
+
+  idx = 0; escritos = 0; saltados = 0;
+  mostrarPantalla('s-escribir');
+  actualizarUI();
+  if (tieneNFC) arrancarNFC();
+}
+
+// ── Motor NFC ────────────────────────────────────────────────────────────────
+async function arrancarNFC() {
+  try {
+    ndef = new NDEFReader();
+    await ndef.scan();
+
+    setEstado('espera', 'Acerca la pieza al teléfono',
+      'Pon la parte trasera del teléfono sobre el chip en el interior de la pieza');
+
+    ndef.addEventListener('reading', async () => {
+      if (ocupado) return;
+      ocupado = true;
+      await escribirActual();
+    });
+
+  } catch(e) {
+    if (e.name === 'NotAllowedError') {
+      setEstado('error', 'Permiso denegado',
+        'Toca aquí y permite que Chrome use el NFC');
+    } else {
+      setEstado('error', 'Error de NFC', e.message);
+    }
+    ocupado = false;
+  }
+}
+
+async function escribirActual() {
+  const c = codigos[idx];
+  setEstado('escribiendo', 'Escribiendo...', 'Quieto, no muevas el teléfono');
+
+  try {
+    await ndef.write({
+      records: [{ recordType: 'url', data: c.url_landing }]
+    });
+
+    escritos++;
+    if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+    setEstado('ok', '¡Chip listo! ✓', 'Ya puedes retirar la pieza');
+
+    setTimeout(() => {
+      idx++;
+      if (idx >= codigos.length) {
+        terminar();
+      } else {
+        actualizarUI();
+        setEstado('espera', 'Acerca la siguiente pieza',
+          'Pon el teléfono sobre el chip de la próxima pieza');
+        ocupado = false;
+      }
+    }, 1600);
+
+  } catch(e) {
+    setEstado('error', 'No funcionó, intenta de nuevo',
+      'Retira la pieza y acércala despacio otra vez');
+    setTimeout(() => {
+      setEstado('espera', 'Acerca la pieza de nuevo',
+        'Ponla despacio sobre la parte trasera del teléfono');
+      ocupado = false;
+    }, 2200);
+  }
+}
+
+// ── Botones ──────────────────────────────────────────────────────────────────
+document.getElementById('btn-saltar').addEventListener('click', function() {
+  if (ocupado) return;
+  saltados++;
+  idx++;
+  if (idx >= codigos.length) { terminar(); return; }
+  actualizarUI();
+  setEstado('espera', 'Acerca la siguiente pieza',
+    'Esta pieza fue saltada. Puedes programarla después.');
+});
+
+document.getElementById('btn-parar').addEventListener('click', function() {
+  if (confirm('¿Parar aquí? Lo que ya escribiste está guardado.')) {
+    terminar();
+  }
+});
+
+document.getElementById('btn-otro-lote').addEventListener('click', function() {
+  mostrarPantalla('s-lote');
+  cargarLotes();
+});
+
+// ── UI ───────────────────────────────────────────────────────────────────────
+function actualizarUI() {
+  if (idx >= codigos.length) return;
+  const c = codigos[idx];
+  document.getElementById('it-codigo').textContent = c.codigo_nfc;
+  document.getElementById('it-modelo').textContent = c.modelo;
+  document.getElementById('it-color').textContent  = c.color;
+
+  const pct = Math.round((idx / codigos.length) * 100);
+  document.getElementById('barra').style.width = pct + '%';
+  document.getElementById('barra-txt').textContent =
+    idx + ' de ' + codigos.length + ' piezas listas';
+  document.getElementById('top-prog').textContent =
+    idx + ' / ' + codigos.length;
+}
+
+function setEstado(tipo, titulo, detalle) {
+  const zona  = document.getElementById('zona');
+  const ico   = document.getElementById('c-ico');
+  const inst  = document.getElementById('instruccion');
+  const det   = document.getElementById('detalle');
+
+  zona.className  = 'zona-nfc ' + (tipo !== 'espera' ? tipo : '');
+  inst.className  = 'instruccion ' + (tipo !== 'espera' ? tipo : '');
+  inst.textContent = titulo;
+  det.textContent  = detalle;
+
+  const iconos = { espera:'📡', ok:'✅', error:'❌', escribiendo:'⏳' };
+  ico.textContent = iconos[tipo] || '📡';
+}
+
+function mostrarPantalla(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('fuera'));
+  document.getElementById(id).classList.remove('fuera');
+}
+
+function terminar() {
+  document.getElementById('fin-ok').textContent   = escritos;
+  document.getElementById('fin-skip').textContent = saltados;
+  document.getElementById('fin-desc').textContent =
+    escritos + ' piezas programadas correctamente.' +
+    (saltados ? ' ' + saltados + ' fueron saltadas.' : '');
+  mostrarPantalla('s-fin');
+}
+
+// ── Arranque ─────────────────────────────────────────────────────────────────
+cargarLotes();
+</script>
+</body>
+</html>

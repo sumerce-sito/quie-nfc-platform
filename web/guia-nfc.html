@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guía de Programación NFC — QUIE®</title>
+  <style>
+    :root{--negro:#0A0A0A;--dorado:#C9A84C;--azul:#1A2E6B;--blanco:#F5F5F5;
+      --verde:#1DB954;--rojo:#C0392B;--gris:#111;--gris2:#1A1A1A;--naranja:#E67E22;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--negro);color:var(--blanco);font-family:'Segoe UI',Arial,sans-serif;}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.97);
+      border-bottom:2px solid var(--dorado);padding:16px 5%;
+      display:flex;justify-content:space-between;align-items:center;}
+    .nav-logo{font-size:.95rem;font-weight:900;letter-spacing:3px;color:var(--dorado);}
+    .nav-links{display:flex;gap:20px;list-style:none;}
+    .nav-links a{color:#888;text-decoration:none;font-size:.78rem;letter-spacing:1px;transition:color .2s;}
+    .nav-links a:hover{color:var(--dorado);}
+
+    /* HERO */
+    .hero{padding:60px 5% 50px;text-align:center;
+      background:linear-gradient(180deg,#0d1a40 0%,#0A0A0A 100%);}
+    .hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;letter-spacing:4px;
+      color:var(--dorado);margin-bottom:12px;}
+    .hero p{font-size:.9rem;color:#888;max-width:600px;margin:0 auto;line-height:1.7;}
+    .chip-badge{display:inline-flex;align-items:center;gap:8px;background:#1a1a1a;
+      border:1px solid var(--dorado);border-radius:20px;padding:8px 20px;
+      font-size:.78rem;color:var(--dorado);margin-top:20px;letter-spacing:2px;}
+
+    /* SECCIÓN */
+    section{padding:60px 5%;}
+    .sec-label{font-size:.68rem;letter-spacing:4px;color:var(--dorado);
+      text-transform:uppercase;margin-bottom:8px;}
+    h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;letter-spacing:2px;margin-bottom:32px;}
+
+    /* APPS */
+    .apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+    .app-card{background:var(--gris2);border:1px solid #2a2a2a;border-radius:12px;padding:24px;}
+    .app-card .app-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+    .app-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;
+      justify-content:center;font-size:28px;flex-shrink:0;}
+    .app-icon.android{background:linear-gradient(135deg,#00b894,#00cec9);}
+    .app-icon.ios{background:linear-gradient(135deg,#636e72,#2d3436);}
+    .app-icon.both{background:linear-gradient(135deg,var(--azul),#0d1a40);}
+    .app-card h3{font-size:.95rem;font-weight:800;color:var(--blanco);}
+    .app-card .plat{font-size:.72rem;color:#666;margin-top:2px;}
+    .app-card p{font-size:.82rem;color:#888;line-height:1.6;}
+    .recomendado{border-color:var(--dorado);}
+    .rec-badge{background:var(--dorado);color:#000;font-size:.65rem;font-weight:800;
+      padding:2px 8px;border-radius:10px;letter-spacing:1px;margin-left:8px;}
+
+    /* STEPS */
+    .steps-container{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+    .steps-list{display:flex;flex-direction:column;gap:0;}
+    .step{display:flex;gap:0;cursor:pointer;}
+    .step-left{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
+    .step-dot{width:36px;height:36px;border-radius:50%;background:#1a1a1a;border:2px solid #333;
+      display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;
+      color:#666;transition:all .3s;flex-shrink:0;}
+    .step.active .step-dot{background:var(--dorado);border-color:var(--dorado);color:#000;}
+    .step.done .step-dot{background:var(--verde);border-color:var(--verde);color:#fff;}
+    .step-line{width:2px;background:#1a1a1a;flex:1;margin:4px 0;}
+    .step:last-child .step-line{display:none;}
+    .step-content{padding:0 0 28px 16px;}
+    .step-content h3{font-size:.95rem;font-weight:700;margin-bottom:6px;transition:color .3s;}
+    .step.active .step-content h3{color:var(--dorado);}
+    .step.done .step-content h3{color:var(--verde);}
+    .step-content p{font-size:.82rem;color:#777;line-height:1.6;}
+    .step-detail{display:none;margin-top:12px;background:#111;border:1px solid #222;
+      border-radius:8px;padding:16px;}
+    .step.active .step-detail{display:block;}
+    .step-detail code{display:block;background:#0a0a0a;border:1px solid #1a1a1a;
+      border-radius:6px;padding:10px 14px;font-family:monospace;font-size:.78rem;
+      color:var(--dorado);margin:8px 0;overflow-x:auto;}
+    .step-detail ul{padding-left:18px;font-size:.82rem;color:#999;line-height:1.8;}
+    .step-detail .tip{background:rgba(201,168,76,.08);border-left:3px solid var(--dorado);
+      padding:10px 14px;font-size:.8rem;color:#ccc;border-radius:0 6px 6px 0;margin-top:10px;}
+    .step-detail .warn{background:rgba(192,57,43,.08);border-left:3px solid var(--rojo);
+      padding:10px 14px;font-size:.8rem;color:#ccc;border-radius:0 6px 6px 0;margin-top:10px;}
+
+    /* MOCKUP TELÉFONO */
+    .phone-mockup{position:sticky;top:80px;background:#1a1a1a;border:3px solid #333;
+      border-radius:40px;padding:20px 12px;max-width:260px;margin:0 auto;
+      box-shadow:0 0 60px rgba(201,168,76,.15);}
+    .phone-screen{background:#0a0a0a;border-radius:28px;overflow:hidden;min-height:460px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+    .screen-content{text-align:center;width:100%;}
+    .screen-app{font-size:.65rem;color:#555;letter-spacing:2px;margin-bottom:20px;
+      text-transform:uppercase;}
+    .screen-icon{font-size:48px;margin-bottom:12px;display:block;}
+    .screen-title{font-size:.85rem;font-weight:800;letter-spacing:2px;
+      color:var(--dorado);margin-bottom:6px;}
+    .screen-sub{font-size:.7rem;color:#666;line-height:1.5;}
+    .screen-field{background:#111;border:1px solid #2a2a2a;border-radius:6px;
+      padding:8px 12px;margin:6px 0;font-size:.7rem;text-align:left;width:100%;}
+    .screen-field .lbl{color:#555;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;}
+    .screen-field .val{color:var(--blanco);margin-top:2px;}
+    .screen-btn{background:var(--dorado);color:#000;padding:10px;border-radius:8px;
+      font-weight:800;font-size:.75rem;letter-spacing:1px;margin-top:10px;width:100%;}
+    .screen-success{background:rgba(29,185,84,.15);border:2px solid var(--verde);
+      border-radius:10px;padding:12px;margin-top:10px;}
+    .screen-success .ico{font-size:1.8rem;display:block;margin-bottom:4px;}
+    .screen-success p{font-size:.7rem;color:var(--verde);font-weight:700;}
+
+    /* CHECKLIST */
+    .checklist{background:var(--gris);border:1px solid #1a1a1a;}
+    .check-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;
+      border-bottom:1px solid #1a1a1a;}
+    .check-item:last-child{border:none;}
+    .check-box{width:24px;height:24px;border:2px solid #333;border-radius:4px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;margin-top:2px;cursor:pointer;
+      transition:all .2s;font-size:.9rem;}
+    .check-box.checked{background:var(--verde);border-color:var(--verde);}
+    .check-item .ci-text h4{font-size:.88rem;font-weight:700;margin-bottom:4px;}
+    .check-item .ci-text p{font-size:.78rem;color:#888;line-height:1.5;}
+    .check-progress{background:#1a1a1a;border-radius:8px;height:6px;margin-bottom:20px;overflow:hidden;}
+    .check-bar{height:100%;background:var(--verde);border-radius:8px;transition:width .4s;}
+
+    /* ERRORES */
+    .error-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+    .error-card{background:var(--gris2);border:1px solid #2a2a2a;border-radius:10px;padding:20px;}
+    .error-card h4{font-size:.85rem;font-weight:700;color:var(--rojo);margin-bottom:8px;}
+    .error-card .causa{font-size:.78rem;color:#666;margin-bottom:8px;}
+    .error-card .sol{font-size:.82rem;color:#ccc;line-height:1.5;}
+
+    /* FOOTER */
+    footer{background:#050505;border-top:1px solid #111;padding:28px 5%;text-align:center;}
+    footer p{font-size:.72rem;color:#444;letter-spacing:1px;}
+
+    @media(max-width:768px){
+      .steps-container{grid-template-columns:1fr;}
+      .phone-mockup{display:none;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">QUIE® — Guía NFC</div>
+  <ul class="nav-links">
+    <li><a href="#apps">Apps</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#checklist">Checklist</a></li>
+    <li><a href="#errores">Errores</a></li>
+    <li><a href="/">← Sitio</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="sec-label">Operador de Producción</p>
+  <h1>Guía de Programación<br/>de Tags NFC</h1>
+  <p>Todo lo que necesitas para programar, verificar y colocar los chips NFC en las piezas QUIE®. Sin conocimientos técnicos previos.</p>
+  <div class="chip-badge">📡 Chip: NTAG213 · 144 bytes · 13.56 MHz · Compatible iOS + Android</div>
+</div>
+
+<!-- APPS RECOMENDADAS -->
+<section id="apps">
+  <p class="sec-label">Paso 0 — Antes de empezar</p>
+  <h2>¿Qué app usar?</h2>
+  <div class="apps-grid">
+
+    <div class="app-card recomendado">
+      <div class="app-header">
+        <div class="app-icon android">🔧</div>
+        <div>
+          <h3>NFC TagWriter by NXP <span class="rec-badge">RECOMENDADA</span></h3>
+          <div class="plat">📱 Android · Gratis · NXP Semiconductors</div>
+        </div>
+      </div>
+      <p>La app oficial del fabricante del chip. Rápida, confiable y gratuita. Permite escribir, leer y bloquear tags. Es la que usamos en producción QUIE.</p>
+    </div>
+
+    <div class="app-card">
+      <div class="app-header">
+        <div class="app-icon both">⚡</div>
+        <div>
+          <h3>NFC Tools Pro</h3>
+          <div class="plat">📱 Android + iOS · ~$4 USD</div>
+        </div>
+      </div>
+      <p>La más completa del mercado. Permite escribir, leer, bloquear y ver todos los datos del chip. Ideal si trabajas también desde iPhone.</p>
+    </div>
+
+    <div class="app-card">
+      <div class="app-header">
+        <div class="app-icon ios">🍎</div>
+        <div>
+          <h3>NFC.cool Tools</h3>
+          <div class="plat">🍎 iPhone 7+ (iOS 13+) · Gratis</div>
+        </div>
+      </div>
+      <p>Opción gratuita para iPhone. Puede leer y escribir URIs en NTAG213. Menos funciones que NFC Tools Pro pero sirve para producción básica.</p>
+    </div>
+
+  </div>
+
+  <div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:20px;margin-top:24px;font-size:.85rem;color:#888;">
+    <strong style="color:var(--dorado);">📌 Importante:</strong> El NFC debe estar ACTIVADO en tu teléfono.<br/>
+    Android: Ajustes → Conexiones → NFC → Activar<br/>
+    iPhone: Funciona automáticamente en iPhone 7 o superior con iOS 11+
+  </div>
+</section>
+
+<!-- PROCESO PASO A PASO -->
+<section id="proceso" style="background:var(--gris);border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;">
+  <p class="sec-label">Proceso completo</p>
+  <h2>Programar un Tag — Paso a Paso</h2>
+
+  <div class="steps-container">
+    <div class="steps-list">
+
+      <div class="step active" id="step-1" onclick="activarStep(1)">
+        <div class="step-left">
+          <div class="step-dot">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Preparar el CSV del lote</h3>
+          <p>Descarga el CSV desde el panel admin. Cada fila es un código con su URL.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Ve al <strong>Panel Admin → Lotes → CSV</strong></li>
+              <li>Abre el archivo en Excel o Google Sheets</li>
+              <li>Ordena los tags físicos igual que el CSV</li>
+              <li>Trabaja de izquierda a derecha, fila por fila</li>
+            </ul>
+            <div class="tip">💡 El CSV tiene: codigo_nfc, url_landing, modelo, color. La columna que vas a copiar es <strong>url_landing</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-2" onclick="activarStep(2)">
+        <div class="step-left">
+          <div class="step-dot">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Abrir NFC TagWriter by NXP</h3>
+          <p>Crear un nuevo dataset de tipo URI con la URL del primer código.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Abrir la app → <strong>"Write tags"</strong></li>
+              <li>Tocar <strong>"New dataset"</strong></li>
+              <li>Seleccionar <strong>"URI"</strong></li>
+              <li>Pegar la URL del CSV:</li>
+            </ul>
+            <code>https://QUIE®.com/v/QUIE-A7B3X9-42</code>
+            <ul>
+              <li>Tocar <strong>"Save & Write"</strong></li>
+            </ul>
+            <div class="tip">💡 Copia la URL completa incluyendo el https://</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-3" onclick="activarStep(3)">
+        <div class="step-left">
+          <div class="step-dot">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Acercar el tag al teléfono</h3>
+          <p>Mantener el chip plano y quieto bajo el teléfono hasta escuchar confirmación.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Coloca el tag NFC sobre una superficie plana</li>
+              <li>Acerca el <strong>centro o parte trasera superior</strong> del teléfono</li>
+              <li>Mantén quieto <strong>1-2 segundos</strong></li>
+              <li>La app mostrará: <strong style="color:var(--verde)">"Tag written successfully" ✅</strong></li>
+            </ul>
+            <div class="warn">⚠️ No mover el teléfono mientras escribe. Si falla, repetir. Después de 3 fallos, el tag puede estar dañado.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-4" onclick="activarStep(4)">
+        <div class="step-left">
+          <div class="step-dot">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Verificar la escritura</h3>
+          <p>Leer el tag escrito y confirmar que la URL es correcta antes de bloquear.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Cerrar la pantalla de escritura</li>
+              <li>Acercar el teléfono al mismo tag</li>
+              <li>Debe aparecer notificación del navegador</li>
+              <li>Confirmar que la URL coincide con el CSV</li>
+            </ul>
+            <div class="tip">💡 También puedes abrir NFC Tools, leer el tag y ver la URL en la pestaña "Records".</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-5" onclick="activarStep(5)">
+        <div class="step-left">
+          <div class="step-dot">5</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Bloquear el tag (anti-falsificación)</h3>
+          <p>Una vez verificado, bloquear para que nadie pueda sobreescribirlo.</p>
+          <div class="step-detail">
+            <ul>
+              <li><strong>En NFC TagWriter:</strong> "Other functions" → "Lock tag" → Confirmar</li>
+              <li><strong>En NFC Tools Pro:</strong> Leer tag → "More" → "Make read-only"</li>
+            </ul>
+            <div class="warn">⚠️ El bloqueo es IRREVERSIBLE. Un tag bloqueado con URL incorrecta debe descartarse. Verificar ANTES de bloquear.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-6" onclick="activarStep(6)">
+        <div class="step-left">
+          <div class="step-dot">6</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Pegar el tag en la pieza</h3>
+          <p>Posición interior, zona de zona interior discreta, plano y sin interferencias metálicas.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Interior de la pieza, <strong>zona interior discreta frontal</strong></li>
+              <li>Evitar costuras metálicas — interfieren con la señal</li>
+              <li>Si el tag no tiene adhesivo: usar cinta doble faz industrial</li>
+              <li>El tag debe quedar completamente <strong>plano</strong></li>
+              <li>Hacer escaneo final desde el exterior para confirmar lectura</li>
+            </ul>
+            <div class="tip">💡 Alternativa: bajo la etiqueta de talla/marca interior.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-7" onclick="activarStep(7)">
+        <div class="step-left">
+          <div class="step-dot">7</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Marcar como listo y continuar</h3>
+          <p>Avanzar al siguiente código del CSV y repetir desde el paso 2.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Marcar la fila del CSV como ✅ completada</li>
+              <li>Pasar al siguiente código en el CSV</li>
+              <li>Repetir desde el paso 2</li>
+              <li>Cada tag toma ~15 segundos</li>
+            </ul>
+            <div class="tip">💡 Tiempo estimado: 50 tags = 12-15 min · 100 tags = 25-30 min</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MOCKUP TELÉFONO -->
+    <div>
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="screen-content" id="screen-content">
+            <span class="screen-app">NFC TagWriter by NXP</span>
+            <span class="screen-icon">📱</span>
+            <div class="screen-title">LISTO PARA<br/>PROGRAMAR</div>
+            <div class="screen-sub" style="margin-top:10px;">Selecciona un paso para ver la pantalla correspondiente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLIST INTERACTIVO -->
+<section id="checklist">
+  <p class="sec-label">Control de calidad</p>
+  <h2>Checklist por Tag</h2>
+  <div class="check-progress">
+    <div class="check-bar" id="check-bar" style="width:0%"></div>
+  </div>
+  <div id="check-progress-text" style="font-size:.78rem;color:#666;margin-bottom:20px;">0 / 6 completado</div>
+
+  <div class="card checklist">
+    <div class="check-item">
+      <div class="check-box" onclick="toggleCheck(this)"></div>
+      <div class="ci-text">
+        <h4>URL copiada correctamente del CSV</h4>
+        <p>La URL pegada en la app coincide exactamente con la columna url_landing del CSV para este tag.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box" onclick="toggleCheck(this)"></div>
+      <div class="ci-text">
+        <h4>Escritura exitosa confirmada por la app</h4>
+        <p>La app mostró "Tag written successfully" o mensaje equivalente en verde.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box" onclick="toggleCheck(this)"></div>
+      <div class="ci-text">
+        <h4>URL verificada escaneando el tag</h4>
+        <p>Al acercar el teléfono después de escribir, el navegador abrió la URL correcta de QUIE.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box" onclick="toggleCheck(this)"></div>
+      <div class="ci-text">
+        <h4>Tag bloqueado (read-only)</h4>
+        <p>Se aplicó el bloqueo anti-falsificación. El tag ya no puede ser sobreescrito.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box" onclick="toggleCheck(this)"></div>
+      <div class="ci-text">
+        <h4>Tag pegado en posición correcta</h4>
+        <p>Interior de la pieza, zona interior discreta, plano, sin arrugas ni burbujas.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box" onclick="toggleCheck(this)"></div>
+      <div class="ci-text">
+        <h4>Escaneo final desde el exterior</h4>
+        <p>Con la pieza armada, se escaneó desde el exterior y funcionó correctamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="check-complete" style="display:none;background:rgba(29,185,84,.1);border:2px solid var(--verde);
+    border-radius:10px;padding:20px;text-align:center;margin-top:20px;">
+    <div style="font-size:2rem;margin-bottom:8px;">✅</div>
+    <strong style="color:var(--verde);">¡Tag completado y listo!</strong>
+    <p style="font-size:.82rem;color:#aaa;margin-top:6px;">Puedes resetear y continuar con el siguiente.</p>
+    <button onclick="resetChecklist()" style="background:var(--verde);color:#000;border:none;
+      padding:8px 20px;border-radius:6px;font-weight:800;cursor:pointer;margin-top:10px;">
+      ▶ Siguiente Tag
+    </button>
+  </div>
+</section>
+
+<!-- ERRORES COMUNES -->
+<section id="errores" style="background:var(--gris);border-top:1px solid #1a1a1a;">
+  <p class="sec-label">Resolución de problemas</p>
+  <h2>Errores Comunes</h2>
+  <div class="error-grid">
+    <div class="error-card">
+      <h4>❌ Tag no detectado</h4>
+      <div class="causa">Causa: NFC desactivado en el teléfono o posición incorrecta</div>
+      <div class="sol">Verificar que NFC esté activado en Ajustes. Cambiar la posición del teléfono sobre el tag — buscar la zona NFC (varía por modelo).</div>
+    </div>
+    <div class="error-card">
+      <h4>❌ Error al escribir</h4>
+      <div class="causa">Causa: Tag ya bloqueado o chip dañado</div>
+      <div class="sol">Si el tag fue bloqueado previamente, es imposible sobreescribirlo. Descartar y usar un tag nuevo. Reportar al inventario.</div>
+    </div>
+    <div class="error-card">
+      <h4>❌ URL incorrecta escrita</h4>
+      <div class="causa">Causa: Error de copy/paste en la URL</div>
+      <div class="sol">Si el tag no está bloqueado aún, puedes sobreescribirlo. Si ya fue bloqueado, descartar. Siempre verificar ANTES de bloquear.</div>
+    </div>
+    <div class="error-card">
+      <h4>❌ La página abre con error 404</h4>
+      <div class="causa">Causa: Código no existe en el sistema o sistema apagado</div>
+      <div class="sol">Verificar que el servidor esté corriendo. Confirmar que el lote fue activado en el panel admin. La URL debe tener el formato exacto.</div>
+    </div>
+    <div class="error-card">
+      <h4>❌ El tag no se lee desde el exterior de la pieza</h4>
+      <div class="causa">Causa: Material metálico entre el tag y el lector, o tag mal pegado</div>
+      <div class="sol">Reubicar el tag evitando ojetes metálicos y estructuras de la visera. La zona interior discreta textil es la mejor zona.</div>
+    </div>
+    <div class="error-card">
+      <h4>❌ iPhone no lee el tag</h4>
+      <div class="causa">Causa: iPhone 6 o anterior (sin NFC nativo para URL)</div>
+      <div class="sol">iPhone 7 o superior necesario. En iPhone 10 o superior el NFC es automático. En iPhone 7-9 puede requerir abrir la cámara y tocar la notificación.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>QUIE® NFC System · TagWriter v1.0 · 2026</p>
+  <p style="margin-top:6px;"><a href="/admin" style="color:var(--dorado);text-decoration:none;">Panel Admin</a> · <a href="/" style="color:var(--dorado);text-decoration:none;">Sitio Principal</a></p>
+</footer>
+
+<script>
+const pantallas = {
+  1: { icon:'📂', title:'ABRIR CSV', sub:'Descargar desde Admin → Lotes → CSV\nAbrir en Excel o Sheets\nOrdenar tags igual que el CSV' },
+  2: { icon:'✏️', title:'NUEVA URI', sub:'Write tags → New dataset → URI\nPegar URL completa del CSV\nSave & Write' },
+  3: { icon:'📡', title:'ACERCAR TAG', sub:'Tag plano sobre superficie\nCentro del teléfono sobre el chip\nQuieto 1-2 segundos...' },
+  4: { icon:'✅', title:'¡ESCRITO!', sub:'"Tag written successfully"\nCerrar app\nAcercar de nuevo para verificar' },
+  5: { icon:'🔒', title:'BLOQUEAR TAG', sub:'Other functions → Lock tag\nConfirmar bloqueo\n¡IRREVERSIBLE!' },
+  6: { icon:'🧢', title:'PEGAR EN GORRA', sub:'Interior, zona interior discreta\nPlano, sin arrugas\nEscaneo final desde exterior' },
+  7: { icon:'➡️', title:'SIGUIENTE TAG', sub:'Marcar ✅ en CSV\nSiguiente fila\nRepetir desde paso 2' }
+};
+
+function activarStep(n) {
+  document.querySelectorAll('.step').forEach((s,i) => {
+    const num = i + 1;
+    s.classList.remove('active');
+    if (num < n) s.classList.add('done');
+    else s.classList.remove('done');
+  });
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('step-' + n).classList.remove('done');
+  const p = pantallas[n];
+  document.getElementById('screen-content').innerHTML = `
+    <span class="screen-app">NFC TagWriter by NXP</span>
+    <span class="screen-icon">${p.icon}</span>
+    <div class="screen-title">${p.title}</div>
+    <div class="screen-sub" style="margin-top:10px;white-space:pre-line">${p.sub}</div>
+    ${n === 4 ? '<div class="screen-success"><span class="ico">✅</span><p>Tag written successfully</p></div>' : ''}
+  `;
+}
+
+let checkCount = 0;
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.textContent = el.classList.contains('checked') ? '✓' : '';
+  checkCount = document.querySelectorAll('.check-box.checked').length;
+  const total = document.querySelectorAll('.check-box').length;
+  const pct = (checkCount / total * 100).toFixed(0);
+  document.getElementById('check-bar').style.width = pct + '%';
+  document.getElementById('check-progress-text').textContent = `${checkCount} / ${total} completado`;
+  document.getElementById('check-complete').style.display = checkCount === total ? 'block' : 'none';
+}
+
+function resetChecklist() {
+  document.querySelectorAll('.check-box').forEach(b => {
+    b.classList.remove('checked'); b.textContent = '';
+  });
+  checkCount = 0;
+  document.getElementById('check-bar').style.width = '0%';
+  document.getElementById('check-progress-text').textContent = '0 / 6 completado';
+  document.getElementById('check-complete').style.display = 'none';
+}
+</script>
+</body>
+</html>

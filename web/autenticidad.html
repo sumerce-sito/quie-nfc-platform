@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QUIE® — Verificación de Autenticidad</title>
+  <meta name="robots" content="noindex"/>
+  <style>
+    :root{
+      --negro:#0A0A0A; --dorado:#C9A84C; --dorado2:#e8c97a; --dorado3:#8a6a1f;
+      --azul:#1A2E6B; --azul2:#0d1a40; --blanco:#F5F5F5;
+      --verde:#1DB954; --rojo:#C0392B; --naranja:#E67E22;
+      --gris:#111; --gris2:#161616;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      background:var(--negro);color:var(--blanco);
+      font-family:'Segoe UI',Arial,sans-serif;
+      min-height:100vh;overflow-x:hidden;
+    }
+
+    /* ── FONDO DINÁMICO ── */
+    .bg-layers{
+      position:fixed;inset:0;pointer-events:none;z-index:0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(26,46,107,.5) 0%, transparent 70%),
+        var(--negro);
+    }
+    .bg-layers.autentico{
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(29,185,84,.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(26,46,107,.2) 0%, transparent 60%),
+        var(--negro);
+    }
+    .bg-layers.sospechoso{
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(192,57,43,.2) 0%, transparent 60%),
+        var(--negro);
+    }
+
+    /* ── HEADER ── */
+    header{
+      position:relative;z-index:10;
+      padding:20px 20px 0;
+      display:flex;align-items:center;justify-content:space-between;
+      max-width:500px;margin:0 auto;
+    }
+    .header-logo{
+      font-size:.8rem;font-weight:900;letter-spacing:3px;
+      background:linear-gradient(135deg,var(--dorado3),var(--dorado),var(--dorado2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .header-badge{
+      font-size:.6rem;letter-spacing:2px;color:#444;
+      border:1px solid #1a1a1a;border-radius:10px;padding:4px 10px;
+      text-transform:uppercase;
+    }
+
+    /* ── CONTENIDO PRINCIPAL ── */
+    main{
+      position:relative;z-index:10;
+      max-width:500px;margin:0 auto;
+      padding:20px 20px 40px;
+    }
+
+    /* ── SELLO CENTRAL ── */
+    .sello-wrap{
+      text-align:center;padding:32px 0 24px;
+    }
+
+    /* Anillo animado */
+    .sello-ring{
+      position:relative;width:160px;height:160px;
+      margin:0 auto 24px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ring-anim{
+      position:absolute;inset:0;border-radius:50%;
+      border:2px solid;animation:ringPulse 2s ease-out infinite;
+    }
+    .ring-anim:nth-child(2){animation-delay:.7s;}
+
+    .sello-ring.verde .ring-anim{border-color:rgba(29,185,84,.4);}
+    .sello-ring.rojo  .ring-anim{border-color:rgba(192,57,43,.4);}
+    .sello-ring.gold  .ring-anim{border-color:rgba(201,168,76,.4);}
+
+    @keyframes ringPulse{
+      0%{transform:scale(.85);opacity:.9;}
+      100%{transform:scale(1.3);opacity:0;}
+    }
+
+    .sello-ico-wrap{
+      width:110px;height:110px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;z-index:1;
+      border:2px solid;
+      transition:all .5s;
+    }
+    .sello-ico-wrap.verde{
+      background:rgba(29,185,84,.1);border-color:rgba(29,185,84,.5);
+      box-shadow:0 0 40px rgba(29,185,84,.2),inset 0 0 20px rgba(29,185,84,.05);
+    }
+    .sello-ico-wrap.rojo{
+      background:rgba(192,57,43,.1);border-color:rgba(192,57,43,.5);
+      box-shadow:0 0 40px rgba(192,57,43,.2);
+    }
+    .sello-ico-wrap.gold{
+      background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.4);
+      box-shadow:0 0 40px rgba(201,168,76,.15);
+    }
+    .sello-ico{font-size:52px;}
+
+    .sello-titulo{
+      font-size:1.3rem;font-weight:900;letter-spacing:3px;
+      text-transform:uppercase;margin-bottom:8px;
+    }
+    .sello-titulo.verde{color:var(--verde);}
+    .sello-titulo.rojo{color:var(--rojo);}
+    .sello-titulo.gold{
+      background:linear-gradient(135deg,var(--dorado),var(--dorado2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+
+    .sello-sub{
+      font-size:.82rem;color:#777;line-height:1.7;
+      max-width:320px;margin:0 auto 16px;
+    }
+
+    .sello-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      border-radius:20px;padding:6px 16px;font-size:.7rem;
+      font-weight:700;letter-spacing:1px;
+    }
+    .sello-badge.verde{background:rgba(29,185,84,.12);color:var(--verde);border:1px solid rgba(29,185,84,.3);}
+    .sello-badge.rojo{background:rgba(192,57,43,.12);color:#e74c3c;border:1px solid rgba(192,57,43,.3);}
+    .sello-badge.gold{background:rgba(201,168,76,.1);color:var(--dorado);border:1px solid rgba(201,168,76,.3);}
+    .badge-dot{width:6px;height:6px;border-radius:50%;}
+    .verde .badge-dot{background:var(--verde);}
+    .rojo  .badge-dot{background:var(--rojo);}
+    .gold  .badge-dot{background:var(--dorado);}
+
+    /* ── CARD PRODUCTO ── */
+    .card{
+      background:var(--gris2);
+      border:1px solid #1e1e1e;
+      border-radius:16px;
+      padding:20px;
+      margin-bottom:14px;
+      position:relative;overflow:hidden;
+    }
+    .card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent);
+    }
+    .card-titulo{
+      font-size:.6rem;letter-spacing:3px;color:var(--dorado);
+      text-transform:uppercase;margin-bottom:16px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .card-titulo::after{flex:1;content:'';height:1px;background:#1e1e1e;}
+    .producto-foto-verificacion{
+      display:none;margin:-4px 0 14px;border-radius:14px;overflow:hidden;
+      border:1px solid rgba(201,168,76,.22);background:#0b0b0b;
+    }
+    .producto-foto-verificacion img{
+      width:100%;height:auto;max-height:280px;object-fit:cover;display:block;
+    }
+
+    .info-row{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:10px 0;border-bottom:1px solid #111;font-size:.84rem;
+    }
+    .info-row:last-child{border:none;padding-bottom:0;}
+    .info-row .lbl{color:#555;}
+    .info-row .val{font-weight:700;color:var(--blanco);}
+    .val-codigo{
+      font-family:monospace;font-size:.75rem;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);
+      border-radius:6px;padding:4px 10px;color:var(--dorado);
+    }
+
+    /* ── HISTORIAL ── */
+    .historial-item{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 0;border-bottom:1px solid #0d0d0d;font-size:.78rem;
+    }
+    .historial-item:last-child{border:none;}
+    .hist-ico{font-size:1.1rem;width:28px;text-align:center;flex-shrink:0;}
+    .hist-info{flex:1;}
+    .hist-fecha{color:#444;font-size:.7rem;margin-top:2px;}
+
+    /* ── REGISTRO PROPIETARIO ── */
+    .registro-card{
+      border-radius:16px;padding:24px 20px;margin-bottom:14px;
+      position:relative;overflow:hidden;
+    }
+    .registro-card.pendiente{
+      background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(26,46,107,.08));
+      border:1px solid rgba(201,168,76,.25);
+    }
+    .registro-card.ok{
+      background:rgba(29,185,84,.06);border:1px solid rgba(29,185,84,.2);
+      text-align:center;
+    }
+    .reg-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
+    .reg-icon{
+      width:46px;height:46px;border-radius:12px;flex-shrink:0;
+      background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);
+      display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+    }
+    .reg-header h3{font-size:.95rem;font-weight:900;margin-bottom:4px;}
+    .reg-header p{font-size:.75rem;color:#666;line-height:1.6;}
+
+    .reg-campo{margin-bottom:14px;}
+    .reg-campo label{
+      display:block;font-size:.65rem;letter-spacing:2px;color:#555;
+      text-transform:uppercase;margin-bottom:6px;font-weight:700;
+    }
+    .reg-campo input{
+      width:100%;background:#0d0d0d;border:1px solid #222;
+      color:var(--blanco);padding:12px 14px;border-radius:10px;
+      font-size:.9rem;outline:none;transition:border-color .2s;
+      -webkit-appearance:none;
+    }
+    .reg-campo input:focus{border-color:rgba(201,168,76,.5);}
+    .reg-campo input::placeholder{color:#333;}
+    .reg-campo .opcional{
+      font-size:.65rem;color:#333;margin-left:6px;letter-spacing:0;
+      text-transform:none;font-weight:400;
+    }
+    .foto-input{
+      display:flex;align-items:center;gap:12px;
+      background:#0d0d0d;border:1px dashed rgba(201,168,76,.35);
+      border-radius:12px;padding:12px 14px;color:#777;
+    }
+    .foto-input input{display:none;}
+    .foto-icon{font-size:1.35rem;flex-shrink:0;}
+    .foto-copy{flex:1;min-width:0;}
+    .foto-copy strong{display:block;color:var(--blanco);font-size:.82rem;margin-bottom:2px;}
+    .foto-copy span{display:block;color:#444;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .foto-preview{
+      display:none;margin-top:10px;border-radius:12px;overflow:hidden;
+      border:1px solid rgba(201,168,76,.25);background:#0a0a0a;
+    }
+    .foto-preview img{display:block;width:100%;max-height:220px;object-fit:cover;}
+
+    .btn-registrar{
+      width:100%;padding:14px;border-radius:10px;border:none;
+      background:linear-gradient(135deg,#8a6a1f,var(--dorado),#e8c97a);
+      color:#000;font-weight:900;font-size:.9rem;letter-spacing:1px;
+      cursor:pointer;margin-top:6px;transition:opacity .2s,transform .1s;
+    }
+    .btn-registrar:hover:not(:disabled){opacity:.88;}
+    .btn-registrar:active:not(:disabled){transform:scale(.98);}
+    .btn-registrar:disabled{opacity:.35;cursor:not-allowed;}
+
+    .reg-privacidad{
+      font-size:.65rem;color:#333;text-align:center;margin-top:10px;line-height:1.6;
+    }
+    .reg-error{
+      background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.3);
+      border-radius:8px;padding:10px 14px;font-size:.78rem;color:#e74c3c;
+      margin-top:10px;display:none;
+    }
+    .reg-skip{
+      background:none;border:none;color:#333;font-size:.72rem;
+      cursor:pointer;width:100%;margin-top:10px;padding:4px;
+      text-decoration:underline;transition:color .2s;
+    }
+    .reg-skip:hover{color:#666;}
+
+    /* ── SECCIÓN MARCA ── */
+    .promo-card{
+      display:none;background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(26,46,107,.12));
+      border:1px solid rgba(201,168,76,.28);border-radius:16px;padding:20px;margin-bottom:14px;
+    }
+    .promo-kicker{font-size:.62rem;letter-spacing:3px;color:var(--dorado);text-transform:uppercase;font-weight:800;margin-bottom:8px;}
+    .promo-card h3{font-size:1rem;margin-bottom:8px;}
+    .promo-card p{font-size:.78rem;color:#777;line-height:1.6;margin-bottom:14px;}
+    .promo-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .promo-btn{flex:1;min-width:130px;text-align:center;text-decoration:none;border-radius:10px;padding:11px 12px;font-size:.76rem;font-weight:900;}
+    .promo-btn.gold{background:var(--dorado);color:#000;}
+    .promo-btn.dark{background:#111;color:#aaa;border:1px solid #242424;}
+
+    .marca-section{
+      background:linear-gradient(135deg,rgba(26,46,107,.15),rgba(201,168,76,.03));
+      border:1px solid rgba(201,168,76,.1);
+      border-radius:16px;
+      padding:24px 20px;
+      margin-bottom:14px;
+      text-align:center;
+    }
+    .marca-escudo{font-size:44px;display:block;margin-bottom:12px;}
+    .marca-nombre{
+      font-size:1rem;font-weight:900;letter-spacing:5px;
+      background:linear-gradient(135deg,var(--dorado3),var(--dorado),var(--dorado2));
+      background-size:200% auto;
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      animation:shimmer 4s linear infinite;
+      margin-bottom:6px;
+    }
+    @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+    .marca-desc{font-size:.75rem;color:#555;line-height:1.7;}
+
+    /* ── REDES ── */
+    .redes-titulo{
+      font-size:.6rem;letter-spacing:3px;color:#444;
+      text-transform:uppercase;text-align:center;margin-bottom:14px;
+    }
+    .redes-grid{
+      display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .red-btn{
+      background:var(--gris2);border:1px solid #1e1e1e;
+      border-radius:10px;padding:10px 16px;
+      color:#888;text-decoration:none;font-size:.75rem;font-weight:700;
+      transition:border-color .2s,color .2s;display:flex;align-items:center;gap:6px;
+    }
+    .red-btn:hover{border-color:rgba(201,168,76,.3);color:var(--dorado);}
+
+    /* ── CONTACTO ── */
+    .contacto-row{
+      display:flex;align-items:center;gap:12px;
+      padding:10px 0;border-bottom:1px solid #0d0d0d;
+    }
+    .contacto-row:last-child{border:none;}
+    .contacto-row a{color:#888;text-decoration:none;font-size:.82rem;transition:color .2s;}
+    .contacto-row a:hover{color:var(--dorado);}
+    .c-ico{
+      width:34px;height:34px;border-radius:8px;flex-shrink:0;
+      background:rgba(201,168,76,.06);border:1px solid #1e1e1e;
+      display:flex;align-items:center;justify-content:center;font-size:.95rem;
+    }
+
+    /* ── FOOTER ── */
+    .page-footer{
+      text-align:center;padding:20px;
+      border-top:1px solid #111;margin-top:8px;
+    }
+    .footer-codigo{
+      font-family:monospace;font-size:.7rem;color:rgba(201,168,76,.4);
+      letter-spacing:2px;margin-bottom:6px;
+    }
+    .footer-copy{font-size:.65rem;color:#2a2a2a;letter-spacing:1px;}
+
+    /* ── LOADING INICIAL ── */
+    .loading-overlay{
+      position:fixed;inset:0;background:var(--negro);z-index:999;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+      transition:opacity .6s;
+    }
+    .loading-overlay.fade{opacity:0;pointer-events:none;}
+    .spin{
+      width:40px;height:40px;border-radius:50%;
+      border:3px solid #1a1a1a;border-top-color:var(--dorado);
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loading-txt{font-size:.75rem;letter-spacing:3px;color:#444;text-transform:uppercase;}
+  </style>
+</head>
+<body>
+
+<!-- Loading inicial -->
+<div class="loading-overlay" id="loading">
+  <div class="spin"></div>
+  <div class="loading-txt">Verificando autenticidad...</div>
+</div>
+
+<div class="bg-layers" id="bg"></div>
+
+<header>
+  <div class="header-logo">QUIE®</div>
+  <div class="header-badge">NFC · Verificación</div>
+</header>
+
+<main>
+
+  <!-- ── SELLO CENTRAL ── -->
+  <div class="sello-wrap">
+    <div class="sello-ring" id="sello-ring">
+      <div class="ring-anim"></div>
+      <div class="ring-anim"></div>
+      <div class="sello-ico-wrap" id="sello-ico-wrap">
+        <span class="sello-ico" id="sello-ico">⏳</span>
+      </div>
+    </div>
+    <div class="sello-titulo" id="sello-titulo">Verificando...</div>
+    <p class="sello-sub" id="sello-sub"></p>
+    <div class="sello-badge" id="sello-badge" style="display:none;">
+      <span class="badge-dot"></span>
+      <span id="sello-badge-txt"></span>
+    </div>
+  </div>
+
+  <!-- ── INFO PRODUCTO ── -->
+  <div class="card">
+    <div class="card-titulo">Información del producto</div>
+    <div class="producto-foto-verificacion" id="foto-producto-box">
+      <img id="foto-producto-img" src="{{FOTO_PRODUCTO}}" alt="Foto del modelo de pieza">
+    </div>
+    <div class="info-row">
+      <span class="lbl">Modelo</span>
+      <span class="val" id="d-modelo">{{MODELO}}</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Color</span>
+      <span class="val" id="d-color">{{COLOR}}</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Talla</span>
+      <span class="val" id="d-talla">{{TALLA}}</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Lote</span>
+      <span class="val" style="font-family:monospace;font-size:.8rem;color:#aaa;">{{LOTE_ID}}</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Fabricación</span>
+      <span class="val">{{FECHA_PRODUCCION}}</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Código NFC</span>
+      <span class="val-codigo">{{CODIGO_NFC}}</span>
+    </div>
+  </div>
+
+  <!-- ── HISTORIAL DE ESCANEOS ── -->
+  <div class="card" id="card-historial">
+    <div class="card-titulo">Registro de verificaciones</div>
+    <div id="historial-content"></div>
+  </div>
+
+  <!-- ── REGISTRO DE PROPIETARIO ── -->
+  <div class="promo-card" id="promo-recompra">
+    <div class="promo-kicker">Beneficio por cliente QUIE</div>
+    <h3>¿Quieres otra pieza con autenticidad NFC?</h3>
+    <p>Gracias por verificar tu producto. Mira otros modelos disponibles o escríbenos por WhatsApp para una recomendación personalizada.</p>
+    <div class="promo-actions">
+      <a class="promo-btn gold" href="/catalogo">Ver catálogo</a>
+      <a class="promo-btn dark" id="promo-whatsapp" target="_blank" href="https://wa.me/573014586841">Pedir promoción</a>
+    </div>
+  </div>
+
+  <div id="bloque-registro" style="display:none;">
+
+    <!-- Formulario pendiente -->
+    <div class="registro-card pendiente" id="reg-form-card">
+      <div class="reg-header">
+        <div class="reg-icon">🏷️</div>
+        <div>
+          <h3>Registra tu pieza</h3>
+          <p>Activa la garantía y recibe ofertas exclusivas de QUIE® directamente en tu WhatsApp.</p>
+        </div>
+      </div>
+
+      <div class="reg-campo">
+        <label>Tu nombre completo</label>
+        <input type="text" id="reg-nombre" placeholder="Ej: Juan Pérez"
+          autocomplete="name" maxlength="80" inputmode="text"/>
+      </div>
+      <div class="reg-campo">
+        <label>WhatsApp</label>
+        <input type="tel" id="reg-whatsapp" placeholder="Ej: 3001234567"
+          autocomplete="tel" maxlength="20" inputmode="tel"/>
+      </div>
+      <div class="reg-campo">
+        <label>Ciudad <span class="opcional">(opcional)</span></label>
+        <input type="text" id="reg-ciudad" placeholder="Ej: Bogotá"
+          autocomplete="address-level2" maxlength="60"/>
+      </div>
+      <div class="reg-campo">
+        <label>Email <span class="opcional">(opcional)</span></label>
+        <input type="email" id="reg-email" placeholder="tu@correo.com"
+          autocomplete="email" maxlength="100" inputmode="email"/>
+      </div>
+      <div class="reg-campo">
+        <label>Foto de la pieza <span class="opcional">(opcional)</span></label>
+        <label class="foto-input" for="reg-foto">
+          <span class="foto-icon">📷</span>
+          <span class="foto-copy">
+            <strong>Tomar o subir foto</strong>
+            <span id="reg-foto-nombre">JPG, PNG o WebP. Máximo 4 MB.</span>
+          </span>
+          <input type="file" id="reg-foto" accept="image/jpeg,image/png,image/webp" capture="environment"/>
+        </label>
+        <div class="foto-preview" id="reg-foto-preview">
+          <img id="reg-foto-preview-img" alt="Foto seleccionada de la pieza">
+        </div>
+      </div>
+
+      <button class="btn-registrar" id="btn-registrar" disabled>
+        Activar garantía →
+      </button>
+      <div class="reg-error" id="reg-error"></div>
+      <p class="reg-privacidad">
+        Tus datos son usados únicamente por QUIE® para enviarte información de productos y garantías. No se comparten con terceros.
+      </p>
+      <button class="reg-skip" id="btn-skip-reg">
+        Omitir por ahora
+      </button>
+    </div>
+
+    <!-- Éxito -->
+    <div class="registro-card ok" id="reg-ok-card" style="display:none;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <h3 style="color:var(--verde);font-size:1rem;font-weight:900;margin-bottom:8px;">¡Pieza registrada!</h3>
+      <p style="font-size:.82rem;color:#666;line-height:1.7;">
+        Bienvenido a la familia QUIE®.<br/>
+        Te contactaremos por WhatsApp con novedades y ofertas exclusivas.
+      </p>
+    </div>
+
+    <!-- Ya registrado -->
+    <div class="registro-card" id="reg-ya-card"
+      style="display:none;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.12);text-align:center;">
+      <div style="font-size:32px;margin-bottom:8px;">✅</div>
+      <p style="font-size:.8rem;color:#666;">Esta pieza ya tiene un propietario registrado.</p>
+    </div>
+
+  </div>
+
+  <!-- ── MARCA ── -->
+  <div class="marca-section">
+    <span class="marca-escudo"></span>
+    <div class="marca-nombre">QUIE®</div>
+    <p class="marca-desc">
+      Fabricantes y diseñadores de accesorios premium.<br/>
+      Marca registrada desde 2011.<br/>
+      Fusagasugá, Cundinamarca, Colombia.
+    </p>
+  </div>
+
+  <!-- ── REDES SOCIALES ── -->
+  <div class="redes-titulo">Síguenos</div>
+  <div class="redes-grid">
+    <a class="red-btn" href="https://instagram.com/QUIE®" target="_blank">📸 Instagram</a>
+    <a class="red-btn" href="https://tiktok.com/@QUIE®" target="_blank">🎵 TikTok</a>
+    <a class="red-btn" href="https://facebook.com/quie" target="_blank">📘 Facebook</a>
+    <a class="red-btn" href="https://wa.me/573014586841" target="_blank">💬 WhatsApp</a>
+  </div>
+
+  <!-- ── CONTACTO ── -->
+  <div class="card">
+    <div class="card-titulo">Contacto</div>
+    <div class="contacto-row">
+      <div class="c-ico">📱</div>
+      <a href="https://wa.me/573014586841">301 4586841 (WhatsApp)</a>
+    </div>
+    <div class="contacto-row">
+      <div class="c-ico">✉️</div>
+      <a href="mailto:chloe290711@gmail.com">chloe290711@gmail.com</a>
+    </div>
+    <div class="contacto-row">
+      <div class="c-ico">📍</div>
+      <span style="font-size:.8rem;color:#666;">Cra 7 #8-12 Centro, Fusagasugá, Colombia</span>
+    </div>
+  </div>
+
+</main>
+
+<div class="page-footer">
+  <div class="footer-codigo">NFC · {{CODIGO_NFC}}</div>
+  <div class="footer-copy">© QUIE® · Todos los derechos reservados</div>
+</div>
+
+<script>
+  // Variables inyectadas por el servidor
+  const esPrimerEscaneo = '{{ES_PRIMER_ESCANEO}}' === 'true';
+  const totalEscaneos   = parseInt('{{TOTAL_ESCANEOS}}') || 0;
+  const fechaRegistro   = '{{FECHA_PRIMER_ESCANEO}}';
+  const ciudadRegistro  = '{{CIUDAD_PRIMER_ESCANEO}}';
+  const yaRegistrado      = '{{YA_REGISTRADO}}' === 'true';
+  const nombrePropietario = '{{NOMBRE_PROPIETARIO}}';
+  const codigoNFC         = '{{CODIGO_NFC}}';
+  const fotoProducto      = '{{FOTO_PRODUCTO}}';
+
+  function mostrarFotoProducto() {
+    if (!fotoProducto || fotoProducto.includes('{{')) return;
+    const box = document.getElementById('foto-producto-box');
+    const img = document.getElementById('foto-producto-img');
+    img.src = fotoProducto;
+    box.style.display = 'block';
+  }
+
+  function aplicarEstado(tipo) {
+    const ring    = document.getElementById('sello-ring');
+    const icoWrap = document.getElementById('sello-ico-wrap');
+    const ico     = document.getElementById('sello-ico');
+    const titulo  = document.getElementById('sello-titulo');
+    const sub     = document.getElementById('sello-sub');
+    const badge   = document.getElementById('sello-badge');
+    const badgeTxt= document.getElementById('sello-badge-txt');
+    const bg      = document.getElementById('bg');
+
+    if (tipo === 'autentico') {
+      ring.className = 'sello-ring verde';
+      icoWrap.className = 'sello-ico-wrap verde';
+      ico.textContent = '✅';
+      titulo.className = 'sello-titulo verde';
+      titulo.textContent = 'PRODUCTO AUTÉNTICO';
+      sub.textContent = 'Este es el primer escaneo registrado de esta pieza. Tu QUIE® es original.';
+      badge.className = 'sello-badge verde';
+      badge.style.display = 'inline-flex';
+      badgeTxt.textContent = '1er escaneo registrado hoy';
+      bg.className = 'bg-layers autentico';
+
+    } else if (tipo === 'rescan') {
+      ring.className = 'sello-ring gold';
+      icoWrap.className = 'sello-ico-wrap gold';
+      ico.textContent = yaRegistrado && nombrePropietario ? '👤' : '🔄';
+      titulo.className = 'sello-titulo gold';
+      titulo.textContent = yaRegistrado && nombrePropietario
+        ? 'GORRA DE ' + nombrePropietario.split(' ')[0].toUpperCase()
+        : 'PRODUCTO REGISTRADO';
+      sub.innerHTML = yaRegistrado && nombrePropietario
+        ? 'Esta pieza está registrada a nombre de <strong>' + nombrePropietario + '</strong>.<br/>Registrada el ' + fechaRegistro + ' desde ' + ciudadRegistro + '.'
+        : 'Registrado el <strong>' + fechaRegistro + '</strong> desde <strong>' + ciudadRegistro + '</strong>.';
+      badge.className = 'sello-badge gold';
+      badge.style.display = 'inline-flex';
+      badgeTxt.textContent = 'Escaneo #' + (totalEscaneos);
+      bg.className = 'bg-layers';
+
+    } else if (tipo === 'sospechoso') {
+      ring.className = 'sello-ring rojo';
+      icoWrap.className = 'sello-ico-wrap rojo';
+      ico.textContent = '⚠️';
+      titulo.className = 'sello-titulo rojo';
+      titulo.textContent = 'VERIFICAR AUTENTICIDAD';
+      sub.textContent = 'Este código ha sido escaneado muchas veces (' + totalEscaneos + '). Si tienes dudas, contáctanos.';
+      badge.className = 'sello-badge rojo';
+      badge.style.display = 'inline-flex';
+      badgeTxt.textContent = totalEscaneos + ' escaneos registrados';
+      bg.className = 'bg-layers sospechoso';
+    }
+  }
+
+  function construirHistorial() {
+    const cont = document.getElementById('historial-content');
+    if (esPrimerEscaneo) {
+      cont.innerHTML =
+        '<div class="historial-item">' +
+        '<div class="hist-ico">🆕</div>' +
+        '<div class="hist-info">' +
+        '<div style="color:var(--verde);font-weight:700;font-size:.82rem;">Primera verificación</div>' +
+        '<div class="hist-fecha">Hoy · ' + ciudadRegistro + '</div>' +
+        '</div></div>';
+    } else {
+      cont.innerHTML =
+        '<div class="historial-item">' +
+        '<div class="hist-ico">📍</div>' +
+        '<div class="hist-info">' +
+        '<div style="font-size:.82rem;">Primer registro: <strong style="color:var(--dorado)">' + fechaRegistro + '</strong></div>' +
+        '<div class="hist-fecha">Desde ' + ciudadRegistro + '</div>' +
+        '</div></div>' +
+        '<div class="historial-item">' +
+        '<div class="hist-ico">🔄</div>' +
+        '<div class="hist-info">' +
+        '<div style="font-size:.82rem;">Total verificaciones: <strong>' + totalEscaneos + '</strong></div>' +
+        '<div class="hist-fecha">Este es el escaneo #' + totalEscaneos + '</div>' +
+        '</div></div>';
+    }
+  }
+
+  // ── Registro de propietario ────────────────────────────────────────────────
+  function iniciarFormularioRegistro() {
+    const bloque = document.getElementById('bloque-registro');
+    bloque.style.display = 'block';
+
+    if (yaRegistrado) {
+      document.getElementById('reg-ya-card').style.display = 'block';
+      document.getElementById('reg-form-card').style.display = 'none';
+      return;
+    }
+
+    // Validación en tiempo real
+    function validarForm() {
+      const nombre   = document.getElementById('reg-nombre').value.trim();
+      const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+      document.getElementById('btn-registrar').disabled = !(nombre.length >= 2 && whatsapp.length >= 7);
+    }
+    document.getElementById('reg-nombre').addEventListener('input', validarForm);
+    document.getElementById('reg-whatsapp').addEventListener('input', validarForm);
+    document.getElementById('reg-foto').addEventListener('change', function() {
+      const file = this.files && this.files[0];
+      const nombreEl = document.getElementById('reg-foto-nombre');
+      const preview = document.getElementById('reg-foto-preview');
+      const img = document.getElementById('reg-foto-preview-img');
+
+      if (!file) {
+        nombreEl.textContent = 'JPG, PNG o WebP. Máximo 4 MB.';
+        preview.style.display = 'none';
+        img.removeAttribute('src');
+        return;
+      }
+
+      nombreEl.textContent = 'Foto lista: ' + file.name;
+      img.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+    });
+
+    // Enviar registro
+    document.getElementById('btn-registrar').addEventListener('click', async function() {
+      const btn      = this;
+      const nombre   = document.getElementById('reg-nombre').value.trim();
+      const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+      const ciudad   = document.getElementById('reg-ciudad').value.trim();
+      const email    = document.getElementById('reg-email').value.trim();
+      const foto     = document.getElementById('reg-foto').files[0];
+      const errEl    = document.getElementById('reg-error');
+      const formData = new FormData();
+
+      formData.append('codigo_nfc', codigoNFC);
+      formData.append('nombre', nombre);
+      formData.append('whatsapp', whatsapp);
+      formData.append('ciudad', ciudad);
+      formData.append('email', email);
+      if (foto) formData.append('foto_gorra', foto);
+
+      btn.disabled = true;
+      btn.textContent = 'Registrando...';
+      errEl.style.display = 'none';
+
+      try {
+        const r = await fetch('/api/registro-cliente', {
+          method:  'POST',
+          body:    formData
+        });
+        const data = await r.json();
+
+        if (r.ok) {
+          document.getElementById('reg-form-card').style.display = 'none';
+          document.getElementById('reg-ok-card').style.display = 'block';
+        } else if (r.status === 409) {
+          document.getElementById('reg-form-card').style.display = 'none';
+          document.getElementById('reg-ya-card').style.display = 'block';
+        } else {
+          const detalle = data.detalles && data.detalles[0] ? ': ' + data.detalles[0].msg : '';
+          errEl.textContent = (data.error || 'Error al registrar. Intenta de nuevo.') + detalle;
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Activar garantía →';
+        }
+      } catch(_) {
+        errEl.textContent = 'Sin conexión. Verifica tu internet.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Activar garantía →';
+      }
+    });
+
+    // Omitir
+    document.getElementById('btn-skip-reg').addEventListener('click', function() {
+      document.getElementById('bloque-registro').style.display = 'none';
+    });
+  }
+
+  function mostrarPromoRecompra() {
+    if (esPrimerEscaneo || totalEscaneos < 2) return;
+    const promo = document.getElementById('promo-recompra');
+    const wsp = document.getElementById('promo-whatsapp');
+    const modelo = document.getElementById('d-modelo').textContent.trim();
+    const msg = encodeURIComponent('Hola QUIE®, ya verifiqué mi pieza ' + modelo + ' y quiero conocer una promoción para comprar otro producto.');
+    wsp.href = 'https://wa.me/573014586841?text=' + msg;
+    promo.style.display = 'block';
+  }
+
+  // Inicializar
+  window.addEventListener('load', function() {
+    let tipo = 'rescan';
+    if (esPrimerEscaneo) tipo = 'autentico';
+    else if (totalEscaneos > 50) tipo = 'sospechoso';
+
+    construirHistorial();
+    mostrarFotoProducto();
+    mostrarPromoRecompra();
+
+    setTimeout(function() {
+      aplicarEstado(tipo);
+      document.getElementById('loading').classList.add('fade');
+      setTimeout(function() {
+        document.getElementById('loading').style.display = 'none';
+      }, 700);
+
+      // Mostrar formulario: en primer escaneo siempre, en re-scan solo si no registrado
+      if (esPrimerEscaneo || !yaRegistrado) {
+        setTimeout(iniciarFormularioRegistro, 400);
+      }
+    }, 900);
+  });
+</script>
+</body>
+</html>
