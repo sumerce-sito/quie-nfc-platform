@@ -1,0 +1,44 @@
+{
+  "lotes": [
+    {
+      "id": "QUIE-TARJ-2026-001",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Única",
+      "temporada": "Demo jueces",
+      "fecha_creacion": "2026-06-09",
+      "total_tags": 3,
+      "estado": "codigos_generados"
+    },
+    {
+      "id": "QUIE-TARJ-2026-002",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Única",
+      "temporada": "Demo",
+      "fecha_creacion": "2026-06-09",
+      "total_tags": 1,
+      "estado": "codigos_generados"
+    },
+    {
+      "id": "QUIE-TARJ-2026-003",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Única",
+      "temporada": "Demo",
+      "fecha_creacion": "2026-06-09",
+      "total_tags": 1,
+      "estado": "codigos_generados"
+    },
+    {
+      "id": "QUIE-TAR-2025-001",
+      "modelo": "Tarjetero Origen",
+      "color": "Verde profundo",
+      "talla": "Única",
+      "cantidad": 3,
+      "fecha_produccion": "2025-11-18",
+      "estado": "activo",
+      "created_at": "2025-11-18T10:00:00.000Z"
+    }
+  ]
+}

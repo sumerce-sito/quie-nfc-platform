@@ -1,0 +1,94 @@
+{
+  "codigos": [
+    {
+      "id": 1,
+      "codigo_nfc": "QUIE-6AW7S5-97",
+      "lote_id": "QUIE-TARJ-2026-001",
+      "url_landing": "http://localhost:3000/v/QUIE-6AW7S5-97",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "estado": "generado",
+      "fecha_produccion": "2026-06-09",
+      "fecha_activacion": null
+    },
+    {
+      "id": 2,
+      "codigo_nfc": "QUIE-D4UZWW-69",
+      "lote_id": "QUIE-TARJ-2026-001",
+      "url_landing": "http://localhost:3000/v/QUIE-D4UZWW-69",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "estado": "generado",
+      "fecha_produccion": "2026-06-09",
+      "fecha_activacion": null
+    },
+    {
+      "id": 3,
+      "codigo_nfc": "QUIE-82GXXC-20",
+      "lote_id": "QUIE-TARJ-2026-001",
+      "url_landing": "http://localhost:3000/v/QUIE-82GXXC-20",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "estado": "generado",
+      "fecha_produccion": "2026-06-09",
+      "fecha_activacion": null
+    },
+    {
+      "id": 4,
+      "codigo_nfc": "QUIE-GLXNYP-82",
+      "lote_id": "QUIE-TARJ-2026-002",
+      "url_landing": "https://127.0.0.1:3117/v/QUIE-GLXNYP-82",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "estado": "generado",
+      "fecha_produccion": "2026-06-09",
+      "fecha_activacion": null
+    },
+    {
+      "id": 5,
+      "codigo_nfc": "QUIE-7SYMC2-21",
+      "lote_id": "QUIE-TARJ-2026-003",
+      "url_landing": "https://quie-nfc-platform.vercel.app/v/QUIE-7SYMC2-21",
+      "modelo": "Tarjetero",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "estado": "generado",
+      "fecha_produccion": "2026-06-09",
+      "fecha_activacion": null
+    },
+    {
+      "codigo_nfc": "QUIE-A7B3X9-42",
+      "modelo": "Tarjetero Origen",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "lote_id": "QUIE-TAR-2025-001",
+      "fecha_produccion": "2025-11-18",
+      "estado": "activo",
+      "foto_producto": "/assets/quie/productos/tarjetero.png"
+    },
+    {
+      "codigo_nfc": "QUIE-B8K2M5-47",
+      "modelo": "Billetera Tierra",
+      "color": "Cuero oscuro",
+      "talla": "Unica",
+      "lote_id": "QUIE-TAR-2025-001",
+      "fecha_produccion": "2025-11-18",
+      "estado": "activo",
+      "foto_producto": "/assets/quie/productos/billetera.png"
+    },
+    {
+      "codigo_nfc": "QUIE-C9P4T7-51",
+      "modelo": "Correa Selva",
+      "color": "Verde profundo",
+      "talla": "Unica",
+      "lote_id": "QUIE-TAR-2025-001",
+      "fecha_produccion": "2025-11-18",
+      "estado": "activo",
+      "foto_producto": "/assets/quie/productos/correa.png"
+    }
+  ]
+}

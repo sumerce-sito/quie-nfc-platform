@@ -88,14 +88,25 @@ const DB_DEFAULTS = {
   lotes:     { lotes: [] }
 };
 
+const DB_CACHE = {};
+
 function leerDB(n) {
+  if (IS_VERCEL && DB_CACHE[n]) return DB_CACHE[n];
   try {
-    return JSON.parse(fs.readFileSync(DB(n), 'utf8'));
+    const data = JSON.parse(fs.readFileSync(DB(n), 'utf8'));
+    if (IS_VERCEL) DB_CACHE[n] = data;
+    return data;
   } catch (_) {
-    return structuredClone(DB_DEFAULTS[n] || {});
+    const def = structuredClone(DB_DEFAULTS[n] || {});
+    if (IS_VERCEL) DB_CACHE[n] = def;
+    return def;
   }
 }
-const guardarDB = (n, d) => fs.writeFileSync(DB(n), JSON.stringify(d, null, 2));
+
+function guardarDB(n, d) {
+  if (IS_VERCEL) { DB_CACHE[n] = d; return; }
+  fs.writeFileSync(DB(n), JSON.stringify(d, null, 2));
+}
 fs.mkdirSync(CLIENTE_FOTOS, { recursive: true });
 fs.mkdirSync(PRODUCTO_FOTOS, { recursive: true });
 

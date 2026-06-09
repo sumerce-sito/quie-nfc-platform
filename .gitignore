@@ -5,6 +5,7 @@ servidor.log
 codigos_csv/
 reportes/
 auditoria/
-base_datos/
+# base_datos/ — tracked so Vercel has initial data
+base_datos/clientes.json
 uploads/
 dist/

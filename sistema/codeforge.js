@@ -25,12 +25,11 @@ function leerJsonSeguro(file, fallback) {
 }
 
 function escribirJsonSeguro(file, data) {
+  if (IS_VERCEL) return;
   try {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, JSON.stringify(data, null, 2));
-  } catch (_) {
-    // En Vercel esto es best-effort hasta conectar Aurora/DynamoDB.
-  }
+  } catch (_) {}
 }
 
 function calcularChecksum(codigo6) {
