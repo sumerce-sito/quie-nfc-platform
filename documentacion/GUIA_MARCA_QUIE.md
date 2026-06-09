@@ -179,6 +179,47 @@ Mensaje recomendado:
 
 > Cada pieza QUIE puede contar su propia historia. Escanea, descubre su origen y verifica su autenticidad.
 
+## Estado del proyecto — 2026-06-09
+
+### Lo que funciona hoy
+
+- Servidor Express local completamente operativo en `sistema/servidor.js`
+- Autenticacion admin: usuario `quie_admin`, contrasena en `.env` (no sube a git)
+- Panel admin (`/admin`): crear lotes, ver lotes, gestionar productos, ver clientes, estadisticas
+- Flujo NFC completo: escaneo → autenticidad → registro de cliente con foto
+- Tres estados de escaneo: autentico (primera vez), rescan, sospechoso (50+ escaneos)
+- Pagina `/origen` con animacion typewriter de una sola vez por dispositivo
+- Catalogo publico en `/catalogo` sin precios, con cotizacion por WhatsApp
+- Demo en `/v/demo?tipo=autentico|rescan|sospechoso`
+- Textura de cuero en paginas de escaneo
+- Deploy en Vercel funcionando (URL produccion activa)
+
+### Limitacion conocida en Vercel
+
+Vercel es serverless — el sistema de archivos es de solo lectura. Los datos creados desde el panel (lotes, clientes, escaneos) viven en memoria mientras la instancia este activa y se pierden al reciclar. Los datos iniciales vienen de `base_datos/*.json` commiteados en git.
+
+**Solucion pendiente:** conectar AWS DynamoDB o Aurora. Solo hay que reemplazar `leerDB()` y `guardarDB()` en `sistema/servidor.js` con llamadas al SDK de AWS. El resto del codigo no cambia.
+
+### Datos de demo en produccion
+
+Codigos NFC activos para mostrar:
+- `QUIE-A7B3X9-42` → Tarjetero Origen, Verde profundo
+- `QUIE-B8K2M5-47` → Billetera Tierra, Cuero oscuro
+- `QUIE-C9P4T7-51` → Correa Selva, Verde profundo
+
+URL de acceso rapido: `/v/QUIE-A7B3X9-42`
+
+Demo sin chip fisico: `/v/demo?tipo=autentico`, `/v/demo?tipo=rescan`, `/v/demo?tipo=sospechoso`
+
+### Proximos pasos
+
+1. Conectar AWS DynamoDB (reemplazar `leerDB`/`guardarDB`)
+2. Subir fotos de producto reales a `/assets/quie/productos/`
+3. Configurar dominio propio en Vercel
+4. Agregar mas modelos al catalogo desde el panel admin
+
+---
+
 ## Checklist para nuevas pantallas
 
 - Usa logo desde `logos y marcas/`.
