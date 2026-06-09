@@ -373,37 +373,37 @@
 
     <div class="acciones-grid">
       <div class="accion-card destacada" onclick="irA('p-nuevo-lote'); wizardPaso(1)">
-        <div class="accion-icon">📦</div>
+        <div class="accion-icon">◇</div>
         <h3>Crear lote de piezas</h3>
         <p>Registra un nuevo grupo de piezas y genera los códigos únicos para cada una.</p>
         <div class="accion-arrow">Comenzar →</div>
       </div>
       <div class="accion-card" onclick="irA('p-programar')">
-        <div class="accion-icon">📡</div>
+        <div class="accion-icon">NFC</div>
         <h3>Programar tags NFC</h3>
         <p>Escribe los chips de las piezas con tu teléfono Android. Proceso guiado paso a paso.</p>
         <div class="accion-arrow">Ir a programar →</div>
       </div>
       <div class="accion-card" onclick="irA('p-lotes')">
-        <div class="accion-icon">📋</div>
+        <div class="accion-icon">ID</div>
         <h3>Ver mis lotes</h3>
         <p>Revisa el estado de todos tus lotes: cuántos están activos, pendientes o en proceso.</p>
         <div class="accion-arrow">Ver lotes →</div>
       </div>
       <div class="accion-card" onclick="irA('p-catalogo')">
-        <div class="accion-icon">🧢</div>
+        <div class="accion-icon">QUIE</div>
         <h3>Catalogo de accesorios</h3>
         <p>Crea modelos con descripciones comerciales para mostrar en la página pública.</p>
         <div class="accion-arrow">Editar catálogo →</div>
       </div>
       <div class="accion-card" onclick="irA('p-estadisticas')">
-        <div class="accion-icon">📊</div>
+        <div class="accion-icon">%</div>
         <h3>Estadísticas</h3>
         <p>¿Cuántas piezas se han verificado? ¿Desde dónde? Aquí están los datos.</p>
         <div class="accion-arrow">Ver datos →</div>
       </div>
       <div class="accion-card" onclick="irA('p-clientes')" style="grid-column:1/-1;">
-        <div class="accion-icon">👥</div>
+        <div class="accion-icon">CRM</div>
         <h3>Clientes registrados <span id="r-clientes-badge" style="display:none;background:var(--dorado);color:#000;font-size:.65rem;padding:2px 8px;border-radius:10px;font-weight:900;margin-left:8px;vertical-align:middle;"></span></h3>
         <p>Personas que registraron su pieza al escanear el chip NFC. Base de datos para tu CRM y marketing directo.</p>
         <div class="accion-arrow">Ver clientes →</div>
@@ -443,30 +443,30 @@
       <div class="campo-grupo">
         <label>¿Qué modelo son?</label>
         <div class="opciones-grid" id="op-modelo">
-          <div class="opcion" data-val="Accesorio" onclick="seleccionarOpcion('modelo',this)">
-            <span class="opcion-ico">🧢</span>
-            <div class="opcion-nom">Accesorio</div>
-            <div class="opcion-sub">Cierre trasero</div>
+          <div class="opcion" data-val="Tarjetero" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">T</span>
+            <div class="opcion-nom">Tarjetero</div>
+            <div class="opcion-sub">Formato mínimo</div>
           </div>
-          <div class="opcion" data-val="Trucker" onclick="seleccionarOpcion('modelo',this)">
-            <span class="opcion-ico">🎩</span>
-            <div class="opcion-nom">Trucker</div>
-            <div class="opcion-sub">Con malla</div>
+          <div class="opcion" data-val="Billetera" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">B</span>
+            <div class="opcion-nom">Billetera</div>
+            <div class="opcion-sub">Uso diario</div>
           </div>
-          <div class="opcion" data-val="Beisbolera" onclick="seleccionarOpcion('modelo',this)">
-            <span class="opcion-ico">⛺</span>
-            <div class="opcion-nom">Beisbolera</div>
-            <div class="opcion-sub">Clásica 6 panel</div>
+          <div class="opcion" data-val="Llavero NFC" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">NFC</span>
+            <div class="opcion-nom">Llavero NFC</div>
+            <div class="opcion-sub">Autenticidad visible</div>
           </div>
-          <div class="opcion" data-val="Panel 5" onclick="seleccionarOpcion('modelo',this)">
-            <span class="opcion-ico">🏴</span>
-            <div class="opcion-nom">Panel 5</div>
-            <div class="opcion-sub">Asimétrica</div>
+          <div class="opcion" data-val="Correa" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">C</span>
+            <div class="opcion-nom">Correa</div>
+            <div class="opcion-sub">Cuero y herraje</div>
           </div>
-          <div class="opcion" data-val="Plana" onclick="seleccionarOpcion('modelo',this)">
-            <span class="opcion-ico">🔲</span>
-            <div class="opcion-nom">Plana</div>
-            <div class="opcion-sub">Visera recta</div>
+          <div class="opcion" data-val="Bolso mini" onclick="seleccionarOpcion('modelo',this)">
+            <span class="opcion-ico">BM</span>
+            <div class="opcion-nom">Bolso mini</div>
+            <div class="opcion-sub">Edición limitada</div>
           </div>
         </div>
       </div>
@@ -475,20 +475,20 @@
         <label>¿De qué color?</label>
         <div class="opciones-grid" id="op-color">
           <div class="opcion" data-val="Negro/Dorado" onclick="seleccionarOpcion('color',this)">
-            <span class="opcion-ico">⚫</span>
-            <div class="opcion-nom">Negro / Dorado</div>
+            <span class="opcion-ico">●</span>
+            <div class="opcion-nom">Negro carbón / Dorado</div>
           </div>
           <div class="opcion" data-val="Negro/Blanco" onclick="seleccionarOpcion('color',this)">
-            <span class="opcion-ico">🖤</span>
-            <div class="opcion-nom">Negro / Blanco</div>
+            <span class="opcion-ico">□</span>
+            <div class="opcion-nom">Marfil / Negro</div>
           </div>
-          <div class="opcion" data-val="Azul Rey/Dorado" onclick="seleccionarOpcion('color',this)">
-            <span class="opcion-ico">🔵</span>
-            <div class="opcion-nom">Azul Rey / Dorado</div>
+          <div class="opcion" data-val="Verde Selva/Dorado" onclick="seleccionarOpcion('color',this)">
+            <span class="opcion-ico">◆</span>
+            <div class="opcion-nom">Verde selva / Dorado</div>
           </div>
-          <div class="opcion" data-val="Rojo/Blanco" onclick="seleccionarOpcion('color',this)">
-            <span class="opcion-ico">🔴</span>
-            <div class="opcion-nom">Rojo / Blanco</div>
+          <div class="opcion" data-val="Terracota/Arcilla" onclick="seleccionarOpcion('color',this)">
+            <span class="opcion-ico">■</span>
+            <div class="opcion-nom">Terracota / Arcilla</div>
           </div>
         </div>
       </div>
@@ -523,7 +523,7 @@
       <div class="btns-fila">
         <button class="btn-secundario" onclick="wizardPaso(1)">← Corregir</button>
         <button class="btn-primario" id="btn-crear" onclick="crearLote()">
-          ✅ Crear lote ahora
+          Crear lote ahora →
         </button>
       </div>
     </div>
@@ -531,7 +531,7 @@
     <!-- PASO 3: ÉXITO -->
     <div id="wizard-p3" style="display:none">
       <div class="exito-box">
-        <span class="exito-ico">🎉</span>
+        <span class="exito-ico">QUIE</span>
         <h2>¡Lote creado!</h2>
         <p>
           Se generaron <strong id="e-cantidad" style="color:var(--dorado)">0</strong> códigos únicos
@@ -554,11 +554,11 @@
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;max-width:340px;margin:0 auto;">
           <button class="btn-primario" id="btn-descargar-csv">
-            📥 Descargar archivo de códigos
+            Descargar archivo de códigos
           </button>
           <button class="btn-primario" style="background:var(--azul);color:var(--blanco);"
             onclick="irA('p-programar')">
-            📡 Ir a programar los tags NFC
+            Ir a programar los tags NFC
           </button>
           <button class="btn-secundario" onclick="irA('p-inicio');cargarInicio()">
             Volver al inicio
@@ -578,7 +578,7 @@
 
     <!-- TARJETA PRINCIPAL: URL para Android -->
     <div style="background:var(--gris2);border:2px solid rgba(201,168,76,.3);border-radius:16px;padding:28px;margin-bottom:16px;">
-      <div style="font-size:2.5rem;margin-bottom:12px;text-align:center;">📱</div>
+        <div style="font-size:2rem;margin-bottom:12px;text-align:center;letter-spacing:.12em;">NFC</div>
       <h3 style="font-size:1rem;font-weight:800;text-align:center;margin-bottom:20px;">Abre esto en tu Android</h3>
       <div class="qr-box" id="qr-android">
         <img id="qr-android-img" alt="QR para abrir la pantalla de escritura NFC">
@@ -597,12 +597,12 @@
         style="width:100%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);
         color:var(--dorado);padding:10px;border-radius:8px;font-size:.82rem;font-weight:700;
         cursor:pointer;margin-bottom:20px;transition:background .2s;">
-        📋 Copiar dirección
+        Copiar dirección
       </button>
 
       <!-- Aviso si es localhost -->
       <div id="aviso-localhost" style="display:none;background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.3);border-radius:8px;padding:10px 14px;font-size:.76rem;color:#e67e22;margin-bottom:16px;line-height:1.6;">
-        ⚠️ Se detectó <strong>localhost</strong> — esto solo funciona en este mismo PC.<br/>
+        Atención: se detectó <strong>localhost</strong> — esto solo funciona en este mismo PC.<br/>
         Para usarlo desde el Android, actualiza <code>BASE_URL</code> en el archivo <code>.env</code> con la IP de tu PC.
       </div>
 
@@ -659,7 +659,7 @@
       </button>
     </div>
     <div id="lista-lotes">
-      <div class="empty"><span class="empty-ico">📦</span><p>Cargando lotes...</p></div>
+      <div class="empty"><span class="empty-ico">◇</span><p>Cargando lotes...</p></div>
     </div>
   </div>
 
@@ -684,7 +684,7 @@
     <div class="stats-seccion">
       <h3>Últimas verificaciones</h3>
       <div id="ultimos-escaneos">
-        <div class="empty"><span class="empty-ico">📡</span><p>Sin verificaciones aún.<br/>Cuando alguien escanee una pieza, aparecerá aquí.</p></div>
+        <div class="empty"><span class="empty-ico">NFC</span><p>Sin verificaciones aún.<br/>Cuando alguien escanee una pieza, aparecerá aquí.</p></div>
       </div>
     </div>
   </div>
@@ -701,19 +701,19 @@
       </div>
       <button class="btn-primario" style="flex:unset;padding:10px 16px;font-size:.78rem;"
         id="btn-exportar-crm">
-        📥 Exportar CSV
+        Exportar CSV
       </button>
     </div>
 
     <div class="crm-barra">
       <input class="crm-search" type="search" id="crm-search"
-        placeholder="🔍 Buscar por nombre, WhatsApp, ciudad..."
+        placeholder="Buscar por nombre, WhatsApp, ciudad..."
         autocomplete="off"/>
       <span class="crm-total" id="crm-total"></span>
     </div>
 
     <div id="lista-clientes">
-      <div class="empty"><span class="empty-ico">👥</span>
+      <div class="empty"><span class="empty-ico">CRM</span>
         <p>Aún no hay clientes registrados.<br/>Cuando alguien registre su pieza al escanear el NFC, aparecerá aquí.</p>
       </div>
     </div>
@@ -728,15 +728,15 @@
       <input id="cat-id" type="hidden">
       <div>
         <label>Nombre</label>
-        <input id="cat-nombre" type="text" placeholder="Ej: Accesorio Negro/Dorado" maxlength="80">
+        <input id="cat-nombre" type="text" placeholder="Ej: Tarjetero Terracota" maxlength="80">
       </div>
       <div>
         <label>Modelo</label>
-        <input id="cat-modelo" type="text" placeholder="Ej: Pieza Rapera, Plana Premium, Trucker Malla" maxlength="80">
+        <input id="cat-modelo" type="text" placeholder="Ej: Tarjetero, Billetera, Llavero NFC" maxlength="80">
       </div>
       <div>
         <label>Color</label>
-        <input id="cat-color" type="text" placeholder="Ej: Negro/Dorado" maxlength="50">
+        <input id="cat-color" type="text" placeholder="Ej: Terracota/Dorado" maxlength="50">
       </div>
       <div>
         <label>Estado</label>
@@ -755,7 +755,7 @@
       </div>
       <div>
         <label>Materiales</label>
-        <input id="cat-materiales" type="text" placeholder="Drill, malla, broche ajustable...">
+        <input id="cat-materiales" type="text" placeholder="Cuero legitimo, herraje dorado, forro textil...">
       </div>
       <div>
         <label>Ideal para</label>
@@ -824,12 +824,13 @@ function toast(msg, color) {
 // ── Pantalla INICIO ──────────────────────────────────────────────────────────
 function iconoModelo(modelo) {
   return {
-    Accesorio: '🧢',
-    Trucker: '🎩',
-    Beisbolera: '⛺',
-    'Panel 5': '◼',
-    Plana: '▰'
-  }[modelo] || '🧢';
+    Tarjetero: 'T',
+    Billetera: 'B',
+    'Llavero NFC': 'NFC',
+    Correa: 'C',
+    'Bolso mini': 'BM',
+    Accesorio: 'QUIE'
+  }[modelo] || 'QUIE';
 }
 
 async function cargarOpcionesCatalogo() {
@@ -887,7 +888,7 @@ async function cargarInicio() {
   if (data.alertas_activas > 0) {
     document.getElementById('alerta-banner').classList.add('visible');
     document.getElementById('alerta-txt').textContent =
-      '⚠️ Hay ' + data.alertas_activas + ' alerta(s) de autenticidad activa(s). Revisa tus lotes.';
+      'Hay ' + data.alertas_activas + ' alerta(s) de autenticidad activa(s). Revisa tus lotes.';
     document.getElementById('notif-dot').style.display = 'block';
   }
 }
@@ -896,7 +897,7 @@ async function cargarInicio() {
 async function cargarSesion() {
   const data = await api('/auth/verify');
   if (!data) return;
-  document.getElementById('topbar-user').textContent = '👤 ' + data.usuario;
+  document.getElementById('topbar-user').textContent = data.usuario;
 }
 
 document.getElementById('btn-logout').addEventListener('click', async function() {
@@ -973,10 +974,10 @@ async function crearLote() {
   });
 
   btn.disabled = false;
-  btn.textContent = '✅ Crear lote ahora';
+  btn.textContent = 'Crear lote ahora →';
 
   if (!data || data.error) {
-    toast('❌ ' + (data?.error || 'Error al crear el lote'), 'var(--rojo)');
+    toast((data?.error || 'Error al crear el lote'), 'var(--rojo)');
     return;
   }
 
@@ -994,7 +995,7 @@ async function cargarLotes() {
   const lotes = await api('/lotes');
   const cont  = document.getElementById('lista-lotes');
   if (!lotes || !lotes.length) {
-    cont.innerHTML = '<div class="empty"><span class="empty-ico">📦</span><p>Todavía no has creado ningún lote.<br/>Empieza creando uno desde el inicio.</p></div>';
+    cont.innerHTML = '<div class="empty"><span class="empty-ico">◇</span><p>Todavía no has creado ningún lote.<br/>Empieza creando uno desde el inicio.</p></div>';
     return;
   }
 
@@ -1033,7 +1034,7 @@ async function activarLote(id) {
     body: JSON.stringify({ estado: 'activo' })
   });
   if (data && !data.error) {
-    toast('✅ Lote activado correctamente');
+    toast('Lote activado correctamente');
     cargarLotes();
   }
 }
@@ -1078,7 +1079,7 @@ async function cargarEstadisticas() {
         &nbsp;·&nbsp;${e.dispositivo}
         &nbsp;
         <span style="color:${e.es_primer_escaneo ? 'var(--verde)' : 'var(--dorado)'};font-weight:700;">
-          ${e.es_primer_escaneo ? '✅ 1er escaneo' : '🔄 Re-scan'}
+          ${e.es_primer_escaneo ? '1er escaneo' : 'Re-scan'}
         </span>
       </div>
     </div>`).join('');
@@ -1098,28 +1099,28 @@ async function cargarClientes(q) {
   total.textContent = data.total + ' clientes en total';
 
   if (!data.clientes.length) {
-    cont.innerHTML = '<div class="empty"><span class="empty-ico">👥</span>' +
+    cont.innerHTML = '<div class="empty"><span class="empty-ico">CRM</span>' +
       '<p>' + (q ? 'Sin resultados para "' + q + '"' : 'Aún no hay clientes registrados.') + '</p></div>';
     return;
   }
 
   cont.innerHTML = data.clientes.map(function(c) {
     const tel = c.whatsapp ? '57' + c.whatsapp : '';
-    const msg = encodeURIComponent('Hola ' + c.nombre + ', te escribe QUIE® 👋');
+    const msg = encodeURIComponent('Hola ' + c.nombre + ', te escribe QUIE®');
     const fecha = new Date(c.fecha_registro).toLocaleDateString('es-CO', { dateStyle: 'medium' });
     return '<div class="cliente-card">' +
       '<div>' +
         '<div class="cli-nombre">' + c.nombre + '</div>' +
         '<div class="cli-meta">' +
-          (c.whatsapp ? '<span class="cli-tag">📱 ' + c.whatsapp + '</span>' : '') +
+          (c.whatsapp ? '<span class="cli-tag">Tel ' + c.whatsapp + '</span>' : '') +
           (c.ciudad   ? '<span class="cli-tag">📍 ' + c.ciudad + '</span>' : '') +
-          (c.email    ? '<span class="cli-tag">✉️ ' + c.email + '</span>' : '') +
+          (c.email    ? '<span class="cli-tag">Mail ' + c.email + '</span>' : '') +
         '</div>' +
         '<div class="cli-pieza">' + c.codigo_nfc + ' · ' + c.modelo + ' ' + c.color + '</div>' +
-        (c.foto_gorra ? '<br><a class="cli-foto" href="' + c.foto_gorra + '" target="_blank">Ver foto de la pieza</a>' : '') +
+        (c.foto_pieza ? '<br><a class="cli-foto" href="' + c.foto_pieza + '" target="_blank">Ver foto de la pieza</a>' : '') +
       '</div>' +
       '<div class="cli-acciones">' +
-        (tel ? '<a class="btn-wsp" href="https://wa.me/' + tel + '?text=' + msg + '" target="_blank">💬 WhatsApp</a>' : '') +
+        (tel ? '<a class="btn-wsp" href="https://wa.me/' + tel + '?text=' + msg + '" target="_blank">WhatsApp</a>' : '') +
         '<div class="cli-fecha">' + fecha + '</div>' +
       '</div>' +
     '</div>';
@@ -1137,7 +1138,7 @@ document.getElementById('crm-search').addEventListener('input', function() {
 // Exportar CSV
 document.getElementById('btn-exportar-crm').addEventListener('click', function() {
   if (!todosClientes.length) { toast('Sin datos para exportar', 'var(--naranja)'); return; }
-  const cols = ['nombre','whatsapp','ciudad','email','codigo_nfc','modelo','color','foto_gorra','fecha_registro'];
+  const cols = ['nombre','whatsapp','ciudad','email','codigo_nfc','modelo','color','foto_pieza','fecha_registro'];
   const csv  = [cols.join(',')]
     .concat(todosClientes.map(function(c) {
       return cols.map(function(k) { return '"' + (c[k] || '').replace(/"/g, '""') + '"'; }).join(',');
@@ -1149,7 +1150,7 @@ document.getElementById('btn-exportar-crm').addEventListener('click', function()
   a.href = url; a.download = 'clientes_chl_' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
   URL.revokeObjectURL(url);
-  toast('✅ CSV exportado');
+  toast('CSV exportado');
 });
 
 // ── URL Android ──────────────────────────────────────────────────────────────
@@ -1157,7 +1158,7 @@ async function cargarProductos() {
   const productos = await api('/productos');
   const cont = document.getElementById('lista-productos');
   if (!productos || !productos.length) {
-    cont.innerHTML = '<div class="empty"><span class="empty-ico">🧢</span><p>No hay productos en el catálogo.</p></div>';
+    cont.innerHTML = '<div class="empty"><span class="empty-ico">QUIE</span><p>No hay productos en el catálogo.</p></div>';
     return;
   }
 
@@ -1290,8 +1291,8 @@ function copiarUrl() {
   const url = document.getElementById('url-android').textContent;
   navigator.clipboard.writeText(url).then(function() {
     const btn = document.getElementById('btn-copiar-url');
-    btn.textContent = '✅ ¡Copiado!';
-    setTimeout(function() { btn.textContent = '📋 Copiar dirección'; }, 2000);
+    btn.textContent = 'Copiado';
+    setTimeout(function() { btn.textContent = 'Copiar dirección'; }, 2000);
   }).catch(function() {
     // fallback para contextos sin clipboard API
     const ta = document.createElement('textarea');
@@ -1300,7 +1301,7 @@ function copiarUrl() {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    toast('✅ URL copiada');
+    toast('URL copiada');
   });
 }
 

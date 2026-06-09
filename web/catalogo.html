@@ -83,11 +83,12 @@
 
 <script>
 const iconos = {
-  Accesorio: '🧢',
-  Trucker: '🎩',
-  Beisbolera: '⛺',
-  'Panel 5': '◼',
-  Plana: '▰'
+  Tarjetero: 'T',
+  Billetera: 'B',
+  'Llavero NFC': 'NFC',
+  Correa: 'C',
+  'Bolso mini': 'BM',
+  Accesorio: 'QUIE'
 };
 let productos = [];
 let filtro = 'Todos';
@@ -118,7 +119,7 @@ function renderCatalogo() {
   cont.innerHTML = lista.map(p => {
     const msg = encodeURIComponent('Hola QUIE®, quiero cotizar: ' + p.nombre);
     return '<article class="card">' +
-      '<div class="visual">' + (p.foto_producto ? '<img src="' + p.foto_producto + '" alt="' + p.nombre + '">' : (iconos[p.modelo] || '🧢')) + '</div>' +
+      '<div class="visual">' + (p.foto_producto ? '<img src="' + p.foto_producto + '" alt="' + p.nombre + '">' : (iconos[p.modelo] || 'QUIE')) + '</div>' +
       '<div class="body">' +
         '<div class="meta">' +
           '<span class="pill">' + (p.modelo || 'Pieza') + '</span>' +

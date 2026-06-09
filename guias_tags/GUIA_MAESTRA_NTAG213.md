@@ -24,8 +24,8 @@
 | App | Sistema | Gratuita |
 |-----|---------|----------|
 | **NFC Tools Pro** | Android / iOS | No (vale la pena) |
-| **NFC TagWriter by NXP** | Android | ✅ Sí |
-| **NFC.cool Tools** | iOS | ✅ Sí |
+| **NFC TagWriter by NXP** | Android | OK Sí |
+| **NFC.cool Tools** | iOS | OK Sí |
 
 ### Para verificar (control de calidad):
 - **NFC Tools** (leer y confirmar URL escrita)
@@ -67,10 +67,10 @@
 
 1. Acercar el tag NFC al lector del teléfono (zona posterior, centro o parte superior según modelo)
 2. Mantener el teléfono **quieto y plano** sobre el tag durante 1–2 segundos
-3. Esperar la confirmación de la app: **"Tag written successfully"** ✅
+3. Esperar la confirmación de la app: **"Tag written successfully"** OK
 4. Si falla: volver a intentar — no mover el teléfono mientras escribe
 
-> ⚠️ Si el tag no responde después de 3 intentos, puede ser un tag defectuoso. Separar y reportar.
+> Atención: Si el tag no responde después de 3 intentos, puede ser un tag defectuoso. Separar y reportar.
 
 ---
 
@@ -80,7 +80,7 @@
 2. Acercar el mismo tag al teléfono con NFC activado
 3. Debe aparecer la notificación del navegador con la URL de autenticidad QUIE
 4. Confirmar que la URL corresponde al código correcto del CSV
-5. Marcar ese tag como ✅ verificado en la lista
+5. Marcar ese tag como OK verificado en la lista
 
 ---
 
@@ -96,7 +96,7 @@ Una vez verificado, **bloquear el tag** para que nadie pueda sobreescribir la UR
 1. Ir a **"Other functions"** → **"Lock tag"**
 2. Confirmar bloqueo
 
-> ⚠️ BLOQUEAR solo después de verificar que la URL es correcta. Un tag bloqueado con URL incorrecta debe descartarse.
+> Atención: BLOQUEAR solo después de verificar que la URL es correcta. Un tag bloqueado con URL incorrecta debe descartarse.
 
 ---
 
@@ -117,9 +117,9 @@ Una vez verificado, **bloquear el tag** para que nadie pueda sobreescribir la UR
 ```
 LOTE: _______________    FECHA: _______________
 
-[ ] Tag #___  URL: QUIE®.com/v/____________  Escrito ✅  Verificado ✅  Bloqueado ✅  Pegado ✅
-[ ] Tag #___  URL: QUIE®.com/v/____________  Escrito ✅  Verificado ✅  Bloqueado ✅  Pegado ✅
-[ ] Tag #___  URL: QUIE®.com/v/____________  Escrito ✅  Verificado ✅  Bloqueado ✅  Pegado ✅
+[ ] Tag #___  URL: QUIE®.com/v/____________  Escrito OK  Verificado OK  Bloqueado OK  Pegado OK
+[ ] Tag #___  URL: QUIE®.com/v/____________  Escrito OK  Verificado OK  Bloqueado OK  Pegado OK
+[ ] Tag #___  URL: QUIE®.com/v/____________  Escrito OK  Verificado OK  Bloqueado OK  Pegado OK
 ```
 
 ---

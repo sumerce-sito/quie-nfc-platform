@@ -214,7 +214,7 @@
     <div class="onda"></div>
     <div class="onda"></div>
     <div class="circulo-centro">
-      <div class="circulo-ico" id="c-ico">📡</div>
+      <div class="circulo-ico" id="c-ico">NFC</div>
       <div class="circulo-sub">NFC</div>
     </div>
   </div>
@@ -252,7 +252,7 @@
 
 <!-- ══ PANTALLA 3: FIN ══ -->
 <div class="screen fuera" id="s-fin">
-  <div class="ico-fin">🎉</div>
+  <div class="ico-fin">QUIE</div>
   <h2>¡Terminaste!</h2>
   <p class="sub-fin" id="fin-desc">Lote programado correctamente.</p>
 
@@ -287,7 +287,7 @@ const tieneNFC = ('NDEFReader' in window);
 if (!tieneNFC) {
   document.getElementById('aviso-nfc').innerHTML =
     '<div class="aviso-nfc">' +
-    '⚠️ Este teléfono no puede escribir chips NFC desde el navegador.<br/><br/>' +
+    'Atención Este teléfono no puede escribir chips NFC desde el navegador.<br/><br/>' +
     '<strong>Necesitas:</strong> Android + Chrome versión 89 o superior.<br/>' +
     'En iPhone no está disponible esta función.' +
     '</div>';
@@ -312,7 +312,7 @@ async function cargarLotes() {
   if (!pendientes.length) {
     cont.innerHTML =
       '<div class="empty-lotes">' +
-      '<span class="ei">📦</span>' +
+      '<span class="ei">◇</span>' +
       '<p>No hay lotes pendientes de programar.<br/>Crea un lote primero desde el panel principal.</p>' +
       '<button class="btn-crear-lote" onclick="window.location.href=\'/admin\'">Ir a crear un lote</button>' +
       '</div>';
@@ -323,7 +323,7 @@ async function cargarLotes() {
     '<button class="lote-btn" data-id="' + l.id + '">' +
     '<h4>' + l.id + '</h4>' +
     '<p>' + l.modelo + ' · ' + l.color + ' · ' + l.temporada + '</p>' +
-    '<div class="pendientes">📦 ' + l.total_tags + ' piezas pendientes</div>' +
+    '<div class="pendientes">◇ ' + l.total_tags + ' piezas pendientes</div>' +
     '</button>'
   ).join('');
 
@@ -339,7 +339,7 @@ async function iniciarLote(loteId) {
   codigos = todos.filter(c => c.estado !== 'activo');
 
   if (!codigos.length) {
-    alert('Todos los tags de este lote ya están escritos. 🎉');
+    alert('Todos los tags de este lote ya están escritos. QUIE');
     return;
   }
 
@@ -386,7 +386,7 @@ async function escribirActual() {
 
     escritos++;
     if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
-    setEstado('ok', '¡Chip listo! ✓', 'Ya puedes retirar la pieza');
+    setEstado('ok', '¡Chip listo! OK', 'Ya puedes retirar la pieza');
 
     setTimeout(() => {
       idx++;
@@ -460,8 +460,8 @@ function setEstado(tipo, titulo, detalle) {
   inst.textContent = titulo;
   det.textContent  = detalle;
 
-  const iconos = { espera:'📡', ok:'✅', error:'❌', escribiendo:'⏳' };
-  ico.textContent = iconos[tipo] || '📡';
+  const iconos = { espera:'NFC', ok:'OK', error:'NO', escribiendo:'...' };
+  ico.textContent = iconos[tipo] || 'NFC';
 }
 
 function mostrarPantalla(id) {

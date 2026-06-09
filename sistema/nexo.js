@@ -39,8 +39,8 @@ function iniciarLote({ modelo, color, talla, cantidad, temporada }) {
   const resultado = generarLote({ lote_id, modelo, color, talla, cantidad, temporada });
   auditoria('CodeForge', 'CODIGOS_GENERADOS', `${cantidad} códigos para ${lote_id}`);
 
-  console.log(`[NEXO] ✅ DataVault: Lote registrado → ${lote_id}`);
-  console.log(`[NEXO] ✅ CodeForge: ${cantidad} códigos generados`);
+  console.log(`[NEXO] OK DataVault: Lote registrado → ${lote_id}`);
+  console.log(`[NEXO] OK CodeForge: ${cantidad} códigos generados`);
   console.log(`[NEXO] 📄 CSV en: ${resultado.csv_path}`);
   console.log(`[NEXO] 🔗 Ejemplo: ${resultado.ejemplo_url}`);
   console.log(`\n[NEXO] Fase 1 completa. Listo para Fase 2 (páginas web).`);

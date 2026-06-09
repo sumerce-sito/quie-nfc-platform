@@ -71,7 +71,7 @@ const uploadFotoCliente = multer({
     }
     cb(null, true);
   }
-}).single('foto_gorra');
+}).single('foto_pieza');
 
 const uploadFotoProducto = multer({
   storage: multer.diskStorage({
@@ -276,7 +276,7 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
     whatsapp:       whatsapp.replace(/\D/g, '').slice(-10), // solo dígitos, últimos 10
     ciudad:         ciudad || '',
     email:          email  || '',
-    foto_gorra:     req.file ? `/uploads/clientes/${req.file.filename}` : '',
+    foto_pieza:     req.file ? `/uploads/clientes/${req.file.filename}` : '',
     fecha_registro: new Date().toISOString(),
     ip_registro:    ip(req),
     fuente:         'nfc_first_scan'
@@ -810,12 +810,12 @@ app.listen(PORT, () => {
 ║   http://localhost:${PORT}                          ║
 ║                                                  ║
 ║   Seguridad activa:                              ║
-║   ✅ Helmet CSP/HSTS/XSS/noSniff               ║
-║   ✅ Rate limiting (general + login + NFC)      ║
-║   ✅ JWT httpOnly cookie (2h)                   ║
-║   ✅ Brute-force protection (5 intentos/15min)  ║
-║   ✅ Input validation en todos los endpoints    ║
-║   ✅ Auditoría de eventos de seguridad          ║
+║   OK Helmet CSP/HSTS/XSS/noSniff               ║
+║   OK Rate limiting (general + login + NFC)      ║
+║   OK JWT httpOnly cookie (2h)                   ║
+║   OK Brute-force protection (5 intentos/15min)  ║
+║   OK Input validation en todos los endpoints    ║
+║   OK Auditoría de eventos de seguridad          ║
 ╚══════════════════════════════════════════════════╝
   `);
 });

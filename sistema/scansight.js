@@ -162,7 +162,7 @@ function generarRecomendaciones(metricas, alertas) {
     recomendaciones.push('🚨 Investigar códigos con alta frecuencia de escaneo — posible red de falsificación');
   }
   if (alertas.some(a => a.tipo === 'BAJA_CIRCULACION')) {
-    recomendaciones.push('📦 Revisar distribución — hay lotes con baja o nula circulación');
+    recomendaciones.push('◇ Revisar distribución — hay lotes con baja o nula circulación');
   }
   if (metricas.top_modelos.length > 0) {
     const top = metricas.top_modelos[0];

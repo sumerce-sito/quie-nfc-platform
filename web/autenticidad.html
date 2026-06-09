@@ -384,7 +384,7 @@
       <div class="ring-anim"></div>
       <div class="ring-anim"></div>
       <div class="sello-ico-wrap" id="sello-ico-wrap">
-        <span class="sello-ico" id="sello-ico">⏳</span>
+        <span class="sello-ico" id="sello-ico">...</span>
       </div>
     </div>
     <div class="sello-titulo" id="sello-titulo">Verificando...</div>
@@ -449,7 +449,7 @@
     <!-- Formulario pendiente -->
     <div class="registro-card pendiente" id="reg-form-card">
       <div class="reg-header">
-        <div class="reg-icon">🏷️</div>
+        <div class="reg-icon">ID</div>
         <div>
           <h3>Registra tu pieza</h3>
           <p>Activa la garantía y recibe ofertas exclusivas de QUIE® directamente en tu WhatsApp.</p>
@@ -479,7 +479,7 @@
       <div class="reg-campo">
         <label>Foto de la pieza <span class="opcional">(opcional)</span></label>
         <label class="foto-input" for="reg-foto">
-          <span class="foto-icon">📷</span>
+          <span class="foto-icon">Foto</span>
           <span class="foto-copy">
             <strong>Tomar o subir foto</strong>
             <span id="reg-foto-nombre">JPG, PNG o WebP. Máximo 4 MB.</span>
@@ -505,7 +505,7 @@
 
     <!-- Éxito -->
     <div class="registro-card ok" id="reg-ok-card" style="display:none;">
-      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <div style="font-size:48px;margin-bottom:12px;">QUIE</div>
       <h3 style="color:var(--verde);font-size:1rem;font-weight:900;margin-bottom:8px;">¡Pieza registrada!</h3>
       <p style="font-size:.82rem;color:#666;line-height:1.7;">
         Bienvenido a la familia QUIE®.<br/>
@@ -516,7 +516,7 @@
     <!-- Ya registrado -->
     <div class="registro-card" id="reg-ya-card"
       style="display:none;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.12);text-align:center;">
-      <div style="font-size:32px;margin-bottom:8px;">✅</div>
+      <div style="font-size:32px;margin-bottom:8px;">OK</div>
       <p style="font-size:.8rem;color:#666;">Esta pieza ya tiene un propietario registrado.</p>
     </div>
 
@@ -536,25 +536,25 @@
   <!-- ── REDES SOCIALES ── -->
   <div class="redes-titulo">Síguenos</div>
   <div class="redes-grid">
-    <a class="red-btn" href="https://instagram.com/QUIE®" target="_blank">📸 Instagram</a>
-    <a class="red-btn" href="https://tiktok.com/@QUIE®" target="_blank">🎵 TikTok</a>
-    <a class="red-btn" href="https://facebook.com/quie" target="_blank">📘 Facebook</a>
-    <a class="red-btn" href="https://wa.me/573014586841" target="_blank">💬 WhatsApp</a>
+    <a class="red-btn" href="https://instagram.com/QUIE®" target="_blank">Instagram Instagram</a>
+    <a class="red-btn" href="https://tiktok.com/@QUIE®" target="_blank">TikTok TikTok</a>
+    <a class="red-btn" href="https://facebook.com/quie" target="_blank">Facebook Facebook</a>
+    <a class="red-btn" href="https://wa.me/573014586841" target="_blank">WhatsApp WhatsApp</a>
   </div>
 
   <!-- ── CONTACTO ── -->
   <div class="card">
     <div class="card-titulo">Contacto</div>
     <div class="contacto-row">
-      <div class="c-ico">📱</div>
+      <div class="c-ico">Tel</div>
       <a href="https://wa.me/573014586841">301 4586841 (WhatsApp)</a>
     </div>
     <div class="contacto-row">
-      <div class="c-ico">✉️</div>
+      <div class="c-ico">Mail</div>
       <a href="mailto:chloe290711@gmail.com">chloe290711@gmail.com</a>
     </div>
     <div class="contacto-row">
-      <div class="c-ico">📍</div>
+      <div class="c-ico">Lugar</div>
       <span style="font-size:.8rem;color:#666;">Cra 7 #8-12 Centro, Fusagasugá, Colombia</span>
     </div>
   </div>
@@ -598,7 +598,7 @@
     if (tipo === 'autentico') {
       ring.className = 'sello-ring verde';
       icoWrap.className = 'sello-ico-wrap verde';
-      ico.textContent = '✅';
+      ico.textContent = 'OK';
       titulo.className = 'sello-titulo verde';
       titulo.textContent = 'PRODUCTO AUTÉNTICO';
       sub.textContent = 'Este es el primer escaneo registrado de esta pieza. Tu QUIE® es original.';
@@ -610,10 +610,10 @@
     } else if (tipo === 'rescan') {
       ring.className = 'sello-ring gold';
       icoWrap.className = 'sello-ico-wrap gold';
-      ico.textContent = yaRegistrado && nombrePropietario ? '👤' : '🔄';
+      ico.textContent = yaRegistrado && nombrePropietario ? 'Cliente' : 'Re';
       titulo.className = 'sello-titulo gold';
       titulo.textContent = yaRegistrado && nombrePropietario
-        ? 'GORRA DE ' + nombrePropietario.split(' ')[0].toUpperCase()
+        ? 'PIEZA DE ' + nombrePropietario.split(' ')[0].toUpperCase()
         : 'PRODUCTO REGISTRADO';
       sub.innerHTML = yaRegistrado && nombrePropietario
         ? 'Esta pieza está registrada a nombre de <strong>' + nombrePropietario + '</strong>.<br/>Registrada el ' + fechaRegistro + ' desde ' + ciudadRegistro + '.'
@@ -626,7 +626,7 @@
     } else if (tipo === 'sospechoso') {
       ring.className = 'sello-ring rojo';
       icoWrap.className = 'sello-ico-wrap rojo';
-      ico.textContent = '⚠️';
+      ico.textContent = 'Atención';
       titulo.className = 'sello-titulo rojo';
       titulo.textContent = 'VERIFICAR AUTENTICIDAD';
       sub.textContent = 'Este código ha sido escaneado muchas veces (' + totalEscaneos + '). Si tienes dudas, contáctanos.';
@@ -642,7 +642,7 @@
     if (esPrimerEscaneo) {
       cont.innerHTML =
         '<div class="historial-item">' +
-        '<div class="hist-ico">🆕</div>' +
+        '<div class="hist-ico">Nuevo</div>' +
         '<div class="hist-info">' +
         '<div style="color:var(--verde);font-weight:700;font-size:.82rem;">Primera verificación</div>' +
         '<div class="hist-fecha">Hoy · ' + ciudadRegistro + '</div>' +
@@ -650,13 +650,13 @@
     } else {
       cont.innerHTML =
         '<div class="historial-item">' +
-        '<div class="hist-ico">📍</div>' +
+        '<div class="hist-ico">Lugar</div>' +
         '<div class="hist-info">' +
         '<div style="font-size:.82rem;">Primer registro: <strong style="color:var(--dorado)">' + fechaRegistro + '</strong></div>' +
         '<div class="hist-fecha">Desde ' + ciudadRegistro + '</div>' +
         '</div></div>' +
         '<div class="historial-item">' +
-        '<div class="hist-ico">🔄</div>' +
+        '<div class="hist-ico">Re</div>' +
         '<div class="hist-info">' +
         '<div style="font-size:.82rem;">Total verificaciones: <strong>' + totalEscaneos + '</strong></div>' +
         '<div class="hist-fecha">Este es el escaneo #' + totalEscaneos + '</div>' +
@@ -717,7 +717,7 @@
       formData.append('whatsapp', whatsapp);
       formData.append('ciudad', ciudad);
       formData.append('email', email);
-      if (foto) formData.append('foto_gorra', foto);
+      if (foto) formData.append('foto_pieza', foto);
 
       btn.disabled = true;
       btn.textContent = 'Registrando...';

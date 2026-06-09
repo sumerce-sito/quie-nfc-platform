@@ -163,7 +163,7 @@
       const data = await r.json();
 
       if (r.ok) {
-        setMsg('✅ Acceso autorizado. Redirigiendo...', 'ok');
+        setMsg('OK Acceso autorizado. Redirigiendo...', 'ok');
         setTimeout(function() { window.location.href = '/admin'; }, 800);
         return;
       }

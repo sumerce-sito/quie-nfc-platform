@@ -154,7 +154,7 @@
   <p class="sec-label">Operador de Producción</p>
   <h1>Guía de Programación<br/>de Tags NFC</h1>
   <p>Todo lo que necesitas para programar, verificar y colocar los chips NFC en las piezas QUIE®. Sin conocimientos técnicos previos.</p>
-  <div class="chip-badge">📡 Chip: NTAG213 · 144 bytes · 13.56 MHz · Compatible iOS + Android</div>
+  <div class="chip-badge">NFC · Chip: NTAG213 · 144 bytes · 13.56 MHz · Compatible iOS + Android</div>
 </div>
 
 <!-- APPS RECOMENDADAS -->
@@ -165,10 +165,10 @@
 
     <div class="app-card recomendado">
       <div class="app-header">
-        <div class="app-icon android">🔧</div>
+        <div class="app-icon android">NXP</div>
         <div>
           <h3>NFC TagWriter by NXP <span class="rec-badge">RECOMENDADA</span></h3>
-          <div class="plat">📱 Android · Gratis · NXP Semiconductors</div>
+          <div class="plat">Android · Gratis · NXP Semiconductors</div>
         </div>
       </div>
       <p>La app oficial del fabricante del chip. Rápida, confiable y gratuita. Permite escribir, leer y bloquear tags. Es la que usamos en producción QUIE.</p>
@@ -176,10 +176,10 @@
 
     <div class="app-card">
       <div class="app-header">
-        <div class="app-icon both">⚡</div>
+        <div class="app-icon both">NFC</div>
         <div>
           <h3>NFC Tools Pro</h3>
-          <div class="plat">📱 Android + iOS · ~$4 USD</div>
+          <div class="plat">Android + iOS · ~$4 USD</div>
         </div>
       </div>
       <p>La más completa del mercado. Permite escribir, leer, bloquear y ver todos los datos del chip. Ideal si trabajas también desde iPhone.</p>
@@ -187,10 +187,10 @@
 
     <div class="app-card">
       <div class="app-header">
-        <div class="app-icon ios">🍎</div>
+        <div class="app-icon ios">iOS</div>
         <div>
           <h3>NFC.cool Tools</h3>
-          <div class="plat">🍎 iPhone 7+ (iOS 13+) · Gratis</div>
+          <div class="plat">iOS iPhone 7+ (iOS 13+) · Gratis</div>
         </div>
       </div>
       <p>Opción gratuita para iPhone. Puede leer y escribir URIs en NTAG213. Menos funciones que NFC Tools Pro pero sirve para producción básica.</p>
@@ -270,9 +270,9 @@
               <li>Coloca el tag NFC sobre una superficie plana</li>
               <li>Acerca el <strong>centro o parte trasera superior</strong> del teléfono</li>
               <li>Mantén quieto <strong>1-2 segundos</strong></li>
-              <li>La app mostrará: <strong style="color:var(--verde)">"Tag written successfully" ✅</strong></li>
+              <li>La app mostrará: <strong style="color:var(--verde)">"Tag written successfully"</strong></li>
             </ul>
-            <div class="warn">⚠️ No mover el teléfono mientras escribe. Si falla, repetir. Después de 3 fallos, el tag puede estar dañado.</div>
+            <div class="warn">Atención: no mover el teléfono mientras escribe. Si falla, repetir. Después de 3 fallos, el tag puede estar dañado.</div>
           </div>
         </div>
       </div>
@@ -310,7 +310,7 @@
               <li><strong>En NFC TagWriter:</strong> "Other functions" → "Lock tag" → Confirmar</li>
               <li><strong>En NFC Tools Pro:</strong> Leer tag → "More" → "Make read-only"</li>
             </ul>
-            <div class="warn">⚠️ El bloqueo es IRREVERSIBLE. Un tag bloqueado con URL incorrecta debe descartarse. Verificar ANTES de bloquear.</div>
+            <div class="warn">Atención: el bloqueo es IRREVERSIBLE. Un tag bloqueado con URL incorrecta debe descartarse. Verificar ANTES de bloquear.</div>
           </div>
         </div>
       </div>
@@ -346,7 +346,7 @@
           <p>Avanzar al siguiente código del CSV y repetir desde el paso 2.</p>
           <div class="step-detail">
             <ul>
-              <li>Marcar la fila del CSV como ✅ completada</li>
+              <li>Marcar la fila del CSV como OK completada</li>
               <li>Pasar al siguiente código en el CSV</li>
               <li>Repetir desde el paso 2</li>
               <li>Cada tag toma ~15 segundos</li>
@@ -364,7 +364,7 @@
         <div class="phone-screen">
           <div class="screen-content" id="screen-content">
             <span class="screen-app">NFC TagWriter by NXP</span>
-            <span class="screen-icon">📱</span>
+            <span class="screen-icon">NFC</span>
             <div class="screen-title">LISTO PARA<br/>PROGRAMAR</div>
             <div class="screen-sub" style="margin-top:10px;">Selecciona un paso para ver la pantalla correspondiente</div>
           </div>
@@ -430,7 +430,7 @@
 
   <div id="check-complete" style="display:none;background:rgba(29,185,84,.1);border:2px solid var(--verde);
     border-radius:10px;padding:20px;text-align:center;margin-top:20px;">
-    <div style="font-size:2rem;margin-bottom:8px;">✅</div>
+    <div style="font-size:2rem;margin-bottom:8px;">OK</div>
     <strong style="color:var(--verde);">¡Tag completado y listo!</strong>
     <p style="font-size:.82rem;color:#aaa;margin-top:6px;">Puedes resetear y continuar con el siguiente.</p>
     <button onclick="resetChecklist()" style="background:var(--verde);color:#000;border:none;
@@ -446,32 +446,32 @@
   <h2>Errores Comunes</h2>
   <div class="error-grid">
     <div class="error-card">
-      <h4>❌ Tag no detectado</h4>
+      <h4> Tag no detectado</h4>
       <div class="causa">Causa: NFC desactivado en el teléfono o posición incorrecta</div>
       <div class="sol">Verificar que NFC esté activado en Ajustes. Cambiar la posición del teléfono sobre el tag — buscar la zona NFC (varía por modelo).</div>
     </div>
     <div class="error-card">
-      <h4>❌ Error al escribir</h4>
+      <h4> Error al escribir</h4>
       <div class="causa">Causa: Tag ya bloqueado o chip dañado</div>
       <div class="sol">Si el tag fue bloqueado previamente, es imposible sobreescribirlo. Descartar y usar un tag nuevo. Reportar al inventario.</div>
     </div>
     <div class="error-card">
-      <h4>❌ URL incorrecta escrita</h4>
+      <h4> URL incorrecta escrita</h4>
       <div class="causa">Causa: Error de copy/paste en la URL</div>
       <div class="sol">Si el tag no está bloqueado aún, puedes sobreescribirlo. Si ya fue bloqueado, descartar. Siempre verificar ANTES de bloquear.</div>
     </div>
     <div class="error-card">
-      <h4>❌ La página abre con error 404</h4>
+      <h4> La página abre con error 404</h4>
       <div class="causa">Causa: Código no existe en el sistema o sistema apagado</div>
       <div class="sol">Verificar que el servidor esté corriendo. Confirmar que el lote fue activado en el panel admin. La URL debe tener el formato exacto.</div>
     </div>
     <div class="error-card">
-      <h4>❌ El tag no se lee desde el exterior de la pieza</h4>
+      <h4> El tag no se lee desde el exterior de la pieza</h4>
       <div class="causa">Causa: Material metálico entre el tag y el lector, o tag mal pegado</div>
-      <div class="sol">Reubicar el tag evitando ojetes metálicos y estructuras de la visera. La zona interior discreta textil es la mejor zona.</div>
+      <div class="sol">Reubicar el tag evitando herrajes metálicos, broches o placas. La zona interior discreta textil es la mejor zona.</div>
     </div>
     <div class="error-card">
-      <h4>❌ iPhone no lee el tag</h4>
+      <h4> iPhone no lee el tag</h4>
       <div class="causa">Causa: iPhone 6 o anterior (sin NFC nativo para URL)</div>
       <div class="sol">iPhone 7 o superior necesario. En iPhone 10 o superior el NFC es automático. En iPhone 7-9 puede requerir abrir la cámara y tocar la notificación.</div>
     </div>
@@ -486,13 +486,13 @@
 
 <script>
 const pantallas = {
-  1: { icon:'📂', title:'ABRIR CSV', sub:'Descargar desde Admin → Lotes → CSV\nAbrir en Excel o Sheets\nOrdenar tags igual que el CSV' },
-  2: { icon:'✏️', title:'NUEVA URI', sub:'Write tags → New dataset → URI\nPegar URL completa del CSV\nSave & Write' },
-  3: { icon:'📡', title:'ACERCAR TAG', sub:'Tag plano sobre superficie\nCentro del teléfono sobre el chip\nQuieto 1-2 segundos...' },
-  4: { icon:'✅', title:'¡ESCRITO!', sub:'"Tag written successfully"\nCerrar app\nAcercar de nuevo para verificar' },
-  5: { icon:'🔒', title:'BLOQUEAR TAG', sub:'Other functions → Lock tag\nConfirmar bloqueo\n¡IRREVERSIBLE!' },
-  6: { icon:'🧢', title:'PEGAR EN GORRA', sub:'Interior, zona interior discreta\nPlano, sin arrugas\nEscaneo final desde exterior' },
-  7: { icon:'➡️', title:'SIGUIENTE TAG', sub:'Marcar ✅ en CSV\nSiguiente fila\nRepetir desde paso 2' }
+  1: { icon:'CSV', title:'ABRIR CSV', sub:'Descargar desde Admin → Lotes → CSV\nAbrir en Excel o Sheets\nOrdenar tags igual que el CSV' },
+  2: { icon:'URI', title:'NUEVA URI', sub:'Write tags → New dataset → URI\nPegar URL completa del CSV\nSave & Write' },
+  3: { icon:'NFC', title:'ACERCAR TAG', sub:'Tag plano sobre superficie\nCentro del teléfono sobre el chip\nQuieto 1-2 segundos...' },
+  4: { icon:'OK', title:'ESCRITO', sub:'"Tag written successfully"\nCerrar app\nAcercar de nuevo para verificar' },
+  5: { icon:'LOCK', title:'BLOQUEAR TAG', sub:'Other functions → Lock tag\nConfirmar bloqueo\nIRREVERSIBLE' },
+  6: { icon:'QUIE', title:'FIJAR EN PIEZA', sub:'Interior, zona interior discreta\nPlano, sin arrugas\nEscaneo final desde exterior' },
+  7: { icon:'NEXT', title:'SIGUIENTE TAG', sub:'Marcar OK en CSV\nSiguiente fila\nRepetir desde paso 2' }
 };
 
 function activarStep(n) {
@@ -510,7 +510,7 @@ function activarStep(n) {
     <span class="screen-icon">${p.icon}</span>
     <div class="screen-title">${p.title}</div>
     <div class="screen-sub" style="margin-top:10px;white-space:pre-line">${p.sub}</div>
-    ${n === 4 ? '<div class="screen-success"><span class="ico">✅</span><p>Tag written successfully</p></div>' : ''}
+    ${n === 4 ? '<div class="screen-success"><span class="ico">OK</span><p>Tag written successfully</p></div>' : ''}
   `;
 }
 

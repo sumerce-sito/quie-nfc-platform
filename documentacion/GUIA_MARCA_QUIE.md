@@ -177,5 +177,5 @@ Mensaje recomendado:
 - Usa paleta oficial o secundaria autorizada.
 - Titulos con serif elegante, textos con sans limpia.
 - No usa referencias visuales ni textuales de marcas anteriores.
-- No habla de gorras salvo que sea un producto real de QUIE.
+- No usa categorias heredadas de marcas anteriores.
 - Mantiene lujo silencioso, raiz colombiana y autenticidad NFC.
