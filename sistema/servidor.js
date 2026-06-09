@@ -170,7 +170,7 @@ app.use(cors({
 }));
 
 app.use(express.json({ limit: '10kb' }));       // limite de payload
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(process.env.COOKIE_SECRET || 'quie-hackathon-demo-cookie-secret-change-after-demo'));
 
 // Eliminar cabecera X-Powered-By
 app.disable('x-powered-by');

@@ -7,7 +7,7 @@ const fs       = require('fs');
 const path     = require('path');
 const crypto   = require('crypto');
 
-const JWT_SECRET  = process.env.JWT_SECRET;
+const JWT_SECRET  = process.env.JWT_SECRET || 'quie-hackathon-demo-jwt-secret-change-after-demo';
 const JWT_EXPIRES = process.env.JWT_EXPIRES_IN || '2h';
 const LOG_PATH    = path.join(__dirname, '../auditoria/log.json');
 const DEMO_ADMIN_USERNAME = 'nexo_admin';
