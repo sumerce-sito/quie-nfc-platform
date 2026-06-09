@@ -31,6 +31,17 @@ const FORCE_HTTPS = process.env.FORCE_HTTPS === 'true';
 const UPLOADS = IS_VERCEL ? path.join(os.tmpdir(), 'quie-uploads') : path.join(__dirname, '../uploads');
 const CLIENTE_FOTOS = path.join(UPLOADS, 'clientes');
 const PRODUCTO_FOTOS = path.join(UPLOADS, 'productos');
+const DEMO_NFC_CODE = 'QUIE-A7B3X9-42';
+const DEMO_NFC_RECORD = {
+  codigo_nfc: DEMO_NFC_CODE,
+  modelo: 'Tarjetero Origen',
+  color: 'Verde profundo',
+  talla: 'Unica',
+  lote_id: 'QUIE-BOL-2025-001',
+  fecha_produccion: '2025-11-18',
+  estado: 'activo',
+  foto_producto: '/assets/quie/productos/tarjetero.png'
+};
 const cspDirectives = {
   defaultSrc:     ["'self'"],
   scriptSrc:      ["'self'", "'unsafe-inline'"],
@@ -47,7 +58,21 @@ if (FORCE_HTTPS) {
   cspDirectives.upgradeInsecureRequests = [];
 }
 
-const leerDB    = (n) => JSON.parse(fs.readFileSync(DB(n), 'utf8'));
+const DB_DEFAULTS = {
+  productos: { productos: [] },
+  codigos:   { codigos: [] },
+  escaneos:  { escaneos: [] },
+  clientes:  { clientes: [] },
+  lotes:     { lotes: [] }
+};
+
+function leerDB(n) {
+  try {
+    return JSON.parse(fs.readFileSync(DB(n), 'utf8'));
+  } catch (_) {
+    return structuredClone(DB_DEFAULTS[n] || {});
+  }
+}
 const guardarDB = (n, d) => fs.writeFileSync(DB(n), JSON.stringify(d, null, 2));
 fs.mkdirSync(CLIENTE_FOTOS, { recursive: true });
 fs.mkdirSync(PRODUCTO_FOTOS, { recursive: true });
@@ -324,7 +349,8 @@ app.get('/v/:codigo', limiterEscaneo, [
 
   const codigo = req.params.codigo.toUpperCase();
   const db = leerDB('codigos');
-  const registro = db.codigos.find(c => c.codigo_nfc === codigo);
+  const esDemo = codigo === DEMO_NFC_CODE;
+  const registro = db.codigos.find(c => c.codigo_nfc === codigo) || (esDemo ? DEMO_NFC_RECORD : null);
 
   if (!registro) return res.sendFile(path.join(WEB, 'no-encontrado.html'));
 
@@ -332,18 +358,43 @@ app.get('/v/:codigo', limiterEscaneo, [
   const dispositivo = /iPhone|iPad/.test(userAgent) ? 'iOS'
     : /Android/.test(userAgent) ? 'Android' : 'Otro';
 
-  const escaneo = registrarEscaneo({
-    codigo_id:   codigo,
-    ip:          ip(req),
-    pais:        req.headers['cf-ipcountry'] || 'Colombia',
-    ciudad:      req.headers['cf-ipcity']    || 'Desconocida',
-    dispositivo
-  });
+  const escaneo = esDemo
+    ? {
+        codigo_id: codigo,
+        timestamp: new Date().toISOString(),
+        ip: ip(req),
+        pais: req.headers['cf-ipcountry'] || 'Colombia',
+        ciudad: req.headers['cf-ipcity'] || 'Bogota',
+        dispositivo,
+        es_primer_escaneo: true,
+        mensaje: 'DEMO_HACKATHON'
+      }
+    : registrarEscaneo({
+        codigo_id:   codigo,
+        ip:          ip(req),
+        pais:        req.headers['cf-ipcountry'] || 'Colombia',
+        ciudad:      req.headers['cf-ipcity']    || 'Desconocida',
+        dispositivo
+      });
 
-  auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} — ${escaneo.mensaje}`, ip(req));
+  if (!esDemo) {
+    auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} — ${escaneo.mensaje}`, ip(req));
+  }
 
   const dbEsc = leerDB('escaneos');
-  const historial     = dbEsc.escaneos.filter(e => e.codigo_id === codigo);
+  const historial = esDemo
+    ? [
+        {
+          codigo_id: codigo,
+          timestamp: '2025-11-20T15:30:00.000Z',
+          ciudad: 'Bogota',
+          pais: 'Colombia',
+          dispositivo: 'Android',
+          es_primer_escaneo: true
+        },
+        escaneo
+      ]
+    : dbEsc.escaneos.filter(e => e.codigo_id === codigo);
   const primerEscaneo = historial.find(e => e.es_primer_escaneo);
 
   const dbClientes = leerDB('clientes');
@@ -359,7 +410,7 @@ app.get('/v/:codigo', limiterEscaneo, [
     p.estado !== 'inactivo' &&
     normalizar(p.modelo) === normalizar(registro.modelo)
   );
-  const fotoProducto = productoCatalogo?.foto_producto || '';
+  const fotoProducto = registro.foto_producto || productoCatalogo?.foto_producto || '';
 
   let html = fs.readFileSync(path.join(WEB, 'autenticidad.html'), 'utf8');
   html = html

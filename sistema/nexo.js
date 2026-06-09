@@ -12,7 +12,16 @@ const LOG = path.join(__dirname, '../auditoria/log.json');
 const DB_LOTES = path.join(__dirname, '../base_datos/lotes.json');
 
 function auditoria(agente, accion, detalle, resultado = 'exitoso') {
-  const log = JSON.parse(fs.readFileSync(LOG, 'utf8'));
+  let log = { eventos: [] };
+  try {
+    log = JSON.parse(fs.readFileSync(LOG, 'utf8'));
+  } catch (_) {
+    try {
+      fs.mkdirSync(path.dirname(LOG), { recursive: true });
+    } catch (_) {
+      // En serverless, la auditoria local es best-effort hasta conectar DynamoDB.
+    }
+  }
   log.eventos.push({
     id: log.eventos.length + 1,
     timestamp: new Date().toISOString(),
@@ -21,7 +30,11 @@ function auditoria(agente, accion, detalle, resultado = 'exitoso') {
     detalle,
     resultado
   });
-  fs.writeFileSync(LOG, JSON.stringify(log, null, 2));
+  try {
+    fs.writeFileSync(LOG, JSON.stringify(log, null, 2));
+  } catch (_) {
+    // En serverless, la auditoria local es best-effort hasta conectar DynamoDB.
+  }
 }
 
 function iniciarLote({ modelo, color, talla, cantidad, temporada }) {
