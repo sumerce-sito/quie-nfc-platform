@@ -11,7 +11,7 @@ const JWT_SECRET  = process.env.JWT_SECRET || 'quie-hackathon-demo-jwt-secret-ch
 const JWT_EXPIRES = process.env.JWT_EXPIRES_IN || '2h';
 const LOG_PATH    = path.join(__dirname, '../auditoria/log.json');
 const DEMO_ADMIN_USERNAME = 'nexo_admin';
-const DEMO_ADMIN_HASH = '$2b$12$itz4lomSc99.5faievywmOeshdUMAvhCJ301KwPq3PFVp8kpEEKEy';
+const DEMO_ADMIN_HASH = '$2b$12$Tw3xmCANp3SIlaJB/hfqa.GKRb3d5DnUXyCcuZmsb.Dkg/oFSGhYu';
 
 // ── Registro inmutable de eventos de seguridad ───────────────────────────────
 function logSeguridad(evento, detalle, ip = 'desconocida') {
