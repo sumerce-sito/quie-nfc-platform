@@ -1,170 +1,177 @@
-# QUIE® NFC
+# QUIE® NFC Platform
 
-Sistema web para autenticidad, catalogo y seguimiento de piezas QUIE® mediante codigos NFC.
+Plataforma de autenticidad NFC para accesorios premium colombianos QUIE®. Proyecto para **H0: Hack the Zero Stack — AWS + Vercel**.
 
-## Que hace
+QUIE® combina marca de lujo artesanal, certificados digitales por NFC y trazabilidad de producto para bolsos, billeteras, tarjeteros, correas, llaveros y maletines ejecutivos.
 
-- Publica una pagina principal de la marca.
-- Permite crear un catalogo editable de piezas con descripciones, colores, fotos y datos comerciales.
-- Genera lotes de accesorios con codigos NFC unicos.
-- Exporta CSV con las URL que deben escribirse en cada tag NFC.
-- Muestra una pagina publica de verificacion por codigo:
-  - producto autentico,
-  - primer escaneo,
-  - reescaneos,
-  - posible alerta por uso sospechoso.
-- Permite registrar propietario de la pieza con nombre, WhatsApp, ciudad, email y foto opcional.
-- Incluye panel admin protegido por login.
-- Registra escaneos, clientes, lotes, codigos, auditoria y productos.
-- Muestra promocion de recompra desde el segundo escaneo.
+## Propuesta
 
-## Stack
+Cada pieza QUIE® puede incluir un tag NTAG213 oculto. Al escanearlo, el cliente abre una experiencia web donde puede:
 
-- Node.js
-- Express
-- HTML/CSS/JavaScript sin framework frontend
-- Archivos JSON como almacenamiento inicial
-- PM2 para proceso en produccion
-- Nginx como proxy reverso en VPS
+- Verificar autenticidad del producto.
+- Consultar numero de serie y lote.
+- Conocer origen, material y cuidado de la pieza.
+- Registrar propietario opcionalmente.
+- Generar eventos de escaneo para analitica antifraude y engagement.
 
-## Estructura
+## Stack Hackathon
+
+- **Frontend:** Next.js + TypeScript
+- **Deploy frontend:** Vercel
+- **Base relacional:** AWS Aurora PostgreSQL
+- **Eventos de escaneo:** AWS DynamoDB
+- **Infraestructura:** AWS
+- **Tags fisicos:** NTAG213
+- **Autenticidad:** codigos NFC con formato QUIE y checksum
+
+## Arquitectura
 
 ```text
-web/                  Paginas publicas y admin
-sistema/              Backend Express y modulos internos
-base_datos/           Datos JSON del sistema
-auditoria/            Log de eventos
-codigos_csv/          CSV generados por lote
-uploads/clientes/     Fotos subidas por clientes
-uploads/productos/    Fotos del catalogo
-guias_tags/           Documentacion NFC
-landing_pages/        Plantillas
+Cliente escanea NFC
+        |
+        v
+Next.js /v/[codigo]
+        |
+        +-- Aurora PostgreSQL
+        |   - productos
+        |   - lotes
+        |   - codigos
+        |   - clientes
+        |
+        +-- DynamoDB
+            - escaneos por codigo, timestamp, IP, ciudad y dispositivo
+```
+
+## Estructura del repo
+
+```text
+web/                         Landing y pantallas prototipo de experiencia NFC
+sistema/                     Logica prototipo para generacion y validacion NFC
+database/aurora/             Schema Aurora PostgreSQL y seeds [DEMO]
+documentacion/               Guia de marca QUIE y decisiones de producto
+logos y marcas/              Logo, brand board y concepto visual
+guias_tags/                  Guia operativa NTAG213
+landing_pages/               Plantilla de autenticidad NFC
+quie-submission.md           Documento de submission del hackathon
+```
+
+## Modelo de datos
+
+Aurora PostgreSQL:
+
+- `productos`: catalogo de accesorios QUIE®.
+- `lotes`: lotes de produccion con estado y total de tags.
+- `codigos`: codigos NFC unicos, URL de landing, checksum y estado.
+- `clientes`: registro opcional de propietario.
+- `auditoria`: eventos administrativos.
+
+DynamoDB:
+
+- `escaneos`: eventos de lectura NFC por `codigo_id`, `timestamp`, `ip`, `ciudad` y `dispositivo`.
+
+## Convenciones NFC
+
+Lotes:
+
+```text
+QUIE-[CATEGORIA]-[AÑO]-[SEC]
+```
+
+Ejemplo:
+
+```text
+QUIE-BOL-2025-001
+```
+
+Codigos NFC:
+
+```text
+QUIE-[6ALNUM]-[CHECKSUM]
+```
+
+Ejemplo:
+
+```text
+QUIE-A7B3X9-42
 ```
 
 ## Variables de entorno
 
-Crear un archivo `.env` basado en `.env.example`.
+Crear `.env` desde `.env.example`:
 
 ```env
 PORT=3000
 NODE_ENV=development
-JWT_SECRET=...
-JWT_EXPIRES_IN=2h
-COOKIE_SECRET=...
-ADMIN_USERNAME=chl_admin
-ADMIN_PASSWORD_HASH=...
-DOMAIN=2.25.180.135
-BASE_URL=http://2.25.180.135
+
+DB_HOST=
+DB_PORT=5432
+DB_NAME=quie_nfc
+DB_USER=
+DB_PASSWORD=
+
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+DYNAMODB_TABLE_ESCANEOS=quie_escaneos
+
+BASE_URL=http://localhost:3000
+JWT_SECRET=
 ```
 
-En produccion con dominio y HTTPS se puede usar:
+## Aurora PostgreSQL
 
-```env
-NODE_ENV=production
-FORCE_HTTPS=true
-DOMAIN=tudominio.com
-BASE_URL=https://tudominio.com
-```
-
-## Comandos locales
-
-Instalar dependencias:
+Migraciones:
 
 ```bash
-npm install
+psql "$DATABASE_URL" -f database/aurora/001_init.sql
+psql "$DATABASE_URL" -f database/aurora/002_seed_demo.sql
 ```
 
-Iniciar:
+`002_seed_demo.sql` solo debe usarse en entornos locales, previews o demo. Todos los datos estan marcados como `[DEMO]`.
 
-```bash
-npm start
-```
+## Flujo de producto
 
-Modo desarrollo:
+1. Crear producto QUIE® en el catalogo.
+2. Crear lote con formato `QUIE-[CATEGORIA]-[AÑO]-[SEC]`.
+3. Generar codigos NFC unicos con checksum.
+4. Escribir URL publica en tags NTAG213.
+5. Publicar landing `/v/[codigo]` en Vercel.
+6. Guardar datos transaccionales en Aurora.
+7. Registrar eventos de escaneo en DynamoDB.
+8. Mostrar certificado digital, historia de la pieza y señales de autenticidad.
 
-```bash
-npm run dev
-```
+## Marca
 
-## Despliegue VPS
+QUIE® significa "Tierra". La direccion visual esta documentada en:
 
-El despliegue recomendado es Ubuntu + Node.js + PM2 + Nginx.
+- `logos y marcas/completa.png`
+- `logos y marcas/marketing.txt`
+- `documentacion/GUIA_MARCA_QUIE.md`
 
-Instalar dependencias del servidor:
+Principios:
 
-```bash
-apt update
-apt install -y nodejs npm nginx unzip
-npm install -g pm2
-```
+- Lujo silencioso.
+- Raiz colombiana.
+- Materiales nobles.
+- Autenticidad NFC.
+- Piezas hechas para durar.
 
-Subir el proyecto, instalar dependencias y arrancar:
+## Estado del proyecto
 
-```bash
-cd /var/www/quie
-npm install --omit=dev
-mkdir -p uploads/clientes uploads/productos codigos_csv reportes auditoria base_datos
-pm2 start sistema/servidor.js --name quie
-pm2 save
-```
+Listo:
 
-Reiniciar app:
+- Limpieza completa de marca heredada.
+- Landing premium v1.
+- Guia de marca QUIE®.
+- Schema Aurora PostgreSQL.
+- Seeds [DEMO].
+- Documento de submission.
+- Repo publico en GitHub.
 
-```bash
-pm2 restart quie --update-env
-```
+Siguiente:
 
-Ver estado:
-
-```bash
-pm2 status
-systemctl status nginx --no-pager
-```
-
-## Flujo de uso
-
-1. Entrar al panel admin en `/login`.
-2. Crear o editar productos en "Catalogo de piezas".
-3. Crear un lote usando una pieza del catalogo.
-4. Descargar el CSV del lote.
-5. Escribir manualmente en cada tag la URL de la columna `url_landing`.
-6. Probar la URL `/v/CODIGO`.
-7. Activar el lote.
-8. Los clientes escanean, verifican autenticidad y pueden registrar su pieza.
-
-## Datos importantes
-
-El sistema usa JSON como almacenamiento inicial. Es suficiente para pruebas, pilotos y operacion pequena.
-
-Para alto volumen, por ejemplo 100.000 o 1.000.000 de registros, se recomienda migrar a PostgreSQL o MySQL. Las entidades a migrar son:
-
-- productos
-- lotes
-- codigos
-- escaneos
-- clientes
-- auditoria
-
-## Backups recomendados
-
-Respaldar periodicamente:
-
-```text
-base_datos/
-auditoria/
-codigos_csv/
-reportes/
-uploads/
-.env
-```
-
-## Notas NFC
-
-Cada tag debe escribirse con la URL completa:
-
-```text
-http://IP_O_DOMINIO/v/QUIE-XXXXXX-00
-```
-
-Para produccion definitiva conviene usar dominio con HTTPS antes de escribir tags finales.
-
+- Scaffold Next.js + TypeScript.
+- API routes para codigos NFC.
+- Integracion Aurora.
+- Registro de escaneos en DynamoDB.
+- Deploy en Vercel.
