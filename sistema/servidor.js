@@ -678,7 +678,15 @@ api.get('/estado', (req, res) => {
 });
 
 // Lotes
-api.get('/lotes', (req, res) => res.json(leerDB('lotes').lotes));
+api.get('/lotes', async (req, res) => {
+  if (db) {
+    try {
+      const lotes = await db.getLotes();
+      return res.json(lotes);
+    } catch (_) {}
+  }
+  res.json(leerDB('lotes').lotes);
+});
 
 api.post('/lotes', [
   body('modelo').trim().notEmpty().isLength({ max: 80 }).matches(/^[\p{L}\p{N}\s\/\-\.\(\)]+$/u),

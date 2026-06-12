@@ -105,6 +105,19 @@ async function obtenerProductos() {
   return rows;
 }
 
+async function getLotes() {
+  const pool = await getPool();
+  const { rows } = await pool.query(
+    `SELECT l.id, l.nombre, l.fecha_produccion, l.estado, l.total_tags, l.created_at,
+            COUNT(c.id) AS codigos_count
+     FROM lotes l
+     LEFT JOIN codigos c ON c.lote_id = l.id
+     GROUP BY l.id
+     ORDER BY l.created_at DESC`
+  );
+  return rows;
+}
+
 async function crearLoteConCodigos(lote, codigos) {
   const pool = await getPool();
   await pool.query(
@@ -123,4 +136,4 @@ async function crearLoteConCodigos(lote, codigos) {
   }
 }
 
-module.exports = { buscarCodigo, incrementarEscaneo, registrarPropietario, obtenerProductos, crearLoteConCodigos };
+module.exports = { buscarCodigo, incrementarEscaneo, registrarPropietario, obtenerProductos, crearLoteConCodigos, getLotes };
