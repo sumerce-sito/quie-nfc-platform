@@ -105,6 +105,30 @@ async function obtenerProductos() {
   return rows;
 }
 
+async function getClientes({ lote, q } = {}) {
+  const pool = await getPool();
+  let sql = `SELECT c.codigo_nfc, c.lote_id, c.propietario_nombre AS nombre,
+                    c.propietario_whatsapp AS whatsapp, c.propietario_ciudad AS ciudad,
+                    c.propietario_email AS email, c.registrado_en AS fecha_registro,
+                    p.nombre AS modelo, p.color
+             FROM codigos c
+             LEFT JOIN productos p ON p.id = c.producto_id
+             WHERE c.propietario_nombre IS NOT NULL`;
+  const params = [];
+  if (lote) { params.push(lote); sql += ` AND c.lote_id = $${params.length}`; }
+  if (q)    { params.push(`%${q}%`); sql += ` AND (c.propietario_nombre ILIKE $${params.length} OR c.propietario_whatsapp ILIKE $${params.length} OR c.propietario_ciudad ILIKE $${params.length})`; }
+  sql += ' ORDER BY c.registrado_en DESC LIMIT 200';
+  const { rows } = await pool.query(sql, params);
+  return rows;
+}
+
+async function deleteLote(loteId) {
+  const pool = await getPool();
+  await pool.query('DELETE FROM codigos WHERE lote_id = $1', [loteId]);
+  const { rowCount } = await pool.query('DELETE FROM lotes WHERE id = $1', [loteId]);
+  return rowCount > 0;
+}
+
 async function getLotes() {
   const pool = await getPool();
   const { rows } = await pool.query(
@@ -136,4 +160,4 @@ async function crearLoteConCodigos(lote, codigos) {
   }
 }
 
-module.exports = { buscarCodigo, incrementarEscaneo, registrarPropietario, obtenerProductos, crearLoteConCodigos, getLotes };
+module.exports = { buscarCodigo, incrementarEscaneo, registrarPropietario, obtenerProductos, crearLoteConCodigos, getLotes, deleteLote, getClientes };

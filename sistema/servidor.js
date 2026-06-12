@@ -754,44 +754,41 @@ api.patch('/lotes/:id/estado', [
 // Códigos
 api.delete('/lotes/:id', [
   param('id').matches(/^QUIE-[A-Z0-9]+-\d{4}-\d{3}$/)
-], (req, res) => {
+], async (req, res) => {
   if (validar(req, res)) return;
 
   const loteId = req.params.id;
+
+  // Intentar borrar de Aurora primero
+  if (db) {
+    try {
+      const eliminado = await db.deleteLote(loteId);
+      if (eliminado) {
+        auditoria('DataVault', 'LOTE_ELIMINADO', loteId, ip(req));
+        return res.json({ ok: true, lote_id: loteId });
+      }
+    } catch (dbErr) {
+      console.error('[DELETE_LOTE_AURORA]', dbErr.message);
+    }
+  }
+
+  // Fallback: borrar del JSON local
   const dbLotes = leerDB('lotes');
   const lote = dbLotes.lotes.find(l => l.id === loteId);
   if (!lote) return res.status(404).json({ error: 'Lote no encontrado' });
 
   const dbCodigos = leerDB('codigos');
   const codigosDelLote = dbCodigos.codigos.filter(c => c.lote_id === loteId);
-  const codigosSet = new Set(codigosDelLote.map(c => c.codigo_nfc));
-
   dbLotes.lotes = dbLotes.lotes.filter(l => l.id !== loteId);
   dbCodigos.codigos = dbCodigos.codigos.filter(c => c.lote_id !== loteId);
   guardarDB('lotes', dbLotes);
   guardarDB('codigos', dbCodigos);
 
-  const dbEscaneos = leerDB('escaneos');
-  const escaneosAntes = dbEscaneos.escaneos.length;
-  dbEscaneos.escaneos = dbEscaneos.escaneos.filter(e => !codigosSet.has(e.codigo_id));
-  guardarDB('escaneos', dbEscaneos);
-
-  const dbClientes = leerDB('clientes');
-  const clientesAntes = dbClientes.clientes.length;
-  dbClientes.clientes = dbClientes.clientes.filter(c => c.lote_id !== loteId && !codigosSet.has(c.codigo_nfc));
-  guardarDB('clientes', dbClientes);
-
   const csvPath = path.join(__dirname, `../codigos_csv/${loteId}.csv`);
   if (fs.existsSync(csvPath)) fs.unlinkSync(csvPath);
 
   auditoria('DataVault', 'LOTE_ELIMINADO', `${loteId} - ${codigosDelLote.length} codigos`, ip(req));
-  res.json({
-    ok: true,
-    lote_id: loteId,
-    codigos_eliminados: codigosDelLote.length,
-    escaneos_eliminados: escaneosAntes - dbEscaneos.escaneos.length,
-    clientes_eliminados: clientesAntes - dbClientes.clientes.length
-  });
+  res.json({ ok: true, lote_id: loteId, codigos_eliminados: codigosDelLote.length });
 });
 
 api.get('/codigos', (req, res) => {
@@ -958,9 +955,15 @@ api.get('/reportes/:tipo', [
 });
 
 // CRM — Clientes registrados
-api.get('/clientes', (req, res) => {
-  const db = leerDB('clientes');
-  let lista = [...db.clientes].reverse();
+api.get('/clientes', async (req, res) => {
+  if (db) {
+    try {
+      const clientes = await db.getClientes({ lote: req.query.lote, q: req.query.q });
+      return res.json({ total: clientes.length, clientes });
+    } catch (_) {}
+  }
+  const dbLocal = leerDB('clientes');
+  let lista = [...dbLocal.clientes].reverse();
   if (req.query.lote) lista = lista.filter(c => c.lote_id === req.query.lote);
   if (req.query.q) {
     const q = req.query.q.toLowerCase();
@@ -971,7 +974,7 @@ api.get('/clientes', (req, res) => {
       c.email.toLowerCase().includes(q)
     );
   }
-  res.json({ total: db.clientes.length, clientes: lista.slice(0, 200) });
+  res.json({ total: dbLocal.clientes.length, clientes: lista.slice(0, 200) });
 });
 
 // Alertas
