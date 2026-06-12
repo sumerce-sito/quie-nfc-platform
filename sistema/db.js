@@ -105,4 +105,22 @@ async function obtenerProductos() {
   return rows;
 }
 
-module.exports = { buscarCodigo, incrementarEscaneo, registrarPropietario, obtenerProductos };
+async function crearLoteConCodigos(lote, codigos) {
+  const pool = await getPool();
+  await pool.query(
+    `INSERT INTO lotes (id, nombre, fecha_produccion, estado, total_tags)
+     VALUES ($1, $2, $3, 'activo', $4)
+     ON CONFLICT (id) DO NOTHING`,
+    [lote.id, lote.nombre, lote.fecha_produccion, lote.total_tags]
+  );
+  for (const c of codigos) {
+    await pool.query(
+      `INSERT INTO codigos (codigo_nfc, lote_id, url_landing, estado)
+       VALUES ($1, $2, $3, 'disponible')
+       ON CONFLICT (codigo_nfc) DO NOTHING`,
+      [c.codigo_nfc, c.lote_id, c.url_landing]
+    );
+  }
+}
+
+module.exports = { buscarCodigo, incrementarEscaneo, registrarPropietario, obtenerProductos, crearLoteConCodigos };

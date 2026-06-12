@@ -347,7 +347,7 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
   body('whatsapp').trim().notEmpty().matches(/^[\d\s\+\-\(\)]{7,20}$/).withMessage('WhatsApp inválido'),
   body('ciudad').optional({ checkFalsy: true }).trim().isLength({ max: 60 }).withMessage('Ciudad demasiado larga'),
   body('email').optional({ checkFalsy: true }).trim().isEmail().withMessage('Email inválido').normalizeEmail()
-], (req, res) => {
+], async (req, res) => {
   const borrarFotoSubida = () => {
     if (req.file?.path && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
   };
@@ -358,30 +358,48 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
   }
 
   const { codigo_nfc, nombre, whatsapp, ciudad, email } = req.body;
+  const codigoNfc = codigo_nfc.toUpperCase();
 
-  // Verificar que el código existe
+  // Verificar que el código existe (primero local, luego Aurora)
   const dbCodigos = leerDB('codigos');
-  const codigo = dbCodigos.codigos.find(c => c.codigo_nfc === codigo_nfc.toUpperCase());
-  if (!codigo) {
+  const codigoLocal = dbCodigos.codigos.find(c => c.codigo_nfc === codigoNfc);
+
+  if (!codigoLocal && db) {
+    try {
+      const codigoAurora = await db.buscarCodigo(codigoNfc);
+      if (codigoAurora) {
+        if (codigoAurora.propietario_nombre) {
+          borrarFotoSubida();
+          return res.status(409).json({ error: 'Esta pieza ya tiene un propietario registrado', ya_registrado: true });
+        }
+        await db.registrarPropietario(codigoNfc, { nombre, whatsapp, ciudad, email });
+        auditoria('DataVault', 'CLIENTE_REGISTRADO', `${nombre} — ${codigoNfc}`, ip(req));
+        return res.json({ ok: true, mensaje: '¡Registro exitoso! Bienvenido a QUIE®' });
+      }
+    } catch (_) {}
     borrarFotoSubida();
     return res.status(404).json({ error: 'Código no encontrado' });
   }
 
-  // Verificar que no esté ya registrado
-  const db = leerDB('clientes');
-  if (db.clientes.some(c => c.codigo_nfc === codigo_nfc.toUpperCase())) {
+  if (!codigoLocal) {
+    borrarFotoSubida();
+    return res.status(404).json({ error: 'Código no encontrado' });
+  }
+
+  const dbClientes = leerDB('clientes');
+  if (dbClientes.clientes.some(c => c.codigo_nfc === codigoNfc)) {
     borrarFotoSubida();
     return res.status(409).json({ error: 'Esta pieza ya tiene un propietario registrado', ya_registrado: true });
   }
 
   const nuevo = {
-    id:             db.clientes.length + 1,
-    codigo_nfc:     codigo_nfc.toUpperCase(),
-    lote_id:        codigo.lote_id,
-    modelo:         codigo.modelo,
-    color:          codigo.color,
+    id:             dbClientes.clientes.length + 1,
+    codigo_nfc:     codigoNfc,
+    lote_id:        codigoLocal.lote_id,
+    modelo:         codigoLocal.modelo,
+    color:          codigoLocal.color,
     nombre:         nombre,
-    whatsapp:       whatsapp.replace(/\D/g, '').slice(-10), // solo dígitos, últimos 10
+    whatsapp:       whatsapp.replace(/\D/g, '').slice(-10),
     ciudad:         ciudad || '',
     email:          email  || '',
     foto_pieza:     req.file ? `/uploads/clientes/${req.file.filename}` : '',
@@ -390,9 +408,9 @@ app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
     fuente:         'nfc_first_scan'
   };
 
-  db.clientes.push(nuevo);
-  guardarDB('clientes', db);
-  auditoria('DataVault', 'CLIENTE_REGISTRADO', `${nombre} — ${codigo_nfc}`, ip(req));
+  dbClientes.clientes.push(nuevo);
+  guardarDB('clientes', dbClientes);
+  auditoria('DataVault', 'CLIENTE_REGISTRADO', `${nombre} — ${codigoNfc}`, ip(req));
 
   res.json({ ok: true, mensaje: '¡Registro exitoso! Bienvenido a QUIE®' });
 });
@@ -668,18 +686,30 @@ api.post('/lotes', [
   body('talla').trim().isLength({ max: 30 }),
   body('cantidad').isInt({ min: 1, max: 500 }),
   body('temporada').trim().isLength({ max: 50 })
-], (req, res) => {
+], async (req, res) => {
   if (validar(req, res)) return;
   try {
     const { modelo, color, talla, cantidad, temporada } = req.body;
+    const loteId = generarLoteId(modelo);
     const resultado = generarLote({
-      lote_id:   generarLoteId(modelo),
+      lote_id:   loteId,
       modelo, color,
       talla:     talla || 'Única',
       cantidad:  parseInt(cantidad),
       temporada: temporada || String(new Date().getFullYear()),
       base_url:  baseUrl(req)
     });
+    if (db) {
+      const codigos = obtenerCodigosLote(loteId);
+      try {
+        await db.crearLoteConCodigos(
+          { id: loteId, nombre: `${modelo} ${color}`, fecha_produccion: new Date().toISOString().split('T')[0], total_tags: parseInt(cantidad) },
+          codigos
+        );
+      } catch (dbErr) {
+        console.error('[LOTE_AURORA_ERROR]', dbErr.message);
+      }
+    }
     auditoria('NEXO', 'LOTE_CREADO', `${resultado.lote_id} — ${cantidad} uds`, ip(req));
     res.json(resultado);
   } catch (e) {
