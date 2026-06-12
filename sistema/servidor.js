@@ -16,6 +16,7 @@ const os             = require('os');
 const { generarLote, obtenerCodigosLote }   = require('./codeforge');
 const { generarReporte, registrarEscaneo, detectarAlertas } = require('./scansight');
 const { auditoria }                         = require('./nexo');
+const db = process.env.DATABASE_URL ? require('./db') : null;
 const {
   verificarCredenciales, generarToken, requireAuth,
   cookieOpts, estaBloquada, registrarFallo, limpiarIntentos,
@@ -323,10 +324,15 @@ app.get('/api/qr', async (req, res) => {
 });
 
 // Registro de propietario de pieza — público, llamado desde autenticidad.html
-app.get('/api/catalogo', (req, res) => {
-  const db = leerDB('productos');
-  const productos = db.productos.filter(p => p.estado === 'activo');
-  res.json({ productos });
+app.get('/api/catalogo', async (req, res) => {
+  if (db) {
+    try {
+      const productos = await db.obtenerProductos();
+      return res.json({ productos });
+    } catch (_) {}
+  }
+  const local = leerDB('productos');
+  res.json({ productos: local.productos.filter(p => p.estado === 'activo') });
 });
 
 app.post('/api/registro-cliente', limiterRegistro, (req, res, next) => {
@@ -418,18 +424,39 @@ app.get('/v/:codigo', limiterEscaneo, [
     .trim()
     .matches(/^QUIE-[A-Z0-9]{6}-[0-9]{2}$/)
     .withMessage('Formato de código inválido')
-], (req, res) => {
+], async (req, res) => {
   if (validar(req, res)) return;
 
   const codigo = req.params.codigo.toUpperCase();
-  const db = leerDB('codigos');
-  const registroDb = db.codigos.find(c => c.codigo_nfc === codigo);
+
+  // Buscar en Aurora si está disponible
+  let registroAurora = null;
+  if (db) {
+    try { registroAurora = await db.buscarCodigo(codigo); } catch (_) {}
+  }
+
+  const registroLocal = leerDB('codigos').codigos.find(c => c.codigo_nfc === codigo);
   const esDemoPrincipal = codigo === DEMO_NFC_CODE;
-  const esDemoFallback = ALLOW_DEMO_VALID_CODES && !registroDb;
-  const esDemo = esDemoPrincipal || esDemoFallback;
-  const registro = registroDb
-    || (esDemoPrincipal ? DEMO_NFC_RECORD : null)
-    || (esDemoFallback ? demoRecordForCode(codigo) : null);
+  const esDemoFallback  = ALLOW_DEMO_VALID_CODES && !registroAurora && !registroLocal;
+  const esDemo = !registroAurora && (esDemoPrincipal || esDemoFallback);
+
+  const registro = registroAurora
+    ? {
+        codigo_nfc:       registroAurora.codigo_nfc,
+        modelo:           registroAurora.modelo || 'Pieza QUIE',
+        color:            registroAurora.color  || '',
+        talla:            'Única',
+        lote_id:          registroAurora.lote_id,
+        fecha_produccion: registroAurora.fecha_produccion
+          ? new Date(registroAurora.fecha_produccion).toISOString().split('T')[0]
+          : '',
+        estado:           registroAurora.estado,
+        foto_producto:    registroAurora.foto_producto || '',
+        propietario_nombre: registroAurora.propietario_nombre || null,
+      }
+    : registroLocal
+      || (esDemoPrincipal ? DEMO_NFC_RECORD : null)
+      || (esDemoFallback  ? demoRecordForCode(codigo) : null);
 
   if (!registro) return res.sendFile(path.join(WEB, 'no-encontrado.html'));
 
@@ -437,48 +464,53 @@ app.get('/v/:codigo', limiterEscaneo, [
   const dispositivo = /iPhone|iPad/.test(userAgent) ? 'iOS'
     : /Android/.test(userAgent) ? 'Android' : 'Otro';
 
-  const escaneo = esDemo
-    ? {
-        codigo_id: codigo,
-        timestamp: new Date().toISOString(),
-        ip: ip(req),
-        pais: req.headers['cf-ipcountry'] || 'Colombia',
-        ciudad: req.headers['cf-ipcity'] || 'Bogota',
-        dispositivo,
-        es_primer_escaneo: true,
-        mensaje: 'DEMO_HACKATHON'
-      }
-    : registrarEscaneo({
-        codigo_id:   codigo,
-        ip:          ip(req),
-        pais:        req.headers['cf-ipcountry'] || 'Colombia',
-        ciudad:      req.headers['cf-ipcity']    || 'Desconocida',
-        dispositivo
-      });
+  let escaneo, primerEscaneo, yaRegistrado, clienteReg;
 
-  if (!esDemo) {
+  let totalEscaneos = 1;
+
+  if (esDemo) {
+    escaneo = {
+      codigo_id: codigo, timestamp: new Date().toISOString(),
+      ip: ip(req), pais: req.headers['cf-ipcountry'] || 'Colombia',
+      ciudad: req.headers['cf-ipcity'] || 'Bogota',
+      dispositivo, es_primer_escaneo: true, mensaje: 'DEMO_HACKATHON'
+    };
+    primerEscaneo = { timestamp: '2025-11-20T15:30:00.000Z', ciudad: 'Bogota' };
+    yaRegistrado = false;
+    clienteReg = null;
+    totalEscaneos = 2;
+  } else if (registroAurora && db) {
+    let scanInfo = { es_primer_escaneo: false, total: registroAurora.escaneado_count };
+    try { scanInfo = await db.incrementarEscaneo(codigo); } catch (_) {}
+    escaneo = {
+      codigo_id: codigo, timestamp: new Date().toISOString(),
+      ip: ip(req), pais: req.headers['cf-ipcountry'] || 'Colombia',
+      ciudad: req.headers['cf-ipcity'] || 'Desconocida',
+      dispositivo, es_primer_escaneo: scanInfo.es_primer_escaneo,
+      mensaje: scanInfo.es_primer_escaneo ? 'PRIMER_ESCANEO' : 'RE_ESCANEO'
+    };
+    primerEscaneo = scanInfo.es_primer_escaneo
+      ? escaneo
+      : { timestamp: registroAurora.registrado_en || escaneo.timestamp, ciudad: escaneo.ciudad };
+    yaRegistrado = !!registroAurora.propietario_nombre;
+    clienteReg = yaRegistrado ? { nombre: registroAurora.propietario_nombre } : null;
+    totalEscaneos = scanInfo.total;
     auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} — ${escaneo.mensaje}`, ip(req));
+  } else {
+    escaneo = registrarEscaneo({
+      codigo_id: codigo, ip: ip(req),
+      pais: req.headers['cf-ipcountry'] || 'Colombia',
+      ciudad: req.headers['cf-ipcity'] || 'Desconocida', dispositivo
+    });
+    auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} — ${escaneo.mensaje}`, ip(req));
+    const dbEsc = leerDB('escaneos');
+    const historial = dbEsc.escaneos.filter(e => e.codigo_id === codigo);
+    primerEscaneo = historial.find(e => e.es_primer_escaneo);
+    const dbClientes = leerDB('clientes');
+    clienteReg  = dbClientes.clientes.find(c => c.codigo_nfc === codigo);
+    yaRegistrado = !!clienteReg;
+    totalEscaneos = historial.length;
   }
-
-  const dbEsc = leerDB('escaneos');
-  const historial = esDemo
-    ? [
-        {
-          codigo_id: codigo,
-          timestamp: '2025-11-20T15:30:00.000Z',
-          ciudad: 'Bogota',
-          pais: 'Colombia',
-          dispositivo: 'Android',
-          es_primer_escaneo: true
-        },
-        escaneo
-      ]
-    : dbEsc.escaneos.filter(e => e.codigo_id === codigo);
-  const primerEscaneo = historial.find(e => e.es_primer_escaneo);
-
-  const dbClientes = leerDB('clientes');
-  const clienteReg  = dbClientes.clientes.find(c => c.codigo_nfc === codigo);
-  const yaRegistrado = !!clienteReg;
   const productos = leerDB('productos').productos || [];
   const normalizar = (v) => String(v || '').toLowerCase().replace(/\s+/g, '').replace(/\//g, '');
   const productoCatalogo = productos.find(p =>
@@ -506,7 +538,7 @@ app.get('/v/:codigo', limiterEscaneo, [
     .replace(/\{\{CIUDAD_PRIMER_ESCANEO\}\}/g,
       primerEscaneo ? primerEscaneo.ciudad : escaneo.ciudad)
     .replace(/\{\{ES_PRIMER_ESCANEO\}\}/g,    String(escaneo.es_primer_escaneo))
-    .replace(/\{\{TOTAL_ESCANEOS\}\}/g,       String(historial.length))
+    .replace(/\{\{TOTAL_ESCANEOS\}\}/g,       String(totalEscaneos))
     .replace(/\{\{YA_REGISTRADO\}\}/g,        String(yaRegistrado))
     .replace(/\{\{NOMBRE_PROPIETARIO\}\}/g,   clienteReg ? clienteReg.nombre : '')
     .replace(/\{\{FOTO_PRODUCTO\}\}/g,        fotoProducto);
