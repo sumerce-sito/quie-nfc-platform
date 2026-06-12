@@ -16,7 +16,8 @@ const os             = require('os');
 const { generarLote, obtenerCodigosLote }   = require('./codeforge');
 const { generarReporte, registrarEscaneo, detectarAlertas } = require('./scansight');
 const { auditoria }                         = require('./nexo');
-const db = process.env.DATABASE_URL ? require('./db') : null;
+const db = process.env.DB_HOST ? require('./db') : null;
+const dynamo = process.env.DYNAMODB_TABLE_ESCANEOS ? require('./dynamodb') : null;
 const {
   verificarCredenciales, generarToken, requireAuth,
   cookieOpts, estaBloquada, registrarFallo, limpiarIntentos,
@@ -511,6 +512,17 @@ app.get('/v/:codigo', limiterEscaneo, [
     yaRegistrado = !!clienteReg;
     totalEscaneos = historial.length;
   }
+
+  if (dynamo && escaneo) {
+    dynamo.registrarEscaneoDynamo({
+      codigo_id: escaneo.codigo_id,
+      ip:        escaneo.ip,
+      ciudad:    escaneo.ciudad,
+      dispositivo: escaneo.dispositivo,
+      pais:      escaneo.pais
+    }).catch(() => {});
+  }
+
   const productos = leerDB('productos').productos || [];
   const normalizar = (v) => String(v || '').toLowerCase().replace(/\s+/g, '').replace(/\//g, '');
   const productoCatalogo = productos.find(p =>
