@@ -623,13 +623,13 @@ app.post('/api/auth/login', limiterLogin, [
   const token = generarToken(username);
   logSeguridad('LOGIN_EXITOSO', `Admin autenticado: ${username}`, clientIp);
 
-  res.cookie('chl_session', token, cookieOpts());
+  res.cookie('quie_session', token, cookieOpts());
   res.json({ ok: true, mensaje: 'Autenticado correctamente' });
 });
 
 app.post('/api/auth/logout', requireAuth, (req, res) => {
   logSeguridad('LOGOUT', `Admin: ${req.admin.sub}`, ip(req));
-  res.clearCookie('chl_session', { path: '/' });
+  res.clearCookie('quie_session', { path: '/' });
   res.json({ ok: true });
 });
 

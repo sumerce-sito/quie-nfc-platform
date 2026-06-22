@@ -98,7 +98,7 @@ function generarToken(username) {
 
 // ── Middleware: requiere JWT en cookie httpOnly ───────────────────────────────
 function requireAuth(req, res, next) {
-  const token = req.cookies?.chl_session;
+  const token = req.cookies?.quie_session;
   const esAPI = req.xhr || req.path.startsWith('/api/') ||
                 req.originalUrl.startsWith('/api/') ||
                 (req.headers['content-type'] || '').includes('application/json') ||
@@ -113,7 +113,7 @@ function requireAuth(req, res, next) {
     req.admin = payload;
     next();
   } catch (err) {
-    res.clearCookie('chl_session');
+    res.clearCookie('quie_session');
     if (esAPI) return res.status(401).json({ error: 'Sesión inválida o expirada' });
     return res.redirect('/login');
   }
