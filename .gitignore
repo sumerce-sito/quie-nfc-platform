@@ -9,3 +9,5 @@ auditoria/
 base_datos/clientes.json
 uploads/
 dist/
+
+.vercel

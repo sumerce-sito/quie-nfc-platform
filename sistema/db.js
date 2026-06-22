@@ -132,7 +132,7 @@ async function deleteLote(loteId) {
 async function getLotes() {
   const pool = await getPool();
   const { rows } = await pool.query(
-    `SELECT l.id, l.nombre, l.fecha_produccion, l.estado, l.total_tags, l.created_at,
+    `SELECT l.id, l.nombre, l.modelo, l.color, l.fecha_produccion, l.estado, l.total_tags, l.created_at,
             COUNT(c.id) AS codigos_count
      FROM lotes l
      LEFT JOIN codigos c ON c.lote_id = l.id
@@ -144,12 +144,16 @@ async function getLotes() {
 
 async function crearLoteConCodigos(lote, codigos) {
   const pool = await getPool();
-  await pool.query(
-    `INSERT INTO lotes (id, nombre, fecha_produccion, estado, total_tags)
-     VALUES ($1, $2, $3, 'activo', $4)
-     ON CONFLICT (id) DO NOTHING`,
-    [lote.id, lote.nombre, lote.fecha_produccion, lote.total_tags]
+  const result = await pool.query(
+    `INSERT INTO lotes (id, nombre, modelo, color, fecha_produccion, estado, total_tags)
+     VALUES ($1, $2, $3, $4, $5, 'activo', $6)
+     ON CONFLICT (id) DO NOTHING
+     RETURNING id`,
+    [lote.id, lote.nombre, lote.modelo, lote.color, lote.fecha_produccion, lote.total_tags]
   );
+  if (result.rowCount === 0) {
+    throw new Error(`Conflicto: el lote ${lote.id} ya existe en la base de datos`);
+  }
   for (const c of codigos) {
     await pool.query(
       `INSERT INTO codigos (codigo_nfc, lote_id, url_landing, estado)

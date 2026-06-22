@@ -1081,7 +1081,7 @@ async function cargarLotes() {
     <div class="lote-item">
       <div class="lote-info">
         <h4>${l.id}</h4>
-        <p>${l.modelo} · ${l.color} · ${l.total_tags} piezas · ${l.temporada || ''}</p>
+        <p>${l.modelo || l.nombre || '—'} · ${l.color || ''} · ${l.total_tags} piezas · ${l.temporada || ''}</p>
       </div>
       <div class="lote-accion">
         <span class="lote-estado ${cls}">${txt}</span>

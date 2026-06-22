@@ -255,6 +255,16 @@ function ip(req) {
   return (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
 }
 
+// Cloudflare usa cf-ipcity/cf-ipcountry; Vercel usa x-vercel-ip-city/x-vercel-ip-country
+function geoCiudad(req) {
+  const raw = req.headers['cf-ipcity'] || req.headers['x-vercel-ip-city'];
+  return raw ? decodeURIComponent(raw) : null;
+}
+
+function geoPais(req) {
+  return req.headers['cf-ipcountry'] || req.headers['x-vercel-ip-country'] || null;
+}
+
 function baseUrl(req) {
   const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
   const host = req.headers['x-forwarded-host'] || req.headers.host || process.env.BASE_URL || 'localhost:3000';
@@ -490,8 +500,8 @@ app.get('/v/:codigo', limiterEscaneo, [
   if (esDemo) {
     escaneo = {
       codigo_id: codigo, timestamp: new Date().toISOString(),
-      ip: ip(req), pais: req.headers['cf-ipcountry'] || 'Colombia',
-      ciudad: req.headers['cf-ipcity'] || 'Bogota',
+      ip: ip(req), pais: geoPais(req) || 'Colombia',
+      ciudad: geoCiudad(req) || 'Bogota',
       dispositivo, es_primer_escaneo: true, mensaje: 'DEMO_HACKATHON'
     };
     primerEscaneo = { timestamp: '2025-11-20T15:30:00.000Z', ciudad: 'Bogota' };
@@ -503,8 +513,8 @@ app.get('/v/:codigo', limiterEscaneo, [
     try { scanInfo = await db.incrementarEscaneo(codigo); } catch (_) {}
     escaneo = {
       codigo_id: codigo, timestamp: new Date().toISOString(),
-      ip: ip(req), pais: req.headers['cf-ipcountry'] || 'Colombia',
-      ciudad: req.headers['cf-ipcity'] || 'Desconocida',
+      ip: ip(req), pais: geoPais(req) || 'Colombia',
+      ciudad: geoCiudad(req) || 'Desconocida',
       dispositivo, es_primer_escaneo: scanInfo.es_primer_escaneo,
       mensaje: scanInfo.es_primer_escaneo ? 'PRIMER_ESCANEO' : 'RE_ESCANEO'
     };
@@ -518,8 +528,8 @@ app.get('/v/:codigo', limiterEscaneo, [
   } else {
     escaneo = registrarEscaneo({
       codigo_id: codigo, ip: ip(req),
-      pais: req.headers['cf-ipcountry'] || 'Colombia',
-      ciudad: req.headers['cf-ipcity'] || 'Desconocida', dispositivo
+      pais: geoPais(req) || 'Colombia',
+      ciudad: geoCiudad(req) || 'Desconocida', dispositivo
     });
     auditoria('ScanSight', 'ESCANEO_REGISTRADO', `${codigo} — ${escaneo.mensaje}`, ip(req));
     const dbEsc = leerDB('escaneos');
@@ -698,7 +708,7 @@ api.post('/lotes', [
   if (validar(req, res)) return;
   try {
     const { modelo, color, talla, cantidad, temporada } = req.body;
-    const loteId = generarLoteId(modelo);
+    const loteId = await generarLoteId(modelo);
     const resultado = generarLote({
       lote_id:   loteId,
       modelo, color,
@@ -711,11 +721,12 @@ api.post('/lotes', [
       const codigos = obtenerCodigosLote(loteId);
       try {
         await db.crearLoteConCodigos(
-          { id: loteId, nombre: `${modelo} ${color}`, fecha_produccion: new Date().toISOString().split('T')[0], total_tags: parseInt(cantidad) },
+          { id: loteId, nombre: `${modelo} ${color}`, modelo, color, fecha_produccion: new Date().toISOString().split('T')[0], total_tags: parseInt(cantidad) },
           codigos
         );
       } catch (dbErr) {
         console.error('[LOTE_AURORA_ERROR]', dbErr.message);
+        return res.status(500).json({ error: 'Error al guardar lote en base de datos', detalle: dbErr.message });
       }
     }
     auditoria('NEXO', 'LOTE_CREADO', `${resultado.lote_id} — ${cantidad} uds`, ip(req));
@@ -1025,12 +1036,25 @@ app.use((err, req, res, _next) => {
 //  HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-function generarLoteId(modelo) {
-  const db    = leerDB('lotes');
-  const abrev = modelo.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, 'X');
-  const anio  = new Date().getFullYear();
-  const seq   = String(db.lotes.length + 1).padStart(3, '0');
-  return `QUIE-${abrev}-${anio}-${seq}`;
+async function generarLoteId(modelo) {
+  const abrev  = modelo.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, 'X');
+  const anio   = new Date().getFullYear();
+  const prefix = `QUIE-${abrev}-${anio}-`;
+
+  if (db) {
+    try {
+      const lotes = await db.getLotes();
+      const nums = lotes
+        .filter(l => l.id.startsWith(prefix))
+        .map(l => parseInt(l.id.slice(prefix.length), 10))
+        .filter(n => !isNaN(n) && n > 0);
+      const maxSeq = nums.length > 0 ? Math.max(...nums) : 0;
+      return `${prefix}${String(maxSeq + 1).padStart(3, '0')}`;
+    } catch (_) {}
+  }
+
+  const local = leerDB('lotes');
+  return `${prefix}${String(local.lotes.length + 1).padStart(3, '0')}`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS artesanos (
 CREATE TABLE IF NOT EXISTS lotes (
   id varchar(30) PRIMARY KEY,
   nombre varchar(100),
+  modelo varchar(80),
+  color varchar(50),
   fecha_produccion date,
   estado varchar(20) NOT NULL DEFAULT 'activo',
   total_tags integer,
