@@ -12,94 +12,94 @@ const C = {
 } as const;
 
 // ── Text corpus
-const BODY_TEXT = `Hubo un tiempo en que la tierra hablaba
-a través de las manos.
+const BODY_TEXT = `There was a time when the earth spoke
+through human hands.
 
-No había fábricas.
-No había prisa.
-Solo arcilla, cuero, aguja e hilo
-y el conocimiento silencioso
-que pasa de padre a hijo
-sin necesidad de palabras.
+There were no factories.
+There was no rush.
+Only clay, leather, needle and thread
+and the silent knowledge
+that passes from parent to child
+without the need for words.
 
-En algún lugar de Colombia —
-donde el río baja de la montaña
-y la neblina todavía abraza los cerros
-antes de que llegue el sol —
-un artesano extendió un trozo de cuero
-sobre su mesa de trabajo.
+Somewhere in Colombia —
+where the river descends from the mountain
+and the mist still embraces the hills
+before the sun arrives —
+an artisan spread a piece of leather
+across his workbench.
 
-Lo miró largo tiempo.
+He looked at it for a long time.
 
-No porque no supiera qué hacer.
-Sino porque sabía
-que lo que estaba a punto de crear
-duraría más que él.
+Not because he didn't know what to do.
+But because he knew
+that what he was about to create
+would outlast him.
 
-Eso cambia la forma en que trabajas.
-Eso cambia todo.
-
-—
-
-QUIE significa tierra.
-No la tierra que pisas —
-la tierra que te sostiene.
-La que guarda semillas
-y devuelve vida.
-La que recuerda
-cuando todo lo demás olvida.
-
-Cada pieza que sale de nuestros talleres
-lleva esa memoria.
-
-El cuero que usamos
-fue piel que protegió a otro ser.
-Las manos que lo cortaron
-aprendieron de manos que ya no están.
-El hilo que lo une
-es el mismo gesto
-que tejió las primeras comunidades
-de esta tierra.
-
-No hacemos accesorios.
-
-Guardamos tiempo.
-Transferimos historia.
-Creamos objetos que envejecen bien
-porque fueron hechos con honestidad.
+That changes the way you work.
+That changes everything.
 
 —
 
-Hoy llevas contigo
-un fragmento de todo eso.
+QUIE means earth.
+Not the earth you walk on —
+the earth that holds you up.
+The one that keeps seeds
+and gives back life.
+The one that remembers
+when everything else forgets.
 
-Escaneaste el tag
-y encontraste este mensaje
-porque creemos
-que mereces saber
-de dónde viene lo que tocas.
+Every piece that leaves our workshops
+carries that memory.
 
-Mereces saber
-que hay manos reales detrás.
-Una historia real.
-Una tierra real.
+The leather we use
+was skin that protected another living being.
+The hands that cut it
+learned from hands that are no longer here.
+The thread that binds it
+is the same gesture
+that wove the first communities
+of this land.
 
-No un algoritmo.
-No una línea de ensamblaje.
-No un logo vacío.
+We do not make accessories.
 
-Solo nosotros.
-Solo tú.
-Y este objeto entre los dos
-que durará más que esta conversación.
+We keep time.
+We transfer history.
+We create objects that age well
+because they were made with honesty.
 
 —
 
-Bienvenido a QUIE®.
+Today you carry with you
+a fragment of all that.
+
+You scanned the tag
+and found this message
+because we believe
+you deserve to know
+where what you touch comes from.
+
+You deserve to know
+that real hands were behind it.
+A real story.
+A real land.
+
+Not an algorithm.
+Not an assembly line.
+Not an empty logo.
+
+Just us.
+Just you.
+And this object between us both
+that will outlast this conversation.
+
+—
+
+Welcome to QUIE®.
 
 `;
 
-const FINAL_TEXT = 'De la tierra.\nPara siempre.';
+const FINAL_TEXT = 'From the earth.\nForever.';
 
 const LS_KEY      = 'quie_origin_seen';
 const CHAR_DELAY  = 40; // ms per character
@@ -360,7 +360,7 @@ export default function BrandOrigin({
                 fontFamily: 'system-ui, sans-serif',
               }}
             >
-              Artesanía colombiana
+              Colombian craftsmanship
             </div>
           </div>
 
@@ -395,7 +395,7 @@ export default function BrandOrigin({
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              Conoce tu pieza →
+              Discover your piece →
             </button>
           </div>
 
@@ -409,7 +409,7 @@ export default function BrandOrigin({
 // BrandOriginTrigger — reusable "Nuestra historia" button
 // ────────────────────────────────────────────────
 export function BrandOriginTrigger({
-  label     = 'Nuestra historia',
+  label     = 'Our story',
   className = '',
   onClick,
 }: {

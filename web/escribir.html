@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-  <title>Programar Piezas — QUIE®</title>
+  <title>Program Pieces — QUIE®</title>
   <style>
     :root{
       --negro:#2D402E; --dorado:#D9A86C; --azul:#2D402E;
@@ -185,28 +185,28 @@
 <body>
 
 <div class="topbar">
-  <div class="topbar-logo">Programar piezas</div>
+  <div class="topbar-logo">Program pieces</div>
   <div class="topbar-prog" id="top-prog"></div>
   <div class="topbar-sal" onclick="window.location.href='/admin'">← Panel</div>
 </div>
 
-<!-- ══ PANTALLA 1: ELEGIR LOTE ══ -->
+<!-- ══ SCREEN 1: CHOOSE BATCH ══ -->
 <div class="screen" id="s-lote">
 
-  <div class="titulo">¿Qué lote vas a programar?</div>
+  <div class="titulo">Which batch will you program?</div>
   <div class="sub">
-    Selecciona el grupo de piezas al que vas a poner los chips NFC hoy.
+    Select the group of pieces you will be tagging with NFC chips today.
   </div>
 
   <div id="aviso-nfc"></div>
   <div class="lote-lista" id="lista-lotes"></div>
 
   <button class="btn-link" onclick="window.location.href='/guia-nfc'">
-    ¿Primera vez? Ver guía completa
+    First time? See the full guide
   </button>
 </div>
 
-<!-- ══ PANTALLA 2: ESCRIBIR ══ -->
+<!-- ══ SCREEN 2: WRITE ══ -->
 <div class="screen fuera" id="s-escribir">
 
   <div class="zona-nfc" id="zona">
@@ -219,16 +219,16 @@
     </div>
   </div>
 
-  <div class="instruccion" id="instruccion">Acerca la pieza al teléfono</div>
-  <div class="detalle" id="detalle">Pon la parte trasera del teléfono sobre el chip de la pieza</div>
+  <div class="instruccion" id="instruccion">Bring the piece to the phone</div>
+  <div class="detalle" id="detalle">Place the back of the phone on the chip inside the piece</div>
 
   <div class="info-tag" id="info-tag">
     <div class="info-tag-row">
-      <span class="k">Código</span>
+      <span class="k">Code</span>
       <span class="v" id="it-codigo" style="font-family:monospace;color:var(--dorado);font-size:.72rem">—</span>
     </div>
     <div class="info-tag-row">
-      <span class="k">Modelo</span>
+      <span class="k">Model</span>
       <span class="v" id="it-modelo">—</span>
     </div>
     <div class="info-tag-row">
@@ -241,40 +241,40 @@
     <div class="barra-bg">
       <div class="barra-fill" id="barra" style="width:0%"></div>
     </div>
-    <div class="barra-txt" id="barra-txt">0 de 0 piezas listas</div>
+    <div class="barra-txt" id="barra-txt">0 of 0 pieces ready</div>
   </div>
 
   <div class="btns-accion">
-    <button class="btn-accion btn-saltar" id="btn-saltar">Saltar esta</button>
-    <button class="btn-accion btn-parar" id="btn-parar">Detener</button>
+    <button class="btn-accion btn-saltar" id="btn-saltar">Skip this</button>
+    <button class="btn-accion btn-parar" id="btn-parar">Stop</button>
   </div>
 </div>
 
-<!-- ══ PANTALLA 3: FIN ══ -->
+<!-- ══ SCREEN 3: DONE ══ -->
 <div class="screen fuera" id="s-fin">
   <div class="ico-fin">QUIE</div>
-  <h2>¡Terminaste!</h2>
-  <p class="sub-fin" id="fin-desc">Lote programado correctamente.</p>
+  <h2>All done!</h2>
+  <p class="sub-fin" id="fin-desc">Batch programmed successfully.</p>
 
   <div class="nums-fin">
     <div class="num-fin ok">
       <div class="n" id="fin-ok">0</div>
-      <div class="l">Escritas</div>
+      <div class="l">Written</div>
     </div>
     <div class="num-fin skip">
       <div class="n" id="fin-skip">0</div>
-      <div class="l">Saltadas</div>
+      <div class="l">Skipped</div>
     </div>
   </div>
 
-  <button class="btn-fin btn-fin-gold" id="btn-otro-lote">Programar otro lote</button>
+  <button class="btn-fin btn-fin-gold" id="btn-otro-lote">Program another batch</button>
   <button class="btn-fin btn-fin-out" onclick="window.location.href='/admin'">
-    Ir al panel principal
+    Go to main panel
   </button>
 </div>
 
 <script>
-// ── Estado ───────────────────────────────────────────────────────────────────
+// ── State ──────────────────────────────────────────────────────────────────────
 let codigos    = [];
 let idx        = 0;
 let escritos   = 0;
@@ -282,18 +282,18 @@ let saltados   = 0;
 let ndef       = null;
 let ocupado    = false;
 
-// ── Verificar soporte NFC ────────────────────────────────────────────────────
+// ── NFC support check ─────────────────────────────────────────────────────────
 const tieneNFC = ('NDEFReader' in window);
 if (!tieneNFC) {
   document.getElementById('aviso-nfc').innerHTML =
     '<div class="aviso-nfc">' +
-    'Atención Este teléfono no puede escribir chips NFC desde el navegador.<br/><br/>' +
-    '<strong>Necesitas:</strong> Android + Chrome versión 89 o superior.<br/>' +
-    'En iPhone no está disponible esta función.' +
+    'This phone cannot write NFC chips from the browser.<br/><br/>' +
+    '<strong>You need:</strong> Android + Chrome version 89 or higher.<br/>' +
+    'This feature is not available on iPhone.' +
     '</div>';
 }
 
-// ── Cargar lotes disponibles ─────────────────────────────────────────────────
+// ── Load available batches ────────────────────────────────────────────────────
 async function cargarLotes() {
   let lotes;
   try {
@@ -302,7 +302,7 @@ async function cargarLotes() {
     lotes = await r.json();
   } catch(e) {
     document.getElementById('lista-lotes').innerHTML =
-      '<div class="aviso-nfc">Error de conexión. Asegúrate de estar en el mismo WiFi.</div>';
+      '<div class="aviso-nfc">Connection error. Make sure you are on the same Wi-Fi.</div>';
     return;
   }
 
@@ -313,8 +313,8 @@ async function cargarLotes() {
     cont.innerHTML =
       '<div class="empty-lotes">' +
       '<span class="ei">◇</span>' +
-      '<p>No hay lotes pendientes de programar.<br/>Crea un lote primero desde el panel principal.</p>' +
-      '<button class="btn-crear-lote" onclick="window.location.href=\'/admin\'">Ir a crear un lote</button>' +
+      '<p>No pending batches to program.<br/>Create a batch first from the main panel.</p>' +
+      '<button class="btn-crear-lote" onclick="window.location.href=\'/admin\'">Go create a batch</button>' +
       '</div>';
     return;
   }
@@ -323,7 +323,7 @@ async function cargarLotes() {
     '<button class="lote-btn" data-id="' + l.id + '">' +
     '<h4>' + l.id + '</h4>' +
     '<p>' + l.modelo + ' · ' + l.color + ' · ' + l.temporada + '</p>' +
-    '<div class="pendientes">◇ ' + l.total_tags + ' piezas pendientes</div>' +
+    '<div class="pendientes">◇ ' + l.total_tags + ' pieces pending</div>' +
     '</button>'
   ).join('');
 
@@ -332,14 +332,14 @@ async function cargarLotes() {
   });
 }
 
-// ── Iniciar lote ─────────────────────────────────────────────────────────────
+// ── Start batch ───────────────────────────────────────────────────────────────
 async function iniciarLote(loteId) {
   const r = await fetch('/api/codigos?lote=' + loteId, { credentials: 'same-origin' });
   const todos = await r.json();
   codigos = todos.filter(c => c.estado !== 'activo');
 
   if (!codigos.length) {
-    alert('Todos los tags de este lote ya están escritos. QUIE');
+    alert('All tags in this batch are already written.');
     return;
   }
 
@@ -349,14 +349,14 @@ async function iniciarLote(loteId) {
   if (tieneNFC) arrancarNFC();
 }
 
-// ── Motor NFC ────────────────────────────────────────────────────────────────
+// ── NFC engine ────────────────────────────────────────────────────────────────
 async function arrancarNFC() {
   try {
     ndef = new NDEFReader();
     await ndef.scan();
 
-    setEstado('espera', 'Acerca la pieza al teléfono',
-      'Pon la parte trasera del teléfono sobre el chip en el interior de la pieza');
+    setEstado('espera', 'Bring the piece to the phone',
+      'Place the back of the phone on the chip inside the piece');
 
     ndef.addEventListener('reading', async () => {
       if (ocupado) return;
@@ -366,10 +366,10 @@ async function arrancarNFC() {
 
   } catch(e) {
     if (e.name === 'NotAllowedError') {
-      setEstado('error', 'Permiso denegado',
-        'Toca aquí y permite que Chrome use el NFC');
+      setEstado('error', 'Permission denied',
+        'Tap here and allow Chrome to use NFC');
     } else {
-      setEstado('error', 'Error de NFC', e.message);
+      setEstado('error', 'NFC error', e.message);
     }
     ocupado = false;
   }
@@ -377,7 +377,7 @@ async function arrancarNFC() {
 
 async function escribirActual() {
   const c = codigos[idx];
-  setEstado('escribiendo', 'Escribiendo...', 'Quieto, no muevas el teléfono');
+  setEstado('escribiendo', 'Writing...', "Hold still, don't move the phone");
 
   try {
     await ndef.write({
@@ -386,7 +386,7 @@ async function escribirActual() {
 
     escritos++;
     if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
-    setEstado('ok', '¡Chip listo! OK', 'Ya puedes retirar la pieza');
+    setEstado('ok', 'Chip ready! OK', 'You can now remove the piece');
 
     setTimeout(() => {
       idx++;
@@ -394,36 +394,36 @@ async function escribirActual() {
         terminar();
       } else {
         actualizarUI();
-        setEstado('espera', 'Acerca la siguiente pieza',
-          'Pon el teléfono sobre el chip de la próxima pieza');
+        setEstado('espera', 'Bring the next piece closer',
+          'Place the phone on the chip of the next piece');
         ocupado = false;
       }
     }, 1600);
 
   } catch(e) {
-    setEstado('error', 'No funcionó, intenta de nuevo',
-      'Retira la pieza y acércala despacio otra vez');
+    setEstado('error', "Didn't work, try again",
+      'Remove the piece and bring it closer slowly again');
     setTimeout(() => {
-      setEstado('espera', 'Acerca la pieza de nuevo',
-        'Ponla despacio sobre la parte trasera del teléfono');
+      setEstado('espera', 'Bring the piece closer again',
+        'Place it slowly on the back of the phone');
       ocupado = false;
     }, 2200);
   }
 }
 
-// ── Botones ──────────────────────────────────────────────────────────────────
+// ── Buttons ───────────────────────────────────────────────────────────────────
 document.getElementById('btn-saltar').addEventListener('click', function() {
   if (ocupado) return;
   saltados++;
   idx++;
   if (idx >= codigos.length) { terminar(); return; }
   actualizarUI();
-  setEstado('espera', 'Acerca la siguiente pieza',
-    'Esta pieza fue saltada. Puedes programarla después.');
+  setEstado('espera', 'Bring the next piece closer',
+    'This piece was skipped. You can program it later.');
 });
 
 document.getElementById('btn-parar').addEventListener('click', function() {
-  if (confirm('¿Parar aquí? Lo que ya escribiste está guardado.')) {
+  if (confirm("Stop here? What you've written so far is saved.")) {
     terminar();
   }
 });
@@ -433,7 +433,7 @@ document.getElementById('btn-otro-lote').addEventListener('click', function() {
   cargarLotes();
 });
 
-// ── UI ───────────────────────────────────────────────────────────────────────
+// ── UI ────────────────────────────────────────────────────────────────────────
 function actualizarUI() {
   if (idx >= codigos.length) return;
   const c = codigos[idx];
@@ -444,7 +444,7 @@ function actualizarUI() {
   const pct = Math.round((idx / codigos.length) * 100);
   document.getElementById('barra').style.width = pct + '%';
   document.getElementById('barra-txt').textContent =
-    idx + ' de ' + codigos.length + ' piezas listas';
+    idx + ' of ' + codigos.length + ' pieces ready';
   document.getElementById('top-prog').textContent =
     idx + ' / ' + codigos.length;
 }
@@ -473,12 +473,12 @@ function terminar() {
   document.getElementById('fin-ok').textContent   = escritos;
   document.getElementById('fin-skip').textContent = saltados;
   document.getElementById('fin-desc').textContent =
-    escritos + ' piezas programadas correctamente.' +
-    (saltados ? ' ' + saltados + ' fueron saltadas.' : '');
+    escritos + ' pieces programmed successfully.' +
+    (saltados ? ' ' + saltados + ' were skipped.' : '');
   mostrarPantalla('s-fin');
 }
 
-// ── Arranque ─────────────────────────────────────────────────────────────────
+// ── Start ─────────────────────────────────────────────────────────────────────
 cargarLotes();
 </script>
 </body>

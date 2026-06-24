@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Catalogo de Accesorios | QUIE®</title>
-  <meta name="description" content="Catalogo editable de accesorios QUIE® con modelos, descripciones, colores y autenticidad NFC."/>
+  <title>Accessories Catalog | QUIE®</title>
+  <meta name="description" content="Editable catalog of QUIE® accessories with models, descriptions, colors and NFC authenticity."/>
   <style>
     :root{
       --verde:#2D402E;--arena:#D9A86C;--marfil:#F2F2F2;
@@ -60,7 +60,7 @@
   <nav class="wrap">
     <div class="brand">QUIE®</div>
     <div class="navlinks">
-      <a href="/">Inicio</a>
+      <a href="/">Home</a>
       <a href="/#nfc">NFC</a>
       <a href="/login">Admin</a>
       <a href="https://wa.me/573156056978" target="_blank">WhatsApp</a>
@@ -70,12 +70,12 @@
 
 <main class="wrap">
   <section class="hero">
-    <div class="tag">Coleccion 2025</div>
-    <h1>Cuero hecho con proposito</h1>
-    <p class="lead">Cada pieza lleva historia impresa en el cuero. Hecha a mano en Colombia, certificada con NFC y disenada para durar mas que cualquier tendencia.</p>
+    <div class="tag">2025 Collection</div>
+    <h1>Leather made with purpose</h1>
+    <p class="lead">Every piece carries history pressed into the leather. Handmade in Colombia, certified with NFC and designed to outlast any trend.</p>
     <div class="actions">
-      <a class="btn gold" href="https://wa.me/573156056978?text=Hola%20QUIE%2C%20quiero%20cotizar%20una%20pieza%20del%20catalogo" target="_blank">Cotizar catalogo</a>
-      <a class="btn ghost" href="/">Volver al sitio</a>
+      <a class="btn gold" href="https://wa.me/573156056978?text=Hola%20QUIE%2C%20quiero%20cotizar%20una%20pieza%20del%20catalogo" target="_blank">Request a quote</a>
+      <a class="btn ghost" href="/">Back to site</a>
     </div>
   </section>
 
@@ -99,11 +99,11 @@ const productosBase = [
     modelo: 'Tarjetero',
     color: 'Verde profundo',
     foto_producto: '/assets/quie/productos/tarjetero.png',
-    descripcion_corta: 'Formato compacto con serie NFC.',
-    descripcion: 'Tarjetero en cuero para uso diario, pensado como pieza de entrada a la marca.',
-    materiales: 'Cuero premium, costuras tono arena y tag NTAG213',
-    ideal_para: 'Regalos corporativos, lanzamiento y clientes VIP',
-    personalizacion: 'Iniciales, color de hilo y certificado digital',
+    descripcion_corta: 'Compact format with NFC series.',
+    descripcion: 'Leather card holder for daily use, designed as an entry-level piece to the brand.',
+    materiales: 'Premium leather, sand-tone stitching and NTAG213 tag',
+    ideal_para: 'Corporate gifts, product launches and VIP clients',
+    personalizacion: 'Initials, thread color and digital certificate',
     nfc: true
   },
   {
@@ -111,11 +111,11 @@ const productosBase = [
     modelo: 'Billetera',
     color: 'Cuero oscuro',
     foto_producto: '/assets/quie/productos/billetera.png',
-    descripcion_corta: 'Pieza diaria con acabados sobrios.',
-    descripcion: 'Billetera de cuero con compartimentos funcionales y autenticidad digital.',
-    materiales: 'Cuero, forro textil y herraje dorado arena',
-    ideal_para: 'Uso personal, regalos premium y colecciones limitadas',
-    personalizacion: 'Marcacion interna, iniciales y pagina NFC',
+    descripcion_corta: 'Daily piece with understated finishes.',
+    descripcion: 'Leather wallet with functional compartments and digital authenticity.',
+    materiales: 'Leather, textile lining and sand-gold hardware',
+    ideal_para: 'Personal use, premium gifts and limited editions',
+    personalizacion: 'Internal branding, initials and NFC page',
     nfc: true
   },
   {
@@ -123,11 +123,11 @@ const productosBase = [
     modelo: 'Llavero NFC',
     color: 'Terracota',
     foto_producto: '/assets/quie/productos/llavero.png',
-    descripcion_corta: 'Accesorio pequeno con verificacion digital.',
-    descripcion: 'Llavero en cuero para demo NFC, certificado y activaciones de marca.',
-    materiales: 'Cuero, aro metalico y tag NTAG213',
-    ideal_para: 'Eventos, hackathon, activaciones y pruebas NFC',
-    personalizacion: 'Grabado, color y URL de autenticidad',
+    descripcion_corta: 'Small accessory with digital verification.',
+    descripcion: 'Leather key fob for NFC demos, certification and brand activations.',
+    materiales: 'Leather, metal ring and NTAG213 tag',
+    ideal_para: 'Events, hackathons, activations and NFC testing',
+    personalizacion: 'Engraving, color and authenticity URL',
     nfc: true
   },
   {
@@ -135,11 +135,11 @@ const productosBase = [
     modelo: 'Correa',
     color: 'Verde profundo',
     foto_producto: '/assets/quie/productos/correa.png',
-    descripcion_corta: 'Cuero, herraje y sello discreto.',
-    descripcion: 'Correa premium con lectura NFC para validar lote, origen y cuidado.',
-    materiales: 'Cuero de grano natural y hebilla metalica',
-    ideal_para: 'Linea masculina, regalo ejecutivo y retail premium',
-    personalizacion: 'Talla, hebilla, iniciales y certificado',
+    descripcion_corta: 'Leather, hardware and a discreet stamp.',
+    descripcion: 'Premium belt with NFC reading to validate batch, origin and care instructions.',
+    materiales: 'Natural grain leather and metal buckle',
+    ideal_para: 'Menswear line, executive gift and premium retail',
+    personalizacion: 'Size, buckle, initials and certificate',
     nfc: true
   },
   {
@@ -147,11 +147,11 @@ const productosBase = [
     modelo: 'Bolso',
     color: 'Terracota y verde',
     foto_producto: '/assets/quie/productos/bolso.png',
-    descripcion_corta: 'La pieza editorial de mayor impacto.',
-    descripcion: 'Bolso QUIE con mezcla de cuero, textura artesanal y presencia de marca.',
-    materiales: 'Cuero premium, forro interno y herrajes dorado arena',
-    ideal_para: 'Coleccion principal, venta directa y contenido editorial',
-    personalizacion: 'Color, asa, iniciales y pagina de historia',
+    descripcion_corta: 'The most impactful editorial piece.',
+    descripcion: 'QUIE bag combining leather, artisan texture and brand presence.',
+    materiales: 'Premium leather, internal lining and sand-gold hardware',
+    ideal_para: 'Main collection, direct sales and editorial content',
+    personalizacion: 'Color, strap, initials and story page',
     nfc: true
   },
   {
@@ -159,19 +159,19 @@ const productosBase = [
     modelo: 'Maletin',
     color: 'Cuero oscuro',
     foto_producto: '/assets/quie/productos/maletin-ejecutivo.png',
-    descripcion_corta: 'Linea ejecutiva con trazabilidad NFC.',
-    descripcion: 'Maletin para portatil y documentos con acabados premium y certificado digital.',
-    materiales: 'Cuero estructurado, compartimento interno y herraje premium',
-    ideal_para: 'Ejecutivos, regalos empresariales y preventa premium',
-    personalizacion: 'Iniciales, placa interna y certificado NFC',
+    descripcion_corta: 'Executive line with NFC traceability.',
+    descripcion: 'Laptop and document briefcase with premium finishes and digital certificate.',
+    materiales: 'Structured leather, internal compartments and premium hardware',
+    ideal_para: 'Executives, corporate gifts and premium pre-orders',
+    personalizacion: 'Initials, internal plaque and NFC certificate',
     nfc: true
   }
 ];
 let productos = [];
-let filtro = 'Todos';
+let filtro = 'All';
 
 function modelosDisponibles() {
-  return ['Todos'].concat([...new Set(productos.map(p => p.modelo).filter(Boolean))]);
+  return ['All'].concat([...new Set(productos.map(p => p.modelo).filter(Boolean))]);
 }
 
 function renderFiltros() {
@@ -188,28 +188,28 @@ function filtrarCatalogo(modelo) {
 
 function renderCatalogo() {
   const cont = document.getElementById('catalogo');
-  const lista = filtro === 'Todos' ? productos : productos.filter(p => p.modelo === filtro);
+  const lista = filtro === 'All' ? productos : productos.filter(p => p.modelo === filtro);
   if (!lista.length) {
-    cont.innerHTML = '<div class="empty">No hay productos activos en el catalogo.</div>';
+    cont.innerHTML = '<div class="empty">No active products in the catalog.</div>';
     return;
   }
   cont.innerHTML = lista.map(p => {
-    const msg = encodeURIComponent('Hola QUIE, quiero cotizar: ' + p.nombre);
+    const msg = encodeURIComponent('Hi QUIE, I want to quote: ' + p.nombre);
     return '<article class="card">' +
       '<div class="visual">' + (p.foto_producto ? '<img src="' + p.foto_producto + '" alt="' + p.nombre + '">' : (iconos[p.modelo] || 'QUIE')) + '</div>' +
       '<div class="body">' +
         '<div class="meta">' +
-          '<span class="pill">' + (p.modelo || 'Pieza') + '</span>' +
-          '<span class="pill">' + (p.color || 'Color a elegir') + '</span>' +
+          '<span class="pill">' + (p.modelo || 'Piece') + '</span>' +
+          '<span class="pill">' + (p.color || 'Color to choose') + '</span>' +
           (p.nfc ? '<span class="pill green">NFC</span>' : '') +
         '</div>' +
         '<div class="product-title"><h2>' + p.nombre + '</h2></div>' +
         '<p class="short">' + (p.descripcion_corta || '') + '</p>' +
         '<p class="desc">' + (p.descripcion || '') + '</p>' +
-        '<div class="spec"><strong>Materiales:</strong> ' + (p.materiales || 'Segun disponibilidad') + '</div>' +
-        '<div class="spec"><strong>Ideal para:</strong> ' + (p.ideal_para || 'Marcas, empresas y colecciones') + '</div>' +
-        '<div class="spec"><strong>Personalizacion:</strong> ' + (p.personalizacion || 'Bordado y detalles personalizados') + '</div>' +
-        '<a class="btn gold" target="_blank" href="https://wa.me/' + WHATSAPP + '?text=' + msg + '">Cotizar este modelo</a>' +
+        '<div class="spec"><strong>Materials:</strong> ' + (p.materiales || 'Subject to availability') + '</div>' +
+        '<div class="spec"><strong>Ideal for:</strong> ' + (p.ideal_para || 'Brands, companies and collections') + '</div>' +
+        '<div class="spec"><strong>Customization:</strong> ' + (p.personalizacion || 'Embroidery and custom details') + '</div>' +
+        '<a class="btn gold" target="_blank" href="https://wa.me/' + WHATSAPP + '?text=' + msg + '">Request a quote</a>' +
       '</div>' +
     '</article>';
   }).join('');

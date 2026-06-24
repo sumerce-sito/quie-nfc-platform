@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>QUIE® — Verificación de Autenticidad</title>
+  <title>QUIE® — Authenticity Verification</title>
   <meta name="robots" content="noindex"/>
   <style>
     :root{
@@ -379,10 +379,10 @@
 </head>
 <body>
 
-<!-- Loading inicial -->
+<!-- Initial loading -->
 <div class="loading-overlay" id="loading">
   <div class="spin"></div>
-  <div class="loading-txt">Verificando autenticidad...</div>
+  <div class="loading-txt">Verifying authenticity...</div>
 </div>
 
 <div class="bg-layers" id="bg"></div>
@@ -390,12 +390,12 @@
 
 <header>
   <div class="header-logo">QUIE®</div>
-  <div class="header-badge">NFC · Verificación</div>
+  <div class="header-badge">NFC · Verification</div>
 </header>
 
 <main>
 
-  <!-- ── SELLO CENTRAL ── -->
+  <!-- ── CENTRAL SEAL ── -->
   <div class="sello-wrap">
     <div class="sello-ring" id="sello-ring">
       <div class="ring-anim"></div>
@@ -404,7 +404,7 @@
         <span class="sello-ico" id="sello-ico">...</span>
       </div>
     </div>
-    <div class="sello-titulo" id="sello-titulo">Verificando...</div>
+    <div class="sello-titulo" id="sello-titulo">Verifying...</div>
     <p class="sello-sub" id="sello-sub"></p>
     <div class="sello-badge" id="sello-badge" style="display:none;">
       <span class="badge-dot"></span>
@@ -412,14 +412,14 @@
     </div>
   </div>
 
-  <!-- ── INFO PRODUCTO ── -->
+  <!-- ── PRODUCT INFO ── -->
   <div class="card">
-    <div class="card-titulo">Información del producto</div>
+    <div class="card-titulo">Product information</div>
     <div class="producto-foto-verificacion" id="foto-producto-box">
-      <img id="foto-producto-img" src="{{FOTO_PRODUCTO}}" alt="Foto del modelo de pieza">
+      <img id="foto-producto-img" src="{{FOTO_PRODUCTO}}" alt="Product model photo">
     </div>
     <div class="info-row">
-      <span class="lbl">Modelo</span>
+      <span class="lbl">Model</span>
       <span class="val" id="d-modelo">{{MODELO}}</span>
     </div>
     <div class="info-row">
@@ -427,131 +427,131 @@
       <span class="val" id="d-color">{{COLOR}}</span>
     </div>
     <div class="info-row">
-      <span class="lbl">Talla</span>
+      <span class="lbl">Size</span>
       <span class="val" id="d-talla">{{TALLA}}</span>
     </div>
     <div class="info-row">
-      <span class="lbl">Lote</span>
+      <span class="lbl">Batch</span>
       <span class="val" style="font-family:monospace;font-size:.8rem;color:#D9A86C;">{{LOTE_ID}}</span>
     </div>
     <div class="info-row">
-      <span class="lbl">Fabricación</span>
+      <span class="lbl">Made</span>
       <span class="val">{{FECHA_PRODUCCION}}</span>
     </div>
     <div class="info-row">
-      <span class="lbl">Código NFC</span>
+      <span class="lbl">NFC code</span>
       <span class="val-codigo">{{CODIGO_NFC}}</span>
     </div>
   </div>
 
-  <!-- ── HISTORIAL DE ESCANEOS ── -->
+  <!-- ── SCAN HISTORY ── -->
   <div class="card" id="card-historial">
-    <div class="card-titulo">Registro de verificaciones</div>
+    <div class="card-titulo">Verification history</div>
     <div id="historial-content"></div>
   </div>
 
-  <!-- ── REGISTRO DE PROPIETARIO ── -->
+  <!-- ── OWNER REGISTRATION ── -->
   <div class="promo-card" id="promo-recompra">
-    <div class="promo-kicker">Beneficio por cliente QUIE</div>
-    <h3>¿Quieres otra pieza con autenticidad NFC?</h3>
-    <p>Gracias por verificar tu producto. Mira otros modelos disponibles o escríbenos por WhatsApp para una recomendación personalizada.</p>
+    <div class="promo-kicker">QUIE customer benefit</div>
+    <h3>Want another piece with NFC authenticity?</h3>
+    <p>Thank you for verifying your product. Browse other available models or message us on WhatsApp for a personalized recommendation.</p>
     <div class="promo-actions">
-      <a class="promo-btn gold" href="/catalogo">Ver catálogo</a>
-      <a class="promo-btn dark" id="promo-whatsapp" target="_blank" href="https://wa.me/573156056978">Pedir promoción</a>
+      <a class="promo-btn gold" href="/catalogo">View catalog</a>
+      <a class="promo-btn dark" id="promo-whatsapp" target="_blank" href="https://wa.me/573156056978">Request offer</a>
     </div>
   </div>
 
   <div id="bloque-registro" style="display:none;">
 
-    <!-- Formulario pendiente -->
+    <!-- Pending form -->
     <div class="registro-card pendiente" id="reg-form-card">
       <div class="reg-header">
         <div class="reg-icon">ID</div>
         <div>
-          <h3>Registra tu pieza</h3>
-          <p>Activa la garantía y recibe ofertas exclusivas de QUIE® directamente en tu WhatsApp.</p>
+          <h3>Register your piece</h3>
+          <p>Activate your warranty and receive exclusive QUIE® offers directly on your WhatsApp.</p>
         </div>
       </div>
 
       <div class="reg-campo">
-        <label>Tu nombre completo</label>
-        <input type="text" id="reg-nombre" placeholder="Ej: Juan Pérez"
+        <label>Your full name</label>
+        <input type="text" id="reg-nombre" placeholder="E.g.: Jane Smith"
           autocomplete="name" maxlength="80" inputmode="text"/>
       </div>
       <div class="reg-campo">
         <label>WhatsApp</label>
-        <input type="tel" id="reg-whatsapp" placeholder="Ej: 3001234567"
+        <input type="tel" id="reg-whatsapp" placeholder="E.g.: 3001234567"
           autocomplete="tel" maxlength="20" inputmode="tel"/>
       </div>
       <div class="reg-campo">
-        <label>Ciudad <span class="opcional">(opcional)</span></label>
-        <input type="text" id="reg-ciudad" placeholder="Ej: Bogotá"
+        <label>City <span class="opcional">(optional)</span></label>
+        <input type="text" id="reg-ciudad" placeholder="E.g.: Bogotá"
           autocomplete="address-level2" maxlength="60"/>
       </div>
       <div class="reg-campo">
-        <label>Email <span class="opcional">(opcional)</span></label>
-        <input type="email" id="reg-email" placeholder="tu@correo.com"
+        <label>Email <span class="opcional">(optional)</span></label>
+        <input type="email" id="reg-email" placeholder="you@email.com"
           autocomplete="email" maxlength="100" inputmode="email"/>
       </div>
       <div class="reg-campo">
-        <label>Foto de la pieza <span class="opcional">(opcional)</span></label>
+        <label>Photo of the piece <span class="opcional">(optional)</span></label>
         <label class="foto-input" for="reg-foto">
           <span class="foto-icon">Foto</span>
           <span class="foto-copy">
-            <strong>Tomar o subir foto</strong>
-            <span id="reg-foto-nombre">JPG, PNG o WebP. Máximo 4 MB.</span>
+            <strong>Take or upload a photo</strong>
+            <span id="reg-foto-nombre">JPG, PNG or WebP. Max 4 MB.</span>
           </span>
           <input type="file" id="reg-foto" accept="image/jpeg,image/png,image/webp" capture="environment"/>
         </label>
         <div class="foto-preview" id="reg-foto-preview">
-          <img id="reg-foto-preview-img" alt="Foto seleccionada de la pieza">
+          <img id="reg-foto-preview-img" alt="Selected photo of the piece">
         </div>
       </div>
 
       <button class="btn-registrar" id="btn-registrar" disabled>
-        Activar garantía →
+        Activate warranty →
       </button>
       <div class="reg-error" id="reg-error"></div>
       <p class="reg-privacidad">
-        Tus datos son usados únicamente por QUIE® para enviarte información de productos y garantías. No se comparten con terceros.
+        Your data is used solely by QUIE® to send you product information and warranty details. It is never shared with third parties.
       </p>
       <button class="reg-skip" id="btn-skip-reg">
-        Omitir por ahora
+        Skip for now
       </button>
     </div>
 
-    <!-- Éxito -->
+    <!-- Success -->
     <div class="registro-card ok" id="reg-ok-card" style="display:none;">
       <div style="font-size:48px;margin-bottom:12px;">QUIE</div>
-      <h3 style="color:#D9A86C;font-size:1rem;font-weight:900;margin-bottom:8px;">¡Pieza registrada!</h3>
+      <h3 style="color:#D9A86C;font-size:1rem;font-weight:900;margin-bottom:8px;">Piece registered!</h3>
       <p style="font-size:.82rem;color:rgba(242,242,242,.58);line-height:1.7;">
-        Bienvenido a la familia QUIE®.<br/>
-        Te contactaremos por WhatsApp con novedades y ofertas exclusivas.
+        Welcome to the QUIE® family.<br/>
+        We will reach out on WhatsApp with news and exclusive offers.
       </p>
     </div>
 
-    <!-- Ya registrado -->
+    <!-- Already registered -->
     <div class="registro-card" id="reg-ya-card"
       style="display:none;background:rgba(217, 168, 108, .04);border:1px solid rgba(217, 168, 108, .12);text-align:center;">
       <div style="font-size:32px;margin-bottom:8px;">OK</div>
-      <p style="font-size:.8rem;color:rgba(242,242,242,.58);">Esta pieza ya tiene un propietario registrado.</p>
+      <p style="font-size:.8rem;color:rgba(242,242,242,.58);">This piece already has a registered owner.</p>
     </div>
 
   </div>
 
-  <!-- ── MARCA ── -->
+  <!-- ── BRAND ── -->
   <div class="marca-section">
     <span class="marca-escudo"></span>
     <div class="marca-nombre">QUIE®</div>
     <p class="marca-desc">
-      Fabricantes y diseñadores de accesorios premium.<br/>
-      Proyecto de demostracion para hackathon.<br/>
-      Bogota, Colombia.
+      Manufacturers and designers of premium accessories.<br/>
+      Demo project for hackathon.<br/>
+      Bogotá, Colombia.
     </p>
   </div>
 
-  <!-- ── REDES SOCIALES ── -->
-  <div class="redes-titulo">Síguenos</div>
+  <!-- ── SOCIAL ── -->
+  <div class="redes-titulo">Follow us</div>
   <div class="redes-grid">
     <a class="red-btn" href="https://instagram.com/quie.oficial" target="_blank">Instagram Instagram</a>
     <a class="red-btn" href="https://tiktok.com/@quie.oficial" target="_blank">TikTok TikTok</a>
@@ -559,9 +559,9 @@
     <a class="red-btn" href="https://wa.me/573156056978" target="_blank">WhatsApp WhatsApp</a>
   </div>
 
-  <!-- ── CONTACTO ── -->
+  <!-- ── CONTACT ── -->
   <div class="card">
-    <div class="card-titulo">Contacto</div>
+    <div class="card-titulo">Contact</div>
     <div class="contacto-row">
       <div class="c-ico">Tel</div>
       <a href="https://wa.me/573156056978">315 6056978 (WhatsApp)</a>
@@ -572,7 +572,7 @@
     </div>
     <div class="contacto-row">
       <div class="c-ico">Lugar</div>
-      <span style="font-size:.8rem;color:rgba(242,242,242,.58);">Bogota, Colombia</span>
+      <span style="font-size:.8rem;color:rgba(242,242,242,.58);">Bogotá, Colombia</span>
     </div>
   </div>
 
@@ -589,13 +589,13 @@
     transition:background-color .25s;
   " onmouseover="this.style.backgroundColor='rgba(212,149,106,.13)'"
      onmouseout="this.style.backgroundColor='transparent'">
-    Nuestra historia
+    Our story
   </a>
-  <div class="footer-copy">© QUIE® · Todos los derechos reservados</div>
+  <div class="footer-copy">© QUIE® · All rights reserved</div>
 </div>
 
 <script>
-  // Variables inyectadas por el servidor
+  // Server-injected variables
   const esPrimerEscaneo = '{{ES_PRIMER_ESCANEO}}' === 'true';
   const totalEscaneos   = parseInt('{{TOTAL_ESCANEOS}}') || 0;
   const fechaRegistro   = '{{FECHA_PRIMER_ESCANEO}}';
@@ -629,11 +629,11 @@
       icoWrap.className = 'sello-ico-wrap verde';
       ico.textContent = 'OK';
       titulo.className = 'sello-titulo verde';
-      titulo.textContent = 'PRODUCTO AUTÉNTICO';
-      sub.textContent = 'Este es el primer escaneo registrado de esta pieza. Tu QUIE® es original.';
+      titulo.textContent = 'AUTHENTIC PRODUCT';
+      sub.textContent = 'This is the first registered scan of this piece. Your QUIE® is genuine.';
       badge.className = 'sello-badge verde';
       badge.style.display = 'inline-flex';
-      badgeTxt.textContent = '1er escaneo registrado hoy';
+      badgeTxt.textContent = '1st scan registered today';
       bg.className = 'bg-layers autentico';
 
     } else if (tipo === 'rescan') {
@@ -642,26 +642,26 @@
       ico.textContent = yaRegistrado && nombrePropietario ? 'Cliente' : 'Re';
       titulo.className = 'sello-titulo gold';
       titulo.textContent = yaRegistrado && nombrePropietario
-        ? 'PIEZA DE ' + nombrePropietario.split(' ')[0].toUpperCase()
-        : 'PRODUCTO REGISTRADO';
+        ? 'PIECE BY ' + nombrePropietario.split(' ')[0].toUpperCase()
+        : 'REGISTERED PRODUCT';
       sub.innerHTML = yaRegistrado && nombrePropietario
-        ? 'Esta pieza está registrada a nombre de <strong>' + nombrePropietario + '</strong>.<br/>Registrada el ' + fechaRegistro + ' desde ' + ciudadRegistro + '.'
-        : 'Registrado el <strong>' + fechaRegistro + '</strong> desde <strong>' + ciudadRegistro + '</strong>.';
+        ? 'This piece is registered to <strong>' + nombrePropietario + '</strong>.<br/>Registered on ' + fechaRegistro + ' from ' + ciudadRegistro + '.'
+        : 'Registered on <strong>' + fechaRegistro + '</strong> from <strong>' + ciudadRegistro + '</strong>.';
       badge.className = 'sello-badge gold';
       badge.style.display = 'inline-flex';
-      badgeTxt.textContent = 'Escaneo #' + (totalEscaneos);
+      badgeTxt.textContent = 'Scan #' + (totalEscaneos);
       bg.className = 'bg-layers';
 
     } else if (tipo === 'sospechoso') {
       ring.className = 'sello-ring rojo';
       icoWrap.className = 'sello-ico-wrap rojo';
-      ico.textContent = 'Atención';
+      ico.textContent = 'Alert';
       titulo.className = 'sello-titulo rojo';
-      titulo.textContent = 'VERIFICAR AUTENTICIDAD';
-      sub.textContent = 'Este código ha sido escaneado muchas veces (' + totalEscaneos + '). Si tienes dudas, contáctanos.';
+      titulo.textContent = 'VERIFY AUTHENTICITY';
+      sub.textContent = 'This code has been scanned many times (' + totalEscaneos + '). If you have doubts, contact us.';
       badge.className = 'sello-badge rojo';
       badge.style.display = 'inline-flex';
-      badgeTxt.textContent = totalEscaneos + ' escaneos registrados';
+      badgeTxt.textContent = totalEscaneos + ' registered scans';
       bg.className = 'bg-layers sospechoso';
       bgTexture.className = 'bg-texture sospechoso';
     }
@@ -672,29 +672,29 @@
     if (esPrimerEscaneo) {
       cont.innerHTML =
         '<div class="historial-item">' +
-        '<div class="hist-ico">Nuevo</div>' +
+        '<div class="hist-ico">New</div>' +
         '<div class="hist-info">' +
-        '<div style="color:#D9A86C;font-weight:700;font-size:.82rem;">Primera verificación</div>' +
-        '<div class="hist-fecha">Hoy · ' + ciudadRegistro + '</div>' +
+        '<div style="color:#D9A86C;font-weight:700;font-size:.82rem;">First verification</div>' +
+        '<div class="hist-fecha">Today · ' + ciudadRegistro + '</div>' +
         '</div></div>';
     } else {
       cont.innerHTML =
         '<div class="historial-item">' +
-        '<div class="hist-ico">Lugar</div>' +
+        '<div class="hist-ico">Place</div>' +
         '<div class="hist-info">' +
-        '<div style="font-size:.82rem;">Primer registro: <strong style="color:var(--dorado)">' + fechaRegistro + '</strong></div>' +
-        '<div class="hist-fecha">Desde ' + ciudadRegistro + '</div>' +
+        '<div style="font-size:.82rem;">First registered: <strong style="color:var(--dorado)">' + fechaRegistro + '</strong></div>' +
+        '<div class="hist-fecha">From ' + ciudadRegistro + '</div>' +
         '</div></div>' +
         '<div class="historial-item">' +
         '<div class="hist-ico">Re</div>' +
         '<div class="hist-info">' +
-        '<div style="font-size:.82rem;">Total verificaciones: <strong>' + totalEscaneos + '</strong></div>' +
-        '<div class="hist-fecha">Este es el escaneo #' + totalEscaneos + '</div>' +
+        '<div style="font-size:.82rem;">Total verifications: <strong>' + totalEscaneos + '</strong></div>' +
+        '<div class="hist-fecha">This is scan #' + totalEscaneos + '</div>' +
         '</div></div>';
     }
   }
 
-  // ── Registro de propietario ────────────────────────────────────────────────
+  // ── Owner registration ─────────────────────────────────────────────────────
   function iniciarFormularioRegistro() {
     const bloque = document.getElementById('bloque-registro');
     bloque.style.display = 'block';
@@ -705,7 +705,7 @@
       return;
     }
 
-    // Validación en tiempo real
+    // Real-time validation
     function validarForm() {
       const nombre   = document.getElementById('reg-nombre').value.trim();
       const whatsapp = document.getElementById('reg-whatsapp').value.trim();
@@ -720,18 +720,18 @@
       const img = document.getElementById('reg-foto-preview-img');
 
       if (!file) {
-        nombreEl.textContent = 'JPG, PNG o WebP. Máximo 4 MB.';
+        nombreEl.textContent = 'JPG, PNG or WebP. Max 4 MB.';
         preview.style.display = 'none';
         img.removeAttribute('src');
         return;
       }
 
-      nombreEl.textContent = 'Foto lista: ' + file.name;
+      nombreEl.textContent = 'Photo ready: ' + file.name;
       img.src = URL.createObjectURL(file);
       preview.style.display = 'block';
     });
 
-    // Enviar registro
+    // Submit registration
     document.getElementById('btn-registrar').addEventListener('click', async function() {
       const btn      = this;
       const nombre   = document.getElementById('reg-nombre').value.trim();
@@ -750,7 +750,7 @@
       if (foto) formData.append('foto_pieza', foto);
 
       btn.disabled = true;
-      btn.textContent = 'Registrando...';
+      btn.textContent = 'Registering...';
       errEl.style.display = 'none';
 
       try {
@@ -768,20 +768,20 @@
           document.getElementById('reg-ya-card').style.display = 'block';
         } else {
           const detalle = data.detalles && data.detalles[0] ? ': ' + data.detalles[0].msg : '';
-          errEl.textContent = (data.error || 'Error al registrar. Intenta de nuevo.') + detalle;
+          errEl.textContent = (data.error || 'Registration error. Please try again.') + detalle;
           errEl.style.display = 'block';
           btn.disabled = false;
-          btn.textContent = 'Activar garantía →';
+          btn.textContent = 'Activate warranty →';
         }
       } catch(_) {
-        errEl.textContent = 'Sin conexión. Verifica tu internet.';
+        errEl.textContent = 'No connection. Check your internet.';
         errEl.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'Activar garantía →';
+        btn.textContent = 'Activate warranty →';
       }
     });
 
-    // Omitir
+    // Skip
     document.getElementById('btn-skip-reg').addEventListener('click', function() {
       document.getElementById('bloque-registro').style.display = 'none';
     });
@@ -792,12 +792,12 @@
     const promo = document.getElementById('promo-recompra');
     const wsp = document.getElementById('promo-whatsapp');
     const modelo = document.getElementById('d-modelo').textContent.trim();
-    const msg = encodeURIComponent('Hola QUIE®, ya verifiqué mi pieza ' + modelo + ' y quiero conocer una promoción para comprar otro producto.');
+    const msg = encodeURIComponent('Hi QUIE®, I already verified my ' + modelo + ' and would like to know about a promotion to purchase another product.');
     wsp.href = 'https://wa.me/573156056978?text=' + msg;
     promo.style.display = 'block';
   }
 
-  // Inicializar
+  // Initialize
   window.addEventListener('load', function() {
     let tipo = 'rescan';
     if (esPrimerEscaneo) tipo = 'autentico';
@@ -814,7 +814,7 @@
         document.getElementById('loading').style.display = 'none';
       }, 700);
 
-      // Mostrar formulario: en primer escaneo siempre, en re-scan solo si no registrado
+      // Show form: always on first scan, on re-scan only if not yet registered
       if (esPrimerEscaneo || !yaRegistrado) {
         setTimeout(iniciarFormularioRegistro, 400);
       }

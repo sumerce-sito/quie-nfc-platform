@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Guía de Programación NFC — QUIE®</title>
+  <title>NFC Programming Guide — QUIE®</title>
   <style>
     :root{--negro:#2D402E;--dorado:#D9A86C;--azul:#2D402E;--blanco:#F2F2F2;
       --verde:#2D402E;--rojo:#BF5630;--gris:#2D402E;--gris2:#2D402E;--naranja:#BF5630;}
@@ -139,39 +139,39 @@
 <body>
 
 <nav>
-  <div class="nav-logo">QUIE® — Guía NFC</div>
+  <div class="nav-logo">QUIE® — NFC Guide</div>
   <ul class="nav-links">
     <li><a href="#apps">Apps</a></li>
-    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#proceso">Process</a></li>
     <li><a href="#checklist">Checklist</a></li>
-    <li><a href="#errores">Errores</a></li>
-    <li><a href="/">← Sitio</a></li>
+    <li><a href="#errores">Errors</a></li>
+    <li><a href="/">← Site</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <p class="sec-label">Operador de Producción</p>
-  <h1>Guía de Programación<br/>de Tags NFC</h1>
-  <p>Todo lo que necesitas para programar, verificar y colocar los chips NFC en las piezas QUIE®. Sin conocimientos técnicos previos.</p>
+  <p class="sec-label">Production Operator</p>
+  <h1>NFC Tag Programming<br/>Guide</h1>
+  <p>Everything you need to program, verify and place NFC chips in QUIE® pieces. No prior technical knowledge required.</p>
   <div class="chip-badge">NFC · Chip: NTAG213 · 144 bytes · 13.56 MHz · Compatible iOS + Android</div>
 </div>
 
-<!-- APPS RECOMENDADAS -->
+<!-- RECOMMENDED APPS -->
 <section id="apps">
-  <p class="sec-label">Paso 0 — Antes de empezar</p>
-  <h2>¿Qué app usar?</h2>
+  <p class="sec-label">Step 0 — Before you start</p>
+  <h2>What app to use?</h2>
   <div class="apps-grid">
 
     <div class="app-card recomendado">
       <div class="app-header">
         <div class="app-icon android">NXP</div>
         <div>
-          <h3>NFC TagWriter by NXP <span class="rec-badge">RECOMENDADA</span></h3>
-          <div class="plat">Android · Gratis · NXP Semiconductors</div>
+          <h3>NFC TagWriter by NXP <span class="rec-badge">RECOMMENDED</span></h3>
+          <div class="plat">Android · Free · NXP Semiconductors</div>
         </div>
       </div>
-      <p>La app oficial del fabricante del chip. Rápida, confiable y gratuita. Permite escribir, leer y bloquear tags. Es la que usamos en producción QUIE.</p>
+      <p>The official app from the chip manufacturer. Fast, reliable and free. Allows writing, reading and locking tags. This is the one we use in QUIE production.</p>
     </div>
 
     <div class="app-card">
@@ -182,7 +182,7 @@
           <div class="plat">Android + iOS · ~$4 USD</div>
         </div>
       </div>
-      <p>La más completa del mercado. Permite escribir, leer, bloquear y ver todos los datos del chip. Ideal si trabajas también desde iPhone.</p>
+      <p>The most complete app on the market. Allows writing, reading, locking and viewing all chip data. Ideal if you also work from iPhone.</p>
     </div>
 
     <div class="app-card">
@@ -190,25 +190,25 @@
         <div class="app-icon ios">iOS</div>
         <div>
           <h3>NFC.cool Tools</h3>
-          <div class="plat">iOS iPhone 7+ (iOS 13+) · Gratis</div>
+          <div class="plat">iOS iPhone 7+ (iOS 13+) · Free</div>
         </div>
       </div>
-      <p>Opción gratuita para iPhone. Puede leer y escribir URIs en NTAG213. Menos funciones que NFC Tools Pro pero sirve para producción básica.</p>
+      <p>Free option for iPhone. Can read and write URIs on NTAG213. Fewer features than NFC Tools Pro but works for basic production.</p>
     </div>
 
   </div>
 
   <div style="background:#2D402E;border:1px solid #2D402E;border-radius:10px;padding:20px;margin-top:24px;font-size:.85rem;color:#593325;">
-    <strong style="color:var(--dorado);">📌 Importante:</strong> El NFC debe estar ACTIVADO en tu teléfono.<br/>
-    Android: Ajustes → Conexiones → NFC → Activar<br/>
-    iPhone: Funciona automáticamente en iPhone 7 o superior con iOS 11+
+    <strong style="color:var(--dorado);">📌 Important:</strong> NFC must be ENABLED on your phone.<br/>
+    Android: Settings → Connections → NFC → Enable<br/>
+    iPhone: Works automatically on iPhone 7 or higher with iOS 11+
   </div>
 </section>
 
-<!-- PROCESO PASO A PASO -->
+<!-- STEP-BY-STEP PROCESS -->
 <section id="proceso" style="background:var(--gris);border-top:1px solid #2D402E;border-bottom:1px solid #2D402E;">
-  <p class="sec-label">Proceso completo</p>
-  <h2>Programar un Tag — Paso a Paso</h2>
+  <p class="sec-label">Full process</p>
+  <h2>Programming a Tag — Step by Step</h2>
 
   <div class="steps-container">
     <div class="steps-list">
@@ -219,16 +219,16 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Preparar el CSV del lote</h3>
-          <p>Descarga el CSV desde el panel admin. Cada fila es un código con su URL.</p>
+          <h3>Prepare the batch CSV</h3>
+          <p>Download the CSV from the admin panel. Each row is a code with its URL.</p>
           <div class="step-detail">
             <ul>
-              <li>Ve al <strong>Panel Admin → Lotes → CSV</strong></li>
-              <li>Abre el archivo en Excel o Google Sheets</li>
-              <li>Ordena los tags físicos igual que el CSV</li>
-              <li>Trabaja de izquierda a derecha, fila por fila</li>
+              <li>Go to <strong>Admin Panel → Batches → CSV</strong></li>
+              <li>Open the file in Excel or Google Sheets</li>
+              <li>Sort the physical tags in the same order as the CSV</li>
+              <li>Work left to right, row by row</li>
             </ul>
-            <div class="tip">💡 El CSV tiene: codigo_nfc, url_landing, modelo, color. La columna que vas a copiar es <strong>url_landing</strong>.</div>
+            <div class="tip">💡 The CSV contains: codigo_nfc, url_landing, modelo, color. The column you will copy is <strong>url_landing</strong>.</div>
           </div>
         </div>
       </div>
@@ -239,20 +239,20 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Abrir NFC TagWriter by NXP</h3>
-          <p>Crear un nuevo dataset de tipo URI con la URL del primer código.</p>
+          <h3>Open NFC TagWriter by NXP</h3>
+          <p>Create a new URI dataset with the URL of the first code.</p>
           <div class="step-detail">
             <ul>
-              <li>Abrir la app → <strong>"Write tags"</strong></li>
-              <li>Tocar <strong>"New dataset"</strong></li>
-              <li>Seleccionar <strong>"URI"</strong></li>
-              <li>Pegar la URL del CSV:</li>
+              <li>Open the app → <strong>"Write tags"</strong></li>
+              <li>Tap <strong>"New dataset"</strong></li>
+              <li>Select <strong>"URI"</strong></li>
+              <li>Paste the URL from the CSV:</li>
             </ul>
             <code>https://quie-nfc-platform.vercel.app/v/QUIE-A7B3X9-42</code>
             <ul>
-              <li>Tocar <strong>"Save & Write"</strong></li>
+              <li>Tap <strong>"Save & Write"</strong></li>
             </ul>
-            <div class="tip">💡 Copia la URL completa incluyendo el https://</div>
+            <div class="tip">💡 Copy the full URL including the https://</div>
           </div>
         </div>
       </div>
@@ -263,16 +263,16 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Acercar el tag al teléfono</h3>
-          <p>Mantener el chip plano y quieto bajo el teléfono hasta escuchar confirmación.</p>
+          <h3>Bring the tag to the phone</h3>
+          <p>Keep the chip flat and still under the phone until you hear confirmation.</p>
           <div class="step-detail">
             <ul>
-              <li>Coloca el tag NFC sobre una superficie plana</li>
-              <li>Acerca el <strong>centro o parte trasera superior</strong> del teléfono</li>
-              <li>Mantén quieto <strong>1-2 segundos</strong></li>
-              <li>La app mostrará: <strong style="color:var(--verde)">"Tag written successfully"</strong></li>
+              <li>Place the NFC tag on a flat surface</li>
+              <li>Bring the <strong>center or upper back</strong> of the phone over it</li>
+              <li>Hold still for <strong>1–2 seconds</strong></li>
+              <li>The app will show: <strong style="color:var(--verde)">"Tag written successfully"</strong></li>
             </ul>
-            <div class="warn">Atención: no mover el teléfono mientras escribe. Si falla, repetir. Después de 3 fallos, el tag puede estar dañado.</div>
+            <div class="warn">Warning: do not move the phone while writing. If it fails, try again. After 3 failures, the tag may be damaged.</div>
           </div>
         </div>
       </div>
@@ -283,16 +283,16 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Verificar la escritura</h3>
-          <p>Leer el tag escrito y confirmar que la URL es correcta antes de bloquear.</p>
+          <h3>Verify the write</h3>
+          <p>Read the written tag and confirm the URL is correct before locking.</p>
           <div class="step-detail">
             <ul>
-              <li>Cerrar la pantalla de escritura</li>
-              <li>Acercar el teléfono al mismo tag</li>
-              <li>Debe aparecer notificación del navegador</li>
-              <li>Confirmar que la URL coincide con el CSV</li>
+              <li>Close the write screen</li>
+              <li>Bring the phone close to the same tag</li>
+              <li>A browser notification should appear</li>
+              <li>Confirm the URL matches the CSV</li>
             </ul>
-            <div class="tip">💡 También puedes abrir NFC Tools, leer el tag y ver la URL en la pestaña "Records".</div>
+            <div class="tip">💡 You can also open NFC Tools, read the tag and see the URL in the "Records" tab.</div>
           </div>
         </div>
       </div>
@@ -303,14 +303,14 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Bloquear el tag (anti-falsificación)</h3>
-          <p>Una vez verificado, bloquear para que nadie pueda sobreescribirlo.</p>
+          <h3>Lock the tag (anti-counterfeit)</h3>
+          <p>Once verified, lock it so nobody can overwrite it.</p>
           <div class="step-detail">
             <ul>
-              <li><strong>En NFC TagWriter:</strong> "Other functions" → "Lock tag" → Confirmar</li>
-              <li><strong>En NFC Tools Pro:</strong> Leer tag → "More" → "Make read-only"</li>
+              <li><strong>In NFC TagWriter:</strong> "Other functions" → "Lock tag" → Confirm</li>
+              <li><strong>In NFC Tools Pro:</strong> Read tag → "More" → "Make read-only"</li>
             </ul>
-            <div class="warn">Atención: el bloqueo es IRREVERSIBLE. Un tag bloqueado con URL incorrecta debe descartarse. Verificar ANTES de bloquear.</div>
+            <div class="warn">Warning: locking is IRREVERSIBLE. A tag locked with the wrong URL must be discarded. Always verify BEFORE locking.</div>
           </div>
         </div>
       </div>
@@ -321,17 +321,17 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Pegar el tag en la pieza</h3>
-          <p>Posición interior, zona de zona interior discreta, plano y sin interferencias metálicas.</p>
+          <h3>Attach the tag to the piece</h3>
+          <p>Interior position, discreet inner zone, flat and free from metal interference.</p>
           <div class="step-detail">
             <ul>
-              <li>Interior de la pieza, <strong>zona interior discreta frontal</strong></li>
-              <li>Evitar costuras metálicas — interfieren con la señal</li>
-              <li>Si el tag no tiene adhesivo: usar cinta doble faz industrial</li>
-              <li>El tag debe quedar completamente <strong>plano</strong></li>
-              <li>Hacer escaneo final desde el exterior para confirmar lectura</li>
+              <li>Inside the piece, <strong>discreet front inner zone</strong></li>
+              <li>Avoid metal stitching — it interferes with the signal</li>
+              <li>If the tag has no adhesive: use industrial double-sided tape</li>
+              <li>The tag must be completely <strong>flat</strong></li>
+              <li>Do a final scan from the outside to confirm readability</li>
             </ul>
-            <div class="tip">💡 Alternativa: bajo la etiqueta de talla/marca interior.</div>
+            <div class="tip">💡 Alternative: under the size/brand label on the interior.</div>
           </div>
         </div>
       </div>
@@ -342,31 +342,31 @@
           <div class="step-line"></div>
         </div>
         <div class="step-content">
-          <h3>Marcar como listo y continuar</h3>
-          <p>Avanzar al siguiente código del CSV y repetir desde el paso 2.</p>
+          <h3>Mark as done and continue</h3>
+          <p>Move to the next code in the CSV and repeat from step 2.</p>
           <div class="step-detail">
             <ul>
-              <li>Marcar la fila del CSV como OK completada</li>
-              <li>Pasar al siguiente código en el CSV</li>
-              <li>Repetir desde el paso 2</li>
-              <li>Cada tag toma ~15 segundos</li>
+              <li>Mark the CSV row as OK completed</li>
+              <li>Move to the next code in the CSV</li>
+              <li>Repeat from step 2</li>
+              <li>Each tag takes ~15 seconds</li>
             </ul>
-            <div class="tip">💡 Tiempo estimado: 50 tags = 12-15 min · 100 tags = 25-30 min</div>
+            <div class="tip">💡 Estimated time: 50 tags = 12–15 min · 100 tags = 25–30 min</div>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- MOCKUP TELÉFONO -->
+    <!-- PHONE MOCKUP -->
     <div>
       <div class="phone-mockup">
         <div class="phone-screen">
           <div class="screen-content" id="screen-content">
             <span class="screen-app">NFC TagWriter by NXP</span>
             <span class="screen-icon">NFC</span>
-            <div class="screen-title">LISTO PARA<br/>PROGRAMAR</div>
-            <div class="screen-sub" style="margin-top:10px;">Selecciona un paso para ver la pantalla correspondiente</div>
+            <div class="screen-title">READY TO<br/>PROGRAM</div>
+            <div class="screen-sub" style="margin-top:10px;">Select a step to see the corresponding screen</div>
           </div>
         </div>
       </div>
@@ -374,56 +374,56 @@
   </div>
 </section>
 
-<!-- CHECKLIST INTERACTIVO -->
+<!-- INTERACTIVE CHECKLIST -->
 <section id="checklist">
-  <p class="sec-label">Control de calidad</p>
-  <h2>Checklist por Tag</h2>
+  <p class="sec-label">Quality control</p>
+  <h2>Per-Tag Checklist</h2>
   <div class="check-progress">
     <div class="check-bar" id="check-bar" style="width:0%"></div>
   </div>
-  <div id="check-progress-text" style="font-size:.78rem;color:#593325;margin-bottom:20px;">0 / 6 completado</div>
+  <div id="check-progress-text" style="font-size:.78rem;color:#593325;margin-bottom:20px;">0 / 6 complete</div>
 
   <div class="card checklist">
     <div class="check-item">
       <div class="check-box" onclick="toggleCheck(this)"></div>
       <div class="ci-text">
-        <h4>URL copiada correctamente del CSV</h4>
-        <p>La URL pegada en la app coincide exactamente con la columna url_landing del CSV para este tag.</p>
+        <h4>URL copied correctly from the CSV</h4>
+        <p>The URL pasted into the app matches exactly the url_landing column of the CSV for this tag.</p>
       </div>
     </div>
     <div class="check-item">
       <div class="check-box" onclick="toggleCheck(this)"></div>
       <div class="ci-text">
-        <h4>Escritura exitosa confirmada por la app</h4>
-        <p>La app mostró "Tag written successfully" o mensaje equivalente en verde.</p>
+        <h4>Successful write confirmed by the app</h4>
+        <p>The app showed "Tag written successfully" or equivalent message in green.</p>
       </div>
     </div>
     <div class="check-item">
       <div class="check-box" onclick="toggleCheck(this)"></div>
       <div class="ci-text">
-        <h4>URL verificada escaneando el tag</h4>
-        <p>Al acercar el teléfono después de escribir, el navegador abrió la URL correcta de QUIE.</p>
+        <h4>URL verified by scanning the tag</h4>
+        <p>After writing, bringing the phone close opened the correct QUIE URL in the browser.</p>
       </div>
     </div>
     <div class="check-item">
       <div class="check-box" onclick="toggleCheck(this)"></div>
       <div class="ci-text">
-        <h4>Tag bloqueado (read-only)</h4>
-        <p>Se aplicó el bloqueo anti-falsificación. El tag ya no puede ser sobreescrito.</p>
+        <h4>Tag locked (read-only)</h4>
+        <p>Anti-counterfeit lock applied. The tag can no longer be overwritten.</p>
       </div>
     </div>
     <div class="check-item">
       <div class="check-box" onclick="toggleCheck(this)"></div>
       <div class="ci-text">
-        <h4>Tag pegado en posición correcta</h4>
-        <p>Interior de la pieza, zona interior discreta, plano, sin arrugas ni burbujas.</p>
+        <h4>Tag attached in the correct position</h4>
+        <p>Inside the piece, discreet inner zone, flat, no wrinkles or bubbles.</p>
       </div>
     </div>
     <div class="check-item">
       <div class="check-box" onclick="toggleCheck(this)"></div>
       <div class="ci-text">
-        <h4>Escaneo final desde el exterior</h4>
-        <p>Con la pieza armada, se escaneó desde el exterior y funcionó correctamente.</p>
+        <h4>Final scan from the exterior</h4>
+        <p>With the piece assembled, scanned from the outside and worked correctly.</p>
       </div>
     </div>
   </div>
@@ -431,49 +431,49 @@
   <div id="check-complete" style="display:none;background:rgba(45, 64, 46, .1);border:2px solid var(--verde);
     border-radius:10px;padding:20px;text-align:center;margin-top:20px;">
     <div style="font-size:2rem;margin-bottom:8px;">OK</div>
-    <strong style="color:var(--verde);">¡Tag completado y listo!</strong>
-    <p style="font-size:.82rem;color:#D9A86C;margin-top:6px;">Puedes resetear y continuar con el siguiente.</p>
+    <strong style="color:var(--verde);">Tag complete and ready!</strong>
+    <p style="font-size:.82rem;color:#D9A86C;margin-top:6px;">You can reset and continue with the next one.</p>
     <button onclick="resetChecklist()" style="background:var(--verde);color:#2D402E;border:none;
       padding:8px 20px;border-radius:6px;font-weight:800;cursor:pointer;margin-top:10px;">
-      ▶ Siguiente Tag
+      ▶ Next Tag
     </button>
   </div>
 </section>
 
-<!-- ERRORES COMUNES -->
+<!-- COMMON ERRORS -->
 <section id="errores" style="background:var(--gris);border-top:1px solid #2D402E;">
-  <p class="sec-label">Resolución de problemas</p>
-  <h2>Errores Comunes</h2>
+  <p class="sec-label">Troubleshooting</p>
+  <h2>Common Errors</h2>
   <div class="error-grid">
     <div class="error-card">
-      <h4> Tag no detectado</h4>
-      <div class="causa">Causa: NFC desactivado en el teléfono o posición incorrecta</div>
-      <div class="sol">Verificar que NFC esté activado en Ajustes. Cambiar la posición del teléfono sobre el tag — buscar la zona NFC (varía por modelo).</div>
+      <h4>Tag not detected</h4>
+      <div class="causa">Cause: NFC disabled on the phone or incorrect position</div>
+      <div class="sol">Check that NFC is enabled in Settings. Try different positions of the phone over the tag — the NFC zone varies by model.</div>
     </div>
     <div class="error-card">
-      <h4> Error al escribir</h4>
-      <div class="causa">Causa: Tag ya bloqueado o chip dañado</div>
-      <div class="sol">Si el tag fue bloqueado previamente, es imposible sobreescribirlo. Descartar y usar un tag nuevo. Reportar al inventario.</div>
+      <h4>Write error</h4>
+      <div class="causa">Cause: Tag already locked or chip damaged</div>
+      <div class="sol">If the tag was previously locked, it cannot be overwritten. Discard and use a new tag. Report to inventory.</div>
     </div>
     <div class="error-card">
-      <h4> URL incorrecta escrita</h4>
-      <div class="causa">Causa: Error de copy/paste en la URL</div>
-      <div class="sol">Si el tag no está bloqueado aún, puedes sobreescribirlo. Si ya fue bloqueado, descartar. Siempre verificar ANTES de bloquear.</div>
+      <h4>Wrong URL written</h4>
+      <div class="causa">Cause: Copy/paste error in the URL</div>
+      <div class="sol">If the tag is not yet locked, you can overwrite it. If already locked, discard it. Always verify BEFORE locking.</div>
     </div>
     <div class="error-card">
-      <h4> La página abre con error 404</h4>
-      <div class="causa">Causa: Código no existe en el sistema o sistema apagado</div>
-      <div class="sol">Verificar que el servidor esté corriendo. Confirmar que el lote fue activado en el panel admin. La URL debe tener el formato exacto.</div>
+      <h4>Page opens with 404 error</h4>
+      <div class="causa">Cause: Code does not exist in the system or server is down</div>
+      <div class="sol">Verify the server is running. Confirm the batch was activated in the admin panel. The URL must follow the exact format.</div>
     </div>
     <div class="error-card">
-      <h4> El tag no se lee desde el exterior de la pieza</h4>
-      <div class="causa">Causa: Material metálico entre el tag y el lector, o tag mal pegado</div>
-      <div class="sol">Reubicar el tag evitando herrajes metálicos, broches o placas. La zona interior discreta textil es la mejor zona.</div>
+      <h4>Tag not readable from outside the piece</h4>
+      <div class="causa">Cause: Metal material between tag and reader, or tag attached incorrectly</div>
+      <div class="sol">Reposition the tag away from metal hardware, snaps or plates. The textile inner zone is the best location.</div>
     </div>
     <div class="error-card">
-      <h4> iPhone no lee el tag</h4>
-      <div class="causa">Causa: iPhone 6 o anterior (sin NFC nativo para URL)</div>
-      <div class="sol">iPhone 7 o superior necesario. En iPhone 10 o superior el NFC es automático. En iPhone 7-9 puede requerir abrir la cámara y tocar la notificación.</div>
+      <h4>iPhone does not read the tag</h4>
+      <div class="causa">Cause: iPhone 6 or older (no native NFC for URLs)</div>
+      <div class="sol">iPhone 7 or higher is required. On iPhone 10 or higher NFC is automatic. On iPhone 7–9 you may need to open the camera and tap the notification.</div>
     </div>
   </div>
 </section>
@@ -481,18 +481,18 @@
 <!-- FOOTER -->
 <footer>
   <p>QUIE® NFC System · TagWriter v1.0 · 2026</p>
-  <p style="margin-top:6px;"><a href="/admin" style="color:var(--dorado);text-decoration:none;">Panel Admin</a> · <a href="/" style="color:var(--dorado);text-decoration:none;">Sitio Principal</a></p>
+  <p style="margin-top:6px;"><a href="/admin" style="color:var(--dorado);text-decoration:none;">Admin panel</a> · <a href="/" style="color:var(--dorado);text-decoration:none;">Main site</a></p>
 </footer>
 
 <script>
 const pantallas = {
-  1: { icon:'CSV', title:'ABRIR CSV', sub:'Descargar desde Admin → Lotes → CSV\nAbrir en Excel o Sheets\nOrdenar tags igual que el CSV' },
-  2: { icon:'URI', title:'NUEVA URI', sub:'Write tags → New dataset → URI\nPegar URL completa del CSV\nSave & Write' },
-  3: { icon:'NFC', title:'ACERCAR TAG', sub:'Tag plano sobre superficie\nCentro del teléfono sobre el chip\nQuieto 1-2 segundos...' },
-  4: { icon:'OK', title:'ESCRITO', sub:'"Tag written successfully"\nCerrar app\nAcercar de nuevo para verificar' },
-  5: { icon:'LOCK', title:'BLOQUEAR TAG', sub:'Other functions → Lock tag\nConfirmar bloqueo\nIRREVERSIBLE' },
-  6: { icon:'QUIE', title:'FIJAR EN PIEZA', sub:'Interior, zona interior discreta\nPlano, sin arrugas\nEscaneo final desde exterior' },
-  7: { icon:'NEXT', title:'SIGUIENTE TAG', sub:'Marcar OK en CSV\nSiguiente fila\nRepetir desde paso 2' }
+  1: { icon:'CSV', title:'OPEN CSV', sub:'Download from Admin → Batches → CSV\nOpen in Excel or Sheets\nSort tags to match the CSV' },
+  2: { icon:'URI', title:'NEW URI', sub:'Write tags → New dataset → URI\nPaste full URL from CSV\nSave & Write' },
+  3: { icon:'NFC', title:'BRING TAG CLOSER', sub:'Tag flat on a surface\nCenter of phone over the chip\nHold still 1–2 seconds...' },
+  4: { icon:'OK', title:'WRITTEN', sub:'"Tag written successfully"\nClose app\nBring close again to verify' },
+  5: { icon:'LOCK', title:'LOCK TAG', sub:'Other functions → Lock tag\nConfirm lock\nIRREVERSIBLE' },
+  6: { icon:'QUIE', title:'ATTACH TO PIECE', sub:'Interior, discreet inner zone\nFlat, no wrinkles\nFinal scan from exterior' },
+  7: { icon:'NEXT', title:'NEXT TAG', sub:'Mark OK in CSV\nNext row\nRepeat from step 2' }
 };
 
 function activarStep(n) {
@@ -522,7 +522,7 @@ function toggleCheck(el) {
   const total = document.querySelectorAll('.check-box').length;
   const pct = (checkCount / total * 100).toFixed(0);
   document.getElementById('check-bar').style.width = pct + '%';
-  document.getElementById('check-progress-text').textContent = `${checkCount} / ${total} completado`;
+  document.getElementById('check-progress-text').textContent = `${checkCount} / ${total} complete`;
   document.getElementById('check-complete').style.display = checkCount === total ? 'block' : 'none';
 }
 
@@ -532,7 +532,7 @@ function resetChecklist() {
   });
   checkCount = 0;
   document.getElementById('check-bar').style.width = '0%';
-  document.getElementById('check-progress-text').textContent = '0 / 6 completado';
+  document.getElementById('check-progress-text').textContent = '0 / 6 complete';
   document.getElementById('check-complete').style.display = 'none';
 }
 </script>
